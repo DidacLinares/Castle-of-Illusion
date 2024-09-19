@@ -65,7 +65,7 @@ void Player::update(int deltaTime) {
 	}
 	else {
 		if (sprite->animation() == MOVE_LEFT) sprite->changeAnimation(STAND_LEFT);
-		else if(sprite->animation() == MOVE_RIGHT) sprite->changeAnimation(STAND_RIGHT);
+		else if (sprite->animation() == MOVE_RIGHT) sprite->changeAnimation(STAND_RIGHT);
 	}
 	
 	if (bJumping) {

@@ -6,21 +6,18 @@
 #define TARGET_FRAMERATE 60.0f
 
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS)
 		Game::instance().keyPressed(key);
 	else if (action == GLFW_RELEASE)
 		Game::instance().keyReleased(key);
 }
 
-void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-{
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 	Game::instance().mouseMove(int(xpos), int(ypos));
 }
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (action == GLFW_PRESS)
 		Game::instance().mousePress(button);
 	else if (action == GLFW_RELEASE)
@@ -28,19 +25,17 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 }
 
 
-int main(void)
-{
+int main(void) {
 	GLFWwindow* window;
 	double timePerFrame = 1.f / TARGET_FRAMERATE, timePreviousFrame, currentTime;
 
 	/* Initialize the library */
-	if (!glfwInit())
-		return -1;
+	if (!glfwInit()) return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", NULL, NULL);
-	if (!window)
-	{
+
+	if (!window) {
 		glfwTerminate();
 		return -1;
 	}
@@ -64,14 +59,12 @@ int main(void)
 	timePreviousFrame = glfwGetTime();
 
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
-	{
+	while (!glfwWindowShouldClose(window)) {
 		currentTime = glfwGetTime();
-		if (currentTime - timePreviousFrame >= timePerFrame)
-		{
+		if (currentTime - timePreviousFrame >= timePerFrame) {
 			/* Update & render steps of the game loop */
-			if(!Game::instance().update(int(1000.0f * (currentTime - timePreviousFrame))))
-				glfwSetWindowShouldClose(window, GLFW_TRUE);
+			if (!Game::instance().update(int(1000.0f * (currentTime - timePreviousFrame)))) glfwSetWindowShouldClose(window, GLFW_TRUE);
+			
 			Game::instance().render();
 			timePreviousFrame = currentTime;
 

@@ -13,8 +13,7 @@
 // able to manage animations stored as a spritesheet. 
 
 
-class Sprite
-{
+class Sprite {
 
 private:
 	Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Texture *spritesheet, ShaderProgram *program);

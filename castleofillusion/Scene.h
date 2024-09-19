@@ -12,8 +12,7 @@
 // It is responsible for updating and render them.
 
 
-class Scene
-{
+class Scene {
 
 public:
 	Scene();

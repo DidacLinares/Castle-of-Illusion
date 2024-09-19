@@ -13,8 +13,7 @@
 // and bind the fragment output to a name from the fragment shader
 
 
-class ShaderProgram
-{
+class ShaderProgram {
 
 public:
 	ShaderProgram();

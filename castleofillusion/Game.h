@@ -13,8 +13,7 @@
 // Game is a singleton (a class with a single instance) that represents our whole application
 
 
-class Game
-{
+class Game {
 
 private:
 	Game() {}

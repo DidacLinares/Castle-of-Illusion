@@ -16,8 +16,7 @@ enum PixelFormat {TEXTURE_PIXEL_FORMAT_RGB, TEXTURE_PIXEL_FORMAT_RGBA};
 // storing the returned id so that it may be applied to any drawn primitives
 
 
-class Texture
-{
+class Texture {
 
 public:
 	Texture();

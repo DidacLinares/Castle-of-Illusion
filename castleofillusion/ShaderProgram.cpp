@@ -2,30 +2,25 @@
 #include "ShaderProgram.h"
 
 
-ShaderProgram::ShaderProgram()
-{
+ShaderProgram::ShaderProgram() {
 	programId = 0;
 	linked = false;
 }
 
 
-void ShaderProgram::init()
-{
+void ShaderProgram::init() {
 	programId = glCreateProgram();
 }
 
-void ShaderProgram::addShader(const Shader &shader)
-{
+void ShaderProgram::addShader(const Shader &shader) {
 	glAttachShader(programId, shader.getId());
 }
 
-void ShaderProgram::bindFragmentOutput(const string &outputName)
-{
+void ShaderProgram::bindFragmentOutput(const string &outputName) {
 	glBindAttribLocation(programId, 0, outputName.c_str());
 }
 
-GLint ShaderProgram::bindVertexAttribute(const string &attribName, GLint size, GLsizei stride, GLvoid *firstPointer)
-{
+GLint ShaderProgram::bindVertexAttribute(const string &attribName, GLint size, GLsizei stride, GLvoid *firstPointer) {
 	GLint attribPos;
 
 	attribPos = glGetAttribLocation(programId, attribName.c_str());
@@ -34,8 +29,7 @@ GLint ShaderProgram::bindVertexAttribute(const string &attribName, GLint size, G
 	return attribPos;
 }
 
-void ShaderProgram::link()
-{
+void ShaderProgram::link() {
 	GLint status;
 	char buffer[512];
 
@@ -46,55 +40,43 @@ void ShaderProgram::link()
 	errorLog.assign(buffer);
 }
 
-void ShaderProgram::free()
-{
+void ShaderProgram::free() {
 	glDeleteProgram(programId);
 }
 
-void ShaderProgram::use()
-{
+void ShaderProgram::use() {
 	glUseProgram(programId);
 }
 
-bool ShaderProgram::isLinked()
-{
+bool ShaderProgram::isLinked() {
 	return linked;
 }
 
-const string &ShaderProgram::log() const
-{
+const string &ShaderProgram::log() const {
 	return errorLog;
 }
 
-void ShaderProgram::setUniform2f(const string &uniformName, float v0, float v1)
-{
+void ShaderProgram::setUniform2f(const string &uniformName, float v0, float v1) {
 	GLint location = glGetUniformLocation(programId, uniformName.c_str());
 
-	if(location != -1)
-		glUniform2f(location, v0, v1);
+	if (location != -1) glUniform2f(location, v0, v1);
 }
 
-void ShaderProgram::setUniform3f(const string &uniformName, float v0, float v1, float v2)
-{
+void ShaderProgram::setUniform3f(const string &uniformName, float v0, float v1, float v2) {
 	GLint location = glGetUniformLocation(programId, uniformName.c_str());
 
-	if(location != -1)
-		glUniform3f(location, v0, v1, v2);
+	if (location != -1) glUniform3f(location, v0, v1, v2);
 }
 
-void ShaderProgram::setUniform4f(const string &uniformName, float v0, float v1, float v2, float v3)
-{
+void ShaderProgram::setUniform4f(const string &uniformName, float v0, float v1, float v2, float v3) {
 	GLint location = glGetUniformLocation(programId, uniformName.c_str());
 
-	if(location != -1)
-		glUniform4f(location, v0, v1, v2, v3);
+	if (location != -1) glUniform4f(location, v0, v1, v2, v3);
 }
 
-void ShaderProgram::setUniformMatrix4f(const string &uniformName, glm::mat4 &mat)
-{
+void ShaderProgram::setUniformMatrix4f(const string &uniformName, glm::mat4 &mat) {
 	GLint location = glGetUniformLocation(programId, uniformName.c_str());
 
-	if(location != -1)
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+	if (location != -1) glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 

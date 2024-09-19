@@ -13,8 +13,7 @@ using namespace std;
 // and texture coordinates for all keyframes.
 
 
-struct AnimKeyframes
-{
+struct AnimKeyframes {
 	float millisecsPerKeyframe;
 	vector<glm::vec2> keyframeDispl;
 };

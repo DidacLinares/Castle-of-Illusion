@@ -10,8 +10,7 @@
 // all properties it needs to track its movement, jumping, and collisions.
 
 
-class Player
-{
+class Player {
 
 public:
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);

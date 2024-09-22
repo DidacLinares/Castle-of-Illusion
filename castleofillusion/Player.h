@@ -27,7 +27,7 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-	double speed;
+	float speed;
 
 };
 

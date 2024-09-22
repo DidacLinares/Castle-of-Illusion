@@ -8,7 +8,7 @@
 #define JUMP_ANGLE_STEP 4
 #define JUMP_HEIGHT 96
 #define FALL_STEP 4
-#define MAX_SPEED 4
+#define MAX_SPEED 2
 #define ACCELERATION 0.0025
 
 
@@ -48,78 +48,47 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram) {
 
 void Player::update(int deltaTime) {
 	sprite->update(deltaTime);
+	cout << speed << endl;
 	if(Game::instance().getKey(GLFW_KEY_LEFT)) {
 		if (sprite->animation() != MOVE_LEFT) sprite->changeAnimation(MOVE_LEFT);
 		speed -= ACCELERATION * deltaTime;
-		if (speed <= -2) speed = -2;
+		if (speed <= -MAX_SPEED) speed = -MAX_SPEED;
 		posPlayer.x += speed;
-
-		if (map->collisionMoveLeft(posPlayer, glm::vec2(32, 32))) {
-			posPlayer.x -= speed;
-			sprite->changeAnimation(STAND_LEFT);
-			speed = 0;
-		}
-		if (map->collisionMoveRight(posPlayer, glm::vec2(32, 32))) {
-			posPlayer.x -= speed;
-			sprite->changeAnimation(STAND_RIGHT);
-			speed = 0;
-		}
 	}
 	else if (Game::instance().getKey(GLFW_KEY_RIGHT)) {
 		if (sprite->animation() != MOVE_RIGHT) sprite->changeAnimation(MOVE_RIGHT);
 		speed += ACCELERATION * deltaTime;
-		if (speed >= 2) speed = 2;
+		if (speed >= MAX_SPEED) speed = MAX_SPEED;
 		posPlayer.x += speed;
-
-		if (map->collisionMoveRight(posPlayer, glm::vec2(32, 32))) {
-			posPlayer.x -= speed;
-			sprite->changeAnimation(STAND_RIGHT);
-			speed = 0;
-		}
-		if (map->collisionMoveLeft(posPlayer, glm::vec2(32, 32))) {
-			posPlayer.x -= speed;
-			sprite->changeAnimation(STAND_LEFT);
-			speed = 0;
-		}
 	}
 	else if (speed != 0) {
-		speed = 0;
 		if (sprite->animation() == MOVE_LEFT) {
 			speed += ACCELERATION * deltaTime;
 			if (speed > 0) speed = 0;
 			posPlayer.x += speed;
-			if (map->collisionMoveLeft(posPlayer, glm::vec2(32, 32))) {
-				posPlayer.x -= speed;
-				sprite->changeAnimation(STAND_LEFT);
-				speed = 0;
-			}
-			if (map->collisionMoveRight(posPlayer, glm::vec2(32, 32))) {
-				posPlayer.x -= speed;
-				sprite->changeAnimation(STAND_RIGHT);
-				speed = 0;
-			}
 		}
 		else {
 			speed -= ACCELERATION * deltaTime;
 			if (speed < 0) speed = 0;
 			posPlayer.x += speed;
-			if (map->collisionMoveRight(posPlayer, glm::vec2(32, 32))) {
-				posPlayer.x -= speed;
-				sprite->changeAnimation(STAND_RIGHT);
-				speed = 0;
-			}
-			if (map->collisionMoveLeft(posPlayer, glm::vec2(32, 32))) {
-				posPlayer.x -= speed;
-				sprite->changeAnimation(STAND_LEFT);
-				speed = 0;
-			}
 		}
 	}
 	else {
 		if (sprite->animation() == MOVE_LEFT) sprite->changeAnimation(STAND_LEFT);
 		else if (sprite->animation() == MOVE_RIGHT) sprite->changeAnimation(STAND_RIGHT);
 	}
-	
+
+	if (map->collisionMoveRight(posPlayer, glm::vec2(32, 32))) {
+		posPlayer.x -= speed;
+		sprite->changeAnimation(STAND_RIGHT);
+		speed = 0;
+	}
+	if (map->collisionMoveLeft(posPlayer, glm::vec2(32, 32))) {
+		posPlayer.x -= speed;
+		sprite->changeAnimation(STAND_LEFT);
+		speed = 0;
+	}
+
 	if (bJumping) {
 		jumpAngle += JUMP_ANGLE_STEP;
 		if (jumpAngle == 180) {

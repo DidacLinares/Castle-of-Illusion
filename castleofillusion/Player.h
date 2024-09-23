@@ -21,13 +21,15 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	
 private:
-	bool bJumping;
+	bool bJumping,falling;
 	glm::vec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY;
+	int jumpAngle;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-	float speed;
+	float speedX,speedY, startY;
+	int max = 800
+		;
 
 };
 

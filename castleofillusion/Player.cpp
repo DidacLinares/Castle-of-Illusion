@@ -6,10 +6,12 @@
 
 
 #define JUMP_ANGLE_STEP 4
+#define JUMP_STEP 3
 #define JUMP_HEIGHT 96
 #define FALL_STEP 4
-#define MAX_SPEED 2
-#define ACCELERATION 0.0025
+#define MAX_SPEED 4
+#define ACCELERATION 0.0075
+#define GRAVITY 0.0075
 
 
 enum PlayerAnims {
@@ -19,7 +21,8 @@ enum PlayerAnims {
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram) {
 	bJumping = false;
-	speed = 0;
+	falling = false;
+	speedX = 0;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(4);
@@ -48,29 +51,47 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram) {
 
 void Player::update(int deltaTime) {
 	sprite->update(deltaTime);
-	cout << speed << endl;
-	if(Game::instance().getKey(GLFW_KEY_LEFT)) {
-		if (sprite->animation() != MOVE_LEFT) sprite->changeAnimation(MOVE_LEFT);
-		speed -= ACCELERATION * deltaTime;
-		if (speed <= -MAX_SPEED) speed = -MAX_SPEED;
-		posPlayer.x += speed;
-	}
-	else if (Game::instance().getKey(GLFW_KEY_RIGHT)) {
-		if (sprite->animation() != MOVE_RIGHT) sprite->changeAnimation(MOVE_RIGHT);
-		speed += ACCELERATION * deltaTime;
-		if (speed >= MAX_SPEED) speed = MAX_SPEED;
-		posPlayer.x += speed;
-	}
-	else if (speed != 0) {
+	if (Game::instance().getKey(GLFW_KEY_A) && Game::instance().getKey(GLFW_KEY_D)) {
 		if (sprite->animation() == MOVE_LEFT) {
-			speed += ACCELERATION * deltaTime;
-			if (speed > 0) speed = 0;
-			posPlayer.x += speed;
+			speedX += ACCELERATION * deltaTime;
+			if (speedX > 0) {
+				speedX = 0;
+				sprite->changeAnimation(STAND_LEFT);
+			}
+			posPlayer.x += speedX;
 		}
 		else {
-			speed -= ACCELERATION * deltaTime;
-			if (speed < 0) speed = 0;
-			posPlayer.x += speed;
+			speedX -= ACCELERATION * deltaTime;
+			if (speedX < 0) {
+				speedX = 0;
+				sprite->changeAnimation(STAND_RIGHT);
+
+			}
+			posPlayer.x += speedX;
+		}
+	}
+	else if(Game::instance().getKey(GLFW_KEY_A)) {
+		if (sprite->animation() != MOVE_LEFT) sprite->changeAnimation(MOVE_LEFT);
+		speedX -= ACCELERATION * deltaTime;
+		if (speedX <= -MAX_SPEED) speedX = -MAX_SPEED;
+		posPlayer.x += speedX;
+	}
+	else if (Game::instance().getKey(GLFW_KEY_D)) {
+		if (sprite->animation() != MOVE_RIGHT) sprite->changeAnimation(MOVE_RIGHT);
+		speedX += ACCELERATION * deltaTime;
+		if (speedX >= MAX_SPEED) speedX = MAX_SPEED;
+		posPlayer.x += speedX;
+	}
+	else if (speedX != 0) {
+		if (sprite->animation() == MOVE_LEFT) {
+			speedX += ACCELERATION * deltaTime;
+			if (speedX > 0) speedX = 0;
+			posPlayer.x += speedX;
+		}
+		else {
+			speedX -= ACCELERATION * deltaTime;
+			if (speedX < 0) speedX = 0;
+			posPlayer.x += speedX;
 		}
 	}
 	else {
@@ -79,16 +100,47 @@ void Player::update(int deltaTime) {
 	}
 
 	if (map->collisionMoveRight(posPlayer, glm::vec2(32, 32))) {
-		posPlayer.x -= speed;
+		posPlayer.x -= speedX;
 		sprite->changeAnimation(STAND_RIGHT);
-		speed = 0;
+		speedX = 0;
 	}
 	if (map->collisionMoveLeft(posPlayer, glm::vec2(32, 32))) {
-		posPlayer.x -= speed;
+		posPlayer.x -= speedX;
 		sprite->changeAnimation(STAND_LEFT);
-		speed = 0;
+		speedX = 0;
 	}
-
+	/*
+	if (Game::instance().getKey(GLFW_KEY_W) && !bJumping && !falling) {
+		startY = posPlayer.y;
+		speedY = JUMP_STEP;
+		posPlayer.y -= speedY;
+		bJumping = true;
+	}
+	else if (Game::instance().getKey(GLFW_KEY_W) && bJumping) {
+		speedY -= GRAVITY * deltaTime;
+		posPlayer.y -= speedY;
+		if (speedY <= 0) {
+			falling = true;
+			bJumping = false;
+		}
+		if (!map->collisionMoveDown(posPlayer, glm::vec2(32, 32), &posPlayer.y)) posPlayer.y -= (JUMP_STEP - GRAVITY * deltaTime);
+	}
+	else if (bJumping && !Game::instance().getKey(GLFW_KEY_W)) {
+		bJumping = false;
+		falling = true;
+		speedY = 0.1f;
+	}
+	else if (falling) {
+		if(speedY < FALL_STEP) speedY += GRAVITY * deltaTime;
+		posPlayer.y += speedY;
+		if (map->collisionMoveDown(posPlayer, glm::vec2(32, 32), &posPlayer.y)) falling = false;
+	}
+	else if (!bJumping && !falling) {
+		speedY = GRAVITY * deltaTime;
+		posPlayer.y += speedY;
+		if(!map->collisionMoveDown(posPlayer, glm::vec2(32, 32), &posPlayer.y)) falling = true;
+	}*/
+		
 	if (bJumping) {
 		jumpAngle += JUMP_ANGLE_STEP;
 		if (jumpAngle == 180) {
@@ -103,13 +155,13 @@ void Player::update(int deltaTime) {
 	else {
 		posPlayer.y += FALL_STEP;
 		if (map->collisionMoveDown(posPlayer, glm::vec2(32, 32), &posPlayer.y)) {
-			if (Game::instance().getKey(GLFW_KEY_UP)) {
+			if (Game::instance().getKey(GLFW_KEY_W)) {
 				bJumping = true;
 				jumpAngle = 0;
 				startY = posPlayer.y;
 			}
 		}
-	}
+	} 
 	
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + posPlayer.x), int(tileMapDispl.y + posPlayer.y)));
 }

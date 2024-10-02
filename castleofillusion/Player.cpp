@@ -237,12 +237,17 @@ void Player::update(int deltaTime) {
 		}
 		else {
 			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-			if (jumpAngle > 90) bJumping = !map->collisionMoveDown(posPlayer, glm::vec2(HITBOX_X, HITBOX_Y), &posPlayer.y);
+			if (jumpAngle > 90) {
+				bJumping = !map->collisionMoveDown(posPlayer, glm::vec2(HITBOX_X, HITBOX_Y), &posPlayer.y);
+				if (sprite->animation() != GROUND_POUND_LEFT && movingLeft()) sprite->changeAnimation(FALL_LEFT);
+				else if (sprite->animation() != GROUND_POUND_RIGHT) sprite->changeAnimation(FALL_RIGHT);
+			}
 		}
 	}
 	else {
 		posPlayer.y += FALL_STEP;
 		if (map->collisionMoveDown(posPlayer, glm::vec2(HITBOX_X, HITBOX_Y), &posPlayer.y)) {
+			falling = false;
 			if (sprite->animation() == GROUND_POUND_LEFT || sprite->animation() == JUMP_LEFT || sprite->animation() == FALL_LEFT) sprite->changeAnimation(STAND_LEFT);
 			else if (sprite->animation() == GROUND_POUND_RIGHT || sprite->animation() == JUMP_RIGHT || sprite->animation() == FALL_RIGHT) sprite->changeAnimation(STAND_RIGHT);
 			if (Game::instance().getKey(GLFW_KEY_W)) {
@@ -252,10 +257,6 @@ void Player::update(int deltaTime) {
 				jumpAngle = 0;
 				startY = posPlayer.y;
 			}
-		}
-		else {
-			if (sprite->animation() != GROUND_POUND_LEFT && movingLeft()) sprite->changeAnimation(FALL_LEFT);
-			else if (sprite->animation() != GROUND_POUND_RIGHT) sprite->changeAnimation(FALL_RIGHT);
 		}
 	}
 	

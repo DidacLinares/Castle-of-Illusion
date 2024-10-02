@@ -19,6 +19,8 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+
+	bool movingLeft();
 	
 private:
 	bool bJumping,falling, crouching;

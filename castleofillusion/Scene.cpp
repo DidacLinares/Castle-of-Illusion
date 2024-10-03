@@ -33,6 +33,11 @@ void Scene::init() {
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
+    // View at player position
+	glm::vec2 pos = player->getPosition();
+	view = glm::lookAt(glm::vec3(pos.x, pos.y, 1), glm::vec3(pos.x, pos.y, 0), glm::vec3(0, 1, 0));
+	std::cout << "Cam at" << pos.x << " " << pos.y << std::endl;
+
 	currentTime = 0.0f;
 }
 
@@ -47,6 +52,12 @@ void Scene::render() {
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	glm::vec2 pos = player->getPosition();
+	view = glm::lookAt(glm::vec3(pos.x, pos.y, 1), glm::vec3(pos.x, pos.y, 0), glm::vec3(0, 1, 0));
+	texProgram.setUniformMatrix4f("view", view);
+	std::cout << "Cam at" << pos.x << " " << pos.y << std::endl;
+
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);

@@ -276,6 +276,9 @@ void Player::setPosition(const glm::vec2 &pos) {
 	sprite->setPosition(glm::vec2(tileMapDispl.x + posPlayer.x, tileMapDispl.y + posPlayer.y));
 }
 
-
+glm::vec2 Player::getPosition()
+{
+	return posPlayer;
+}
 
 

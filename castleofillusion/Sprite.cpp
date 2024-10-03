@@ -46,7 +46,7 @@ void Sprite::update(int deltaTime) {
 void Sprite::render() const {	
 	glm::mat4 modelview;
 	if (currentAnimation % 2 == 0) {
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(position.x + 32, position.y, 0.f));
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(position.x + 20, position.y, 0.f));
 		modelview = glm::scale(modelview, glm::vec3(-1.f, 1.f, 1.f));
 	}
 	else {
@@ -98,6 +98,4 @@ int Sprite::animation() const {
 void Sprite::setPosition(const glm::vec2 &pos) {
 	position = pos;
 }
-
-
 

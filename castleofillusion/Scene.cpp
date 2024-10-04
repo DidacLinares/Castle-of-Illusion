@@ -32,12 +32,12 @@ void Scene::init() {
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
-    // View at player position
-	glm::vec2 pos = player->getPosition();
-	view = glm::lookAt(glm::vec3(pos.x, pos.y, 1), glm::vec3(pos.x, pos.y, 0), glm::vec3(0, 1, 0));
-	std::cout << "Cam at" << pos.x << " " << pos.y << std::endl;
 
+	// View at player position
+	glm::vec2 pos = player->getPosition();
+
+	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / 2, pos.x + float(SCREEN_WIDTH) / 2, pos.y - float(SCREEN_HEIGHT) / 2, pos.y + float(SCREEN_HEIGHT) / 2);
+	
 	currentTime = 0.0f;
 }
 
@@ -50,13 +50,11 @@ void Scene::render() {
 	glm::mat4 modelview;
 
 	texProgram.use();
+	// Center the camera at player position
+	glm::vec2 pos = player->getPosition();
+	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / 2, pos.x + float(SCREEN_WIDTH) / 2, pos.y + float(SCREEN_HEIGHT) / 2, pos.y - float(SCREEN_HEIGHT) / 2);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-	glm::vec2 pos = player->getPosition();
-	view = glm::lookAt(glm::vec3(pos.x, pos.y, 1), glm::vec3(pos.x, pos.y, 0), glm::vec3(0, 1, 0));
-	texProgram.setUniformMatrix4f("view", view);
-	std::cout << "Cam at" << pos.x << " " << pos.y << std::endl;
 
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);

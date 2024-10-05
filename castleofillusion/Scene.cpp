@@ -36,7 +36,7 @@ void Scene::init() {
 	// View at player position
 	glm::vec2 pos = player->getPosition();
 
-	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / 2, pos.x + float(SCREEN_WIDTH) / 2, pos.y - float(SCREEN_HEIGHT) / 2, pos.y + float(SCREEN_HEIGHT) / 2);
+	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / 2, pos.x + float(SCREEN_WIDTH) / 2, pos.y + float(SCREEN_HEIGHT) / 2, pos.y - float(SCREEN_HEIGHT) / 2);
 	
 	currentTime = 0.0f;
 }

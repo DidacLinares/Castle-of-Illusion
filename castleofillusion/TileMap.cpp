@@ -83,6 +83,10 @@ bool TileMap::loadLevel(const string &levelFile) {
 		for (int i = 0; i < mapSize.x; i++) {
 			int tileId;
 			sstream >> tileId;
+			/*if (!(sstream >> tileId)) {
+				std::cerr << "Error: Unable to read tile ID at (" << j << ", " << i << ")" << std::endl;
+				exit(EXIT_FAILURE); 
+			}*/
 
 			map[j * mapSize.x + i] = tileId;
 		}

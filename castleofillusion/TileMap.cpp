@@ -73,19 +73,21 @@ bool TileMap::loadLevel(const string &levelFile) {
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 
 	map = new int[mapSize.x * mapSize.y];
-	for (int j=0; j<mapSize.y; j++) {
-		for (int i=0; i<mapSize.x; i++) {
-			fin.get(tile);
-			if(tile == ' ')
-				map[j*mapSize.x+i] = 0;
-			else
-				map[j*mapSize.x+i] = tile - int('0');
+
+	//Reimplemented per a llegir ids i no chars individuals
+	for (int j = 0; j < mapSize.y; j++) {
+		getline(fin, line);
+		sstream.clear();
+		sstream.str(line);
+
+		for (int i = 0; i < mapSize.x; i++) {
+			int tileId;
+			sstream >> tileId;
+
+			map[j * mapSize.x + i] = tileId;
 		}
-		fin.get(tile);
-#ifndef _WIN32
-		fin.get(tile);
-#endif
 	}
+
 	fin.close();
 	
 	return true;

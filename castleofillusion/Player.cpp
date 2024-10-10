@@ -28,6 +28,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	bJumping = false;
 	falling = false;
 	crouching = false;
+	groundpounding = false;
 	speedX = 0;
 
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -117,6 +118,7 @@ void Player::update(int deltaTime) {
 			else {
 				sprite->changeAnimation(GROUND_POUND_RIGHT);
 			}
+			groundpounding = true;
 		}
 		else {
 			if (movingLeft()) {
@@ -248,6 +250,7 @@ void Player::update(int deltaTime) {
 		posPlayer.y += FALL_STEP;
 		if (map->collisionMoveDown(posPlayer, glm::vec2(HITBOX_X, HITBOX_Y), &posPlayer.y)) {
 			falling = false;
+			groundpounding = false;
 			if (sprite->animation() == GROUND_POUND_LEFT || sprite->animation() == JUMP_LEFT || sprite->animation() == FALL_LEFT) sprite->changeAnimation(STAND_LEFT);
 			else if (sprite->animation() == GROUND_POUND_RIGHT || sprite->animation() == JUMP_RIGHT || sprite->animation() == FALL_RIGHT) sprite->changeAnimation(STAND_RIGHT);
 			if (Game::instance().getKey(GLFW_KEY_W)) {
@@ -281,4 +284,11 @@ glm::vec2 Player::getPosition()
 	return posPlayer;
 }
 
+glm::vec4 Player::getCollisionBox() {
+	return glm::vec4(posPlayer.x, posPlayer.y, HITBOX_X, HITBOX_Y);
+}
+
+bool Player::IsPlayerGroundPounding() {
+	return groundpounding;
+}
 

@@ -14,6 +14,10 @@
 
 #define INIT_PLAYER_X_TILES 1
 #define INIT_PLAYER_Y_TILES 8
+
+
+#define INIT_ENEMY_X_TILES 8
+#define INIT_ENEMY_Y_TILES 8
 Scene::Scene() {
 	map = NULL;
 	player = NULL;
@@ -35,6 +39,12 @@ void Scene::init() {
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 
+	enemy = new TreeEnemy();
+	enemy->setPlayer(player);
+	enemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
+	enemy->setTileMap(map);
+
 	// View at player position
 	glm::vec2 pos = player->getPosition();
 
@@ -46,6 +56,7 @@ void Scene::init() {
 void Scene::update(int deltaTime) {
 	currentTime += deltaTime;
 	player->update(deltaTime);
+	enemy->update(deltaTime);
 }
 
 void Scene::render() {
@@ -63,6 +74,7 @@ void Scene::render() {
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 	player->render();
+	enemy->render();
 }
 
 void Scene::initShaders() {

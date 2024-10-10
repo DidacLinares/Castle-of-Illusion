@@ -1,16 +1,17 @@
-#ifndef _PLAYER_INCLUDE
-#define _PLAYER_INCLUDE
+#ifndef _TREEENEMY_INCLUDE
+#define _TREEENEMY_INCLUDE
 
 
 #include "Sprite.h"
 #include "TileMap.h"
+#include "Player.h"
 
 
 // Player is basically a Sprite that represents the player. As such it has
 // all properties it needs to track its movement, jumping, and collisions.
 
 
-class Player {
+class TreeEnemy {
 
 public:
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
@@ -20,24 +21,20 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	glm::vec2 getPosition();
-	glm::vec4 getCollisionBox();
-
-	bool IsPlayerGroundPounding();
+	void setPlayer(Player* player);
 	bool movingLeft();
 	
 private:
-	bool bJumping,falling, crouching, groundpounding;
-	glm::vec2 tileMapDispl, posPlayer;
+	glm::vec2 tileMapDispl, posEnemy;
 	int jumpAngle;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-	float speedX,speedY, startY;
-	int max = 800,life = 3;
-
+	Player* player;
+	bool checkCollision();
 };
 
 
-#endif // _PLAYER_INCLUDE
+#endif // _TREEENEMY_INCLUDE
 
 

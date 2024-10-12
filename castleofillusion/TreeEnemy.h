@@ -4,6 +4,7 @@
 
 #include "Sprite.h"
 #include "TileMap.h"
+#include "Entity.h"
 #include "Player.h"
 
 
@@ -11,27 +12,19 @@
 // all properties it needs to track its movement, jumping, and collisions.
 
 
-class TreeEnemy {
+class TreeEnemy: public Entity {
 
 public:
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
-	void update(int deltaTime);
-	void render();
-	
-	void setTileMap(TileMap *tileMap);
-	void setPosition(const glm::vec2 &pos);
-	glm::vec2 getPosition();
-	void setPlayer(Player* player);
-	bool movingLeft();
-	
+	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	virtual void update(int deltaTime);
+	virtual glm::vec4 getCollisionBox();
+
+
+	void setPlayer(Player* player);	
 private:
-	glm::vec2 tileMapDispl, posEnemy;
-	int jumpAngle;
-	Texture spritesheet;
-	Sprite *sprite;
-	TileMap *map;
 	Player* player;
 	bool checkCollision();
+	bool dead;
 };
 
 

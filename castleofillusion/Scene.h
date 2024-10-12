@@ -28,7 +28,7 @@ private:
 
 private:
 	TileMap *map;
-	Player *player, *player2;
+	Player* player;
 	TreeEnemy *enemy; // potser canviar a un array? depenent de la escena, i fer una superclasse de enemy
 	ShaderProgram texProgram;
 	float currentTime;

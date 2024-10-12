@@ -23,3 +23,7 @@ glm::vec2 Entity::getPosition()
 	return pos;
 }
 
+bool Entity::isDead() {
+	return dead;
+}
+

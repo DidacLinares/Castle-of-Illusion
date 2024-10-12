@@ -56,7 +56,7 @@ void Scene::init() {
 void Scene::update(int deltaTime) {
 	currentTime += deltaTime;
 	player->update(deltaTime);
-	enemy->update(deltaTime);
+	if(enemy != nullptr) enemy->update(deltaTime);
 }
 
 void Scene::render() {
@@ -74,7 +74,13 @@ void Scene::render() {
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 	player->render();
-	enemy->render();
+	if (enemy != nullptr) {
+		if (enemy->isDead()) {
+			delete enemy;
+			enemy = nullptr;
+		}
+		else if (enemy != nullptr) enemy->render();
+	}
 }
 
 void Scene::initShaders() {

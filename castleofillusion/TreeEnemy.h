@@ -24,7 +24,6 @@ public:
 private:
 	Player* player;
 	bool checkCollision();
-	bool dead;
 };
 
 

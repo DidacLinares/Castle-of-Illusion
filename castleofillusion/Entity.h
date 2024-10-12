@@ -21,13 +21,14 @@ public:
 	void setPosition(const glm::vec2& pos);
 	glm::vec2 getPosition();
 	virtual glm::vec4 getCollisionBox() = 0;
+	bool isDead();
 
 protected:
 	glm::vec2 tileMapDispl, pos;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;
-	bool dead;
+	bool dead = false;
 };
 
 

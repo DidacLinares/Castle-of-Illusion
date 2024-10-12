@@ -112,6 +112,17 @@ bool Player::movingLeft() {
 
 void Player::update(int deltaTime) {
 	sprite->update(deltaTime);
+
+	if (Game::instance().getKey(GLFW_KEY_G)) {
+		setGodMode(!isGodMode());
+		cout << "God mode: " << isGodMode() << endl;
+	}
+
+	if (Game::instance().getKey(GLFW_KEY_H)) {
+		setLives(3);
+		cout << "Lives: " << getLives() << endl;
+	}
+
 	crouching = false;
 	if (Game::instance().getKey(GLFW_KEY_S)) {
 		if (bJumping || falling) {
@@ -310,6 +321,8 @@ bool Player::isHit() {
 }
 
 void Player::onEntityHit() {
+	if (isGodMode()) return;
+
 	--lives;
 	if (lives <= 0) {
 		// Mort del Mickey
@@ -322,3 +335,10 @@ void Player::onEntityHit() {
 	this->setInvulnerable(true);
 }
 
+void Player::setGodMode(bool godMode) {
+	this->godMode = godMode;
+}
+
+bool Player::isGodMode() {
+	return godMode;
+}

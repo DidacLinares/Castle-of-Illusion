@@ -26,13 +26,16 @@ public:
 
 	void onEntityHit();
 	void checkGroundCollision();
+
+	void setGodMode(bool godMode);
+	bool isGodMode();
 	
 private:
 	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY;
 	int max = 800;
-
+	bool godMode = false;
 };
 
 

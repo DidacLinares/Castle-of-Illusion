@@ -9,6 +9,8 @@
 
 #define HITBOX_X 24
 #define HITBOX_Y 32
+#define MAX_RISE_TIME 200
+#define MAX_DEATH_TIME 1000
 
 enum TreeAnims {
 	MOVE_LEFT, MOVE_RIGHT, DIE_LEFT, DIE_RIGHT 
@@ -48,23 +50,59 @@ void TreeEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 
 void TreeEnemy::update(int deltaTime) {
 	sprite->update(deltaTime);
-	if (sprite->animation() == MOVE_LEFT) pos.x -= 2;
-	else pos.x += 2;
+	if (!dying) {
+		if (sprite->animation() == MOVE_LEFT) pos.x -= 2;
+		else pos.x += 2;
 
-	if (map->collisionMoveRight(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
-		pos.x -= 2;
-		sprite->changeAnimation(MOVE_LEFT);
+		if (map->collisionMoveRight(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
+			pos.x -= 2;
+			sprite->changeAnimation(MOVE_LEFT);
+		}
+		if (map->collisionMoveLeft(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
+			pos.x += 2;
+			sprite->changeAnimation(MOVE_RIGHT);
+		}
+		if (checkCollision()) {
+			onEntityHit();
+		}
 	}
-	if (map->collisionMoveLeft(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
-		pos.x += 2;
-		sprite->changeAnimation(MOVE_RIGHT);
-	}
-	if (checkCollision()) {
-		onEntityHit();
+	else {
+		deathTime += deltaTime; 
+		switch (deathFase) {
+		case 1:
+			pos.y -= 2;
+			pos.x += 2;
+
+			if (deathTime >= MAX_RISE_TIME) {
+				deathFase = 2;
+			}
+			break;
+		case 2:
+			pos.y -= 1;
+			pos.x += 1;
+			if (deathTime >= MAX_RISE_TIME + 50) {
+				deathFase = 3;
+			}
+			break;
+		case 3:
+			pos.y += 0.5f;
+			pos.x += 0.5f;
+			if (deathTime >= MAX_RISE_TIME + 150) {
+				deathFase = 4;
+			}
+		break;
+		default:
+			pos.y += 2;
+			if (deathTime >= MAX_DEATH_TIME) {
+				dead = true;
+			}
+			break;
+		}
+		if (sprite->animation() == MOVE_LEFT || sprite->animation() == DIE_LEFT) sprite->changeAnimation(DIE_LEFT);
+		else sprite->changeAnimation(DIE_RIGHT);
 	}
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
-
 
 
 glm::vec4 TreeEnemy::getCollisionBox() {
@@ -86,7 +124,7 @@ void TreeEnemy::setPlayer(Player *player) {
 
 void TreeEnemy::onEntityHit() {
 	if (player->isPlayerGroundPounding()) {
-		dead = true;
+		dying = true;
 	}
 	else {
 		if (player->isInvulnerable()) {

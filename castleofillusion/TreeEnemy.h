@@ -26,6 +26,10 @@ public:
 private:
 	Player* player;
 	bool checkCollision();
+	bool dying = false;
+	int deathFase = 1;
+	int deathTime = 0;
+
 };
 
 

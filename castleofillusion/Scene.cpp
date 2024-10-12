@@ -57,6 +57,13 @@ void Scene::update(int deltaTime) {
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	if(enemy != nullptr) enemy->update(deltaTime);
+	else if (Game::instance().getKey(GLFW_KEY_F)) {
+		enemy = new TreeEnemy();
+		enemy->setPlayer(player);
+		enemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
+		enemy->setTileMap(map);
+	}
 }
 
 void Scene::render() {

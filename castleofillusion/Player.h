@@ -24,14 +24,14 @@ public:
 	bool movingLeft();
 	bool isHit();
 
-	void removeLive();
+	void onEntityHit();
 	void checkGroundCollision();
 	
 private:
-	bool bJumping,falling, crouching, groundpounding,hit;
+	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY;
-	int max = 800,lives = 3;
+	int max = 800;
 
 };
 

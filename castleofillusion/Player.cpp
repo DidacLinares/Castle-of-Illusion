@@ -19,6 +19,8 @@
 #define HITBOX_X 20
 #define HITBOX_Y 32
 
+#define BLINK_TIME 200
+
 enum PlayerAnims {
 	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, CROUCH_LEFT, CROUCH_RIGHT, GROUND_POUND_LEFT, GROUND_POUND_RIGHT, JUMP_LEFT, JUMP_RIGHT, FALL_LEFT, FALL_RIGHT, BREAKING_LEFT, BREAKING_RIGHT
 };
@@ -257,6 +259,15 @@ void Player::update(int deltaTime) {
 			checkGroundCollision();
 		}
 	}
+
+	if (invulnerable) {
+		invulnerableTimeLeft -= deltaTime;
+		cout << "Invulnerable time left: " << invulnerableTimeLeft << endl;
+		cout << "Delta time: " << deltaTime << endl;
+		if (invulnerableTimeLeft <= 0.0f) {
+			invulnerable = false;
+		}
+	}
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
 
@@ -277,6 +288,12 @@ void Player::checkGroundCollision() {
 }
 
 void Player::render() {
+	if (isInvulnerable()) {
+		if (fmod(invulnerableTimeLeft, BLINK_TIME * 2) < BLINK_TIME) {
+			return;
+		}
+	}
+
 	sprite->render();
 }
 
@@ -292,11 +309,16 @@ bool Player::isHit() {
 	return hit;
 }
 
-void Player::removeLive() {
+void Player::onEntityHit() {
 	--lives;
 	if (lives <= 0) {
 		// Mort del Mickey
 		cout << "Mickey is dead!" << endl;
+		this->setDead(true);
+		return;
 	}
+
+	// Mickey needs to be invulnerable for a while
+	this->setInvulnerable(true);
 }
 

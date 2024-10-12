@@ -60,12 +60,7 @@ void TreeEnemy::update(int deltaTime) {
 		sprite->changeAnimation(MOVE_RIGHT);
 	}
 	if (checkCollision()) {
-		if (player->isPlayerGroundPounding()) {
-			dead = true;
-		}
-		else {
-			player->removeLive();
-		}
+		onEntityHit();
 	}
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
@@ -89,4 +84,16 @@ void TreeEnemy::setPlayer(Player *player) {
 	this->player = player;
 }
 
-
+void TreeEnemy::onEntityHit() {
+	if (player->isPlayerGroundPounding()) {
+		dead = true;
+	}
+	else {
+		if (player->isInvulnerable()) {
+			cout << "Mickey is invulnerable!" << endl;
+		}
+		else {
+			player->onEntityHit();
+		}
+	}
+}

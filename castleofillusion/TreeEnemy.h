@@ -19,6 +19,8 @@ public:
 	virtual void update(int deltaTime);
 	virtual glm::vec4 getCollisionBox();
 
+	void onEntityHit();
+
 
 	void setPlayer(Player* player);	
 private:

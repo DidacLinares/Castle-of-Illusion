@@ -23,7 +23,34 @@ glm::vec2 Entity::getPosition()
 	return pos;
 }
 
-bool Entity::isDead() {
+void Entity::setLives(int lives)
+{
+	this->lives = lives;
+}
+
+int Entity::getLives()
+{
+	return lives;
+}
+
+bool Entity::isInvulnerable()
+{
+	return invulnerable;
+}
+
+void Entity::setInvulnerable(bool invulnerable)
+{
+	this->invulnerable = invulnerable;
+	this->invulnerableTimeLeft = invulnerableDuration;
+}
+
+bool Entity::isDead()
+{
 	return dead;
+}
+
+void Entity::setDead(bool dead)
+{
+	this->dead = dead;
 }
 

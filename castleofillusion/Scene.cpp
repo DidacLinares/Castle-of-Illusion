@@ -14,6 +14,10 @@
 
 #define INIT_PLAYER_X_TILES 1
 #define INIT_PLAYER_Y_TILES 8
+
+
+#define INIT_ENEMY_X_TILES 8
+#define INIT_ENEMY_Y_TILES 8
 Scene::Scene() {
 	map = NULL;
 	player = NULL;
@@ -35,6 +39,12 @@ void Scene::init() {
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 
+	enemy = new TreeEnemy();
+	enemy->setPlayer(player);
+	enemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
+	enemy->setTileMap(map);
+
 	// View at player position
 	glm::vec2 pos = player->getPosition();
 
@@ -46,6 +56,14 @@ void Scene::init() {
 void Scene::update(int deltaTime) {
 	currentTime += deltaTime;
 	player->update(deltaTime);
+	if(enemy != nullptr) enemy->update(deltaTime);
+	else if (Game::instance().getKey(GLFW_KEY_F)) {
+		enemy = new TreeEnemy();
+		enemy->setPlayer(player);
+		enemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
+		enemy->setTileMap(map);
+	}
 }
 
 void Scene::render() {
@@ -54,7 +72,8 @@ void Scene::render() {
 	texProgram.use();
 	// Center the camera at player position
 	glm::vec2 pos = player->getPosition();
-	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / 2, pos.x + float(SCREEN_WIDTH) / 2, pos.y + float(SCREEN_HEIGHT) / 2, pos.y - float(SCREEN_HEIGHT) / 2);
+	int zoom = 8;
+	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / zoom, pos.x + float(SCREEN_WIDTH) / zoom, pos.y + float(SCREEN_HEIGHT) / zoom, pos.y - float(SCREEN_HEIGHT) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -63,6 +82,13 @@ void Scene::render() {
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 	player->render();
+	if (enemy != nullptr) {
+		if (enemy->isDead()) {
+			delete enemy;
+			enemy = nullptr;
+		}
+		else if (enemy != nullptr) enemy->render();
+	}
 }
 
 void Scene::initShaders() {

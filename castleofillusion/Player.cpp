@@ -13,8 +13,8 @@
 #define ACCELERATION 0.0075f
 #define GRAVITY 0.0075
 
-#define OFFSET_X 0.066
-#define OFFSET_Y 0.1
+#define OFFSET_X 0.0625
+#define OFFSET_Y 0.5
 
 #define HITBOX_X 20
 #define HITBOX_Y 32
@@ -35,7 +35,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	speedX = 0;
 
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(OFFSET_X, OFFSET_X), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(25, 33), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(14);
 
 	sprite->setAnimationSpeed(STAND_LEFT, 4);

@@ -72,7 +72,8 @@ void Scene::render() {
 	texProgram.use();
 	// Center the camera at player position
 	glm::vec2 pos = player->getPosition();
-	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / 2, pos.x + float(SCREEN_WIDTH) / 2, pos.y + float(SCREEN_HEIGHT) / 2, pos.y - float(SCREEN_HEIGHT) / 2);
+	int zoom = 8;
+	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / zoom, pos.x + float(SCREEN_WIDTH) / zoom, pos.y + float(SCREEN_HEIGHT) / zoom, pos.y - float(SCREEN_HEIGHT) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 

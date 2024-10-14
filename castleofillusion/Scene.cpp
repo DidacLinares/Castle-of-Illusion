@@ -3,6 +3,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
 #include "Game.h"
+#include "Entity.h"
+
 
 // Mirar que fa aixo
 #define SCREEN_X 32
@@ -45,6 +47,12 @@ void Scene::init() {
 	enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
 	enemy->setTileMap(map);
 
+	cake = new Cake();
+	cake->setPlayer(player);
+	cake->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	cake->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	cake->setTileMap(map);
+
 	// View at player position
 	glm::vec2 pos = player->getPosition();
 
@@ -64,6 +72,7 @@ void Scene::update(int deltaTime) {
 		enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
 		enemy->setTileMap(map);
 	}
+	if (cake != nullptr) cake->update(deltaTime);
 }
 
 void Scene::render() {
@@ -88,6 +97,13 @@ void Scene::render() {
 			enemy = nullptr;
 		}
 		else if (enemy != nullptr) enemy->render();
+	}
+	if (cake != nullptr) {
+		if (cake->isDead()) {
+			delete cake;
+			cake = nullptr;
+		}
+		else if (cake != nullptr) cake->render();
 	}
 }
 

@@ -44,11 +44,8 @@ protected:
 	float invulnerableTimeLeft;
 	float invulnerableDuration = 1500.0f; // 1.5 seconds in milliseconds
 
-	int lives = 3;
+	int lives;
 };
 
 
 #endif // _ENTITY_INCLUDE
-
-
-#pragma once

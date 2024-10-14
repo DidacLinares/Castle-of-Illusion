@@ -33,6 +33,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	groundpounding = false;
 	hit = false;
 	speedX = 0;
+	lives = 3;
 
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(25, 33), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
@@ -273,8 +274,8 @@ void Player::update(int deltaTime) {
 
 	if (invulnerable) {
 		invulnerableTimeLeft -= deltaTime;
-		cout << "Invulnerable time left: " << invulnerableTimeLeft << endl;
-		cout << "Delta time: " << deltaTime << endl;
+		/*cout << "Invulnerable time left: " << invulnerableTimeLeft << endl;
+		cout << "Delta time: " << deltaTime << endl; */
 		if (invulnerableTimeLeft <= 0.0f) {
 			invulnerable = false;
 		}
@@ -322,14 +323,16 @@ bool Player::isHit() {
 
 void Player::onEntityHit() {
 	if (isGodMode()) return;
+	cout << "Lives before: " << lives<< endl;
 
 	--lives;
-	if (lives <= 0) {
+	if (lives < 0) {
 		// Mort del Mickey
 		cout << "Mickey is dead!" << endl;
 		this->setDead(true);
 		return;
 	}
+	cout << "Lives after: " << lives << endl;
 
 	// Mickey needs to be invulnerable for a while
 	this->setInvulnerable(true);

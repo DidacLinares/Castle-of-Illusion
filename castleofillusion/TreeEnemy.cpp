@@ -111,7 +111,7 @@ glm::vec4 TreeEnemy::getCollisionBox() {
 
 bool TreeEnemy::checkCollision() {
 	glm::vec4 hitboxplayer = player->getCollisionBox();
-	glm::vec4 hitboxenemy = glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
+	glm::vec4 hitboxenemy = getCollisionBox();
 	return (hitboxplayer.x < hitboxenemy.x + hitboxenemy.z && // hitboxplayer.left < hitboxenemy.right
 		hitboxplayer.x + hitboxplayer.z > hitboxenemy.x && // hitboxplayer.right > hitboxenemy.left
 		hitboxplayer.y < hitboxenemy.y + hitboxenemy.w && // hitboxplayer.top < hitboxenemy.bottom

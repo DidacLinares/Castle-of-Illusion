@@ -7,6 +7,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "TreeEnemy.h"
+#include "Cake.h"
 
 
 // Scene contains all the entities of our game.
@@ -30,6 +31,7 @@ private:
 	TileMap *map;
 	Player* player;
 	TreeEnemy *enemy; // potser canviar a un array? depenent de la escena, i fer una superclasse de enemy
+	Cake* cake;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;

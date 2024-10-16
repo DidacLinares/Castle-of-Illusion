@@ -30,6 +30,9 @@ Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Te
 	shaderProgram = program;
 	currentAnimation = -1;
 	position = glm::vec2(0.f);
+
+	texture->setMinFilter(GL_NEAREST);
+	texture->setMagFilter(GL_NEAREST);
 }
 
 void Sprite::update(int deltaTime) {
@@ -52,8 +55,10 @@ void Sprite::render() const {
 	else {
 		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.f));
 	}
+
 	shaderProgram->setUniformMatrix4f("modelview", modelview);
 	shaderProgram->setUniform2f("texCoordDispl", texCoordDispl.x, texCoordDispl.y);
+
 	glEnable(GL_TEXTURE_2D);
 	texture->use();
 	glBindVertexArray(vao);

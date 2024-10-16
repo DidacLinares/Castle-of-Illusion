@@ -20,6 +20,7 @@
 
 #define INIT_ENEMY_X_TILES 8
 #define INIT_ENEMY_Y_TILES 8
+
 Scene::Scene() {
 	map = NULL;
 	player = NULL;
@@ -41,17 +42,23 @@ void Scene::init() {
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 
-	enemy = new TreeEnemy();
-	enemy->setPlayer(player);
-	enemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
-	enemy->setTileMap(map);
+	entityArray.push_back(new TreeEnemy());
+	entityArray[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[0]->setPlayer(player);
+	entityArray[0]->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
+	entityArray[0]->setTileMap(map);
 
-	cake = new Cake();
-	cake->setPlayer(player);
-	cake->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	cake->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
-	cake->setTileMap(map);
+	entityArray.push_back(new Cake());
+	entityArray[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[1]->setPlayer(player);
+	entityArray[1]->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[1]->setTileMap(map);
+
+	entityArray.push_back(new Block());
+	entityArray[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[2]->setPlayer(player);
+	entityArray[2]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[2]->setTileMap(map);
 
 	// View at player position
 	glm::vec2 pos = player->getPosition();
@@ -64,15 +71,16 @@ void Scene::init() {
 void Scene::update(int deltaTime) {
 	currentTime += deltaTime;
 	player->update(deltaTime);
-	if(enemy != nullptr) enemy->update(deltaTime);
-	else if (Game::instance().getKey(GLFW_KEY_F)) {
-		enemy = new TreeEnemy();
-		enemy->setPlayer(player);
-		enemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
-		enemy->setTileMap(map);
+	int size = entityArray.size();
+	for (int i = 0; i < size; ++i) {
+		if (entityArray[i] != nullptr) {
+			entityArray[i]->update(deltaTime);
+			if (entityArray[i]->isDead()) {
+				delete entityArray[i];
+				entityArray[i] = nullptr;
+			}
+		}
 	}
-	if (cake != nullptr) cake->update(deltaTime);
 }
 
 void Scene::render() {
@@ -91,19 +99,11 @@ void Scene::render() {
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 	player->render();
-	if (enemy != nullptr) {
-		if (enemy->isDead()) {
-			delete enemy;
-			enemy = nullptr;
+	int size = entityArray.size();
+	for (int i = 0; i < size; ++i) {
+		if (entityArray[i] != nullptr) {
+			entityArray[i]->render();
 		}
-		else if (enemy != nullptr) enemy->render();
-	}
-	if (cake != nullptr) {
-		if (cake->isDead()) {
-			delete cake;
-			cake = nullptr;
-		}
-		else if (cake != nullptr) cake->render();
 	}
 }
 

@@ -1,19 +1,19 @@
-#ifndef _CAKE_INCLUDE
-#define _CAKE_INCLUDE
+#ifndef _BLOCK_INCLUDE
+#define _BLOCK_INCLUDE
+
 
 #include "NonPlayerEntity.h"
 
-class Cake : public NonPlayerEntity {
+
+class Block : public NonPlayerEntity
+{
 public:
+
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	virtual void update(int deltaTime);
 	virtual void onEntityHit();
-	
 	virtual glm::vec4 getCollisionBox();
-
-	virtual bool checkCollision();
-
+	
 };
 
-
-#endif // _CAKE_INCLUDE
+#endif // _BLOCK_INCLUDE

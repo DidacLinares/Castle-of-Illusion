@@ -38,10 +38,6 @@ void Cake::onEntityHit() {
 	dead = true;
 }
 
-void Cake::setPlayer(Player* player) {
-	this->player = player;
-}
-
 glm::vec4 Cake::getCollisionBox() {
 	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y); //canviar hitbox a variable i fer aquesta funcio virtual?
 }

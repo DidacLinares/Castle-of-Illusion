@@ -54,3 +54,8 @@ void Entity::setDead(bool dead)
 	this->dead = dead;
 }
 
+void Entity::setPlayer(Entity* player) {
+
+}
+
+

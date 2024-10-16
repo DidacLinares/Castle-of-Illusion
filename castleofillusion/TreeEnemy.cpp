@@ -118,10 +118,6 @@ bool TreeEnemy::checkCollision() {
 		hitboxplayer.y + hitboxplayer.w > hitboxenemy.y);  // hitboxplayer.bottom > hitboxenemy.top
 }
 
-void TreeEnemy::setPlayer(Player *player) {
-	this->player = player;
-}
-
 void TreeEnemy::onEntityHit() {
 	if (player->isPlayerGroundPounding()) {
 		dying = true;

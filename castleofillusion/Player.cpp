@@ -200,8 +200,8 @@ void Player::update(int deltaTime) {
 		}
 	}
 	else {
-		if (sprite->animation() == MOVE_LEFT || sprite->animation() == CROUCH_LEFT  && !crouching && !groundpounding) sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == CROUCH_RIGHT && !crouching && !groundpounding) sprite->changeAnimation(STAND_RIGHT);
+		if (sprite->animation() == MOVE_LEFT || sprite->animation() == CROUCH_LEFT || sprite->animation() == BREAKING_LEFT && !crouching && !groundpounding) sprite->changeAnimation(STAND_LEFT);
+		else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == CROUCH_RIGHT || sprite->animation() == BREAKING_RIGHT && !crouching && !groundpounding) sprite->changeAnimation(STAND_RIGHT);
 	}
 
 	if (map->collisionMoveRight(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {

@@ -27,8 +27,6 @@ public:
 
 	bool isDead();
 	void setDead(bool dead);
-	virtual void setPlayer(Entity* player);
-
 
 protected:
 	glm::vec2 tileMapDispl, pos;

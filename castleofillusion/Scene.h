@@ -27,7 +27,10 @@ private:
 	void initShaders();
 
 private:
-	TileMap *map;
+	TileMap* map;
+	TileMap* layer_0;
+	TileMap* layer_1;
+	TileMap* layer_2;
 	Player* player;
 	TreeEnemy *enemy; // potser canviar a un array? depenent de la escena, i fer una superclasse de enemy
 	ShaderProgram texProgram;

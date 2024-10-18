@@ -18,15 +18,25 @@ def main():
 
         x = 0
         y = 0
+        lowest = layer['data'][0]
         for tile in layer['data']:
             tile_id = int(tile)
 
             matrix[y][x] = tile_id
+            
+            if tile_id < lowest:
+                lowest = tile_id
+
             x += 1
             if x == map_width:
                 x = 0
                 y += 1
-        
+
+        if lowest > 0:
+            for y in range(map_height):
+                for x in range(map_width):
+                    matrix[y][x] -= lowest - 1
+
         output_file = f"{layer['name']}.txt"
         np.savetxt(output_file, matrix, fmt='%d')
         print(f"Written matrix for layer {layer['name']} to {output_file}")

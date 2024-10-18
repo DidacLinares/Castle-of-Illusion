@@ -16,7 +16,6 @@ class TreeEnemy: public NonPlayerEntity {
 public:
 	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	virtual void update(int deltaTime);
-	virtual glm::vec4 getCollisionBox();
 
 	void onEntityHit();
 

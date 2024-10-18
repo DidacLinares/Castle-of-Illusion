@@ -54,4 +54,8 @@ void Entity::setDead(bool dead)
 	this->dead = dead;
 }
 
+glm::vec4 Entity::getCollisionBox() {
+	return glm::vec4(pos.x, pos.y, hitbox_x, hitbox_y);
+}
+
 

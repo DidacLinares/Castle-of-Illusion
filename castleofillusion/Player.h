@@ -18,8 +18,6 @@ public:
 	virtual void update(int deltaTime);
 	virtual void render();
 	
-	virtual glm::vec4 getCollisionBox();
-
 	bool isPlayerGroundPounding();
 	bool movingLeft();
 	bool isHit();

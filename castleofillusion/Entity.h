@@ -12,7 +12,7 @@ public:
 	virtual void update(int deltaTime) = 0;
 	virtual void render();
 
-	virtual glm::vec4 getCollisionBox() = 0;
+	glm::vec4 getCollisionBox();
 	virtual void onEntityHit() = 0;
 
 	void setTileMap(TileMap* tileMap);
@@ -35,7 +35,7 @@ protected:
 	TileMap* map;
 	bool dead = false;
 	bool invulnerable;
-	glm::vec4 hitbox;
+	float hitbox_x, hitbox_y;
 
 	float invulnerableTimeLeft;
 	float invulnerableDuration = 1500.0f; // 1.5 seconds in milliseconds

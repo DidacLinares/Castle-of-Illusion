@@ -44,9 +44,9 @@ void TreeEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	pos.x = 0;
 	pos.y = 0;
 	tileMapDispl = glm::vec2(tileMapPos);
-	hitbox = glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
+	hitbox_x = 24;
+	hitbox_y = 32;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
-	
 }
 
 void TreeEnemy::update(int deltaTime) {
@@ -103,11 +103,6 @@ void TreeEnemy::update(int deltaTime) {
 		else sprite->changeAnimation(DIE_RIGHT);
 	}
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
-}
-
-
-glm::vec4 TreeEnemy::getCollisionBox() {
-	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
 }
 
 void TreeEnemy::onEntityHit() {

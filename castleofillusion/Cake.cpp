@@ -21,6 +21,8 @@ void Cake::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	
 	sprite->changeAnimation(1);
 	tileMapDispl = glm::vec2(tileMapPos);
+	hitbox_x = 16;
+	hitbox_y = 16;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
@@ -36,8 +38,4 @@ void Cake::onEntityHit() {
 		player->setLives(++playerLives);
 	}
 	dead = true;
-}
-
-glm::vec4 Cake::getCollisionBox() {
-	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y); //canviar hitbox a variable i fer aquesta funcio virtual?
 }

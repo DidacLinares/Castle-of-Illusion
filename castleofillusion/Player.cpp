@@ -103,6 +103,8 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 		
 	sprite->changeAnimation(STAND_RIGHT);
 	tileMapDispl = glm::vec2(tileMapPos);
+	hitbox_x = 20;
+	hitbox_y = 32;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 	
 }
@@ -307,10 +309,6 @@ void Player::render() {
 	}
 
 	sprite->render();
-}
-
-glm::vec4 Player::getCollisionBox() {
-	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
 }
 
 bool Player::isPlayerGroundPounding() {

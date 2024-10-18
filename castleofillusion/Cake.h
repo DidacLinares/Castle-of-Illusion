@@ -9,7 +9,6 @@ public:
 	virtual void update(int deltaTime);
 	virtual void onEntityHit();
 	
-	virtual glm::vec4 getCollisionBox();
 };
 
 

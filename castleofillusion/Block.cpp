@@ -21,6 +21,8 @@ void Block::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 	sprite->changeAnimation(1);
 	tileMapDispl = glm::vec2(tileMapPos);
+	hitbox_x = 16;
+	hitbox_y = 16;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 

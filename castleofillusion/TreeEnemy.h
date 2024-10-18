@@ -21,7 +21,6 @@ public:
 	void onEntityHit();
 
 private:
-	bool checkCollision();
 	bool dying = false;
 	int deathFase = 1;
 	int deathTime = 0;

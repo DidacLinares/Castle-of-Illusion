@@ -29,8 +29,10 @@ public:
 
 	void setGodMode(bool godMode);
 	bool isGodMode();
-	
+	bool checkCollision(glm::vec4 hitboxentity);
+
 private:
+
 	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY;

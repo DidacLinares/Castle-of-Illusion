@@ -10,9 +10,6 @@ public:
 	virtual void onEntityHit();
 	
 	virtual glm::vec4 getCollisionBox();
-
-	virtual bool checkCollision();
-
 };
 
 

@@ -25,7 +25,7 @@ void Cake::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 }
 
 void Cake::update(int deltaTime) {
-	if (checkCollision()) {
+	if (player->checkCollision(getCollisionBox())) {
 		onEntityHit();
 	}
 }
@@ -40,13 +40,4 @@ void Cake::onEntityHit() {
 
 glm::vec4 Cake::getCollisionBox() {
 	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y); //canviar hitbox a variable i fer aquesta funcio virtual?
-}
-
-bool Cake::checkCollision() {
-	glm::vec4 hitboxplayer = player->getCollisionBox();
-	glm::vec4 hitboxitem = getCollisionBox();
-	return (hitboxplayer.x < hitboxitem.x + hitboxitem.z && // hitboxplayer.left < hitboxitem.right
-		hitboxplayer.x + hitboxplayer.z > hitboxitem.x && // hitboxplayer.right > hitboxitem.left
-		hitboxplayer.y < hitboxitem.y + hitboxitem.w && // hitboxplayer.top < hitboxitem.bottom
-		hitboxplayer.y + hitboxplayer.w > hitboxitem.y);  // hitboxplayer.bottom > hitboxitem.top
 }

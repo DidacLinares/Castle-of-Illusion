@@ -35,6 +35,7 @@ protected:
 	TileMap* map;
 	bool dead = false;
 	bool invulnerable;
+	glm::vec4 hitbox;
 
 	float invulnerableTimeLeft;
 	float invulnerableDuration = 1500.0f; // 1.5 seconds in milliseconds

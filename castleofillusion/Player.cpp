@@ -345,3 +345,11 @@ void Player::setGodMode(bool godMode) {
 bool Player::isGodMode() {
 	return godMode;
 }
+
+bool Player::checkCollision(glm::vec4 hitboxentity) {
+	glm::vec4 hitbox = getCollisionBox();
+	return (hitbox.x < hitboxentity.x + hitboxentity.z && // hitboxplayer.left < hitboxenemy.right
+		hitbox.x + hitbox.z > hitboxentity.x && // hitboxplayer.right > hitboxenemy.left
+		hitbox.y < hitboxentity.y + hitboxentity.w && // hitboxplayer.top < hitboxenemy.bottom
+		hitbox.y + hitbox.w > hitboxentity.y);  // hitboxplayer.bottom > hitboxenemy.top
+}

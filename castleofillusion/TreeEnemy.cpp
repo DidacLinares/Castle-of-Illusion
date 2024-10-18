@@ -44,6 +44,7 @@ void TreeEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	pos.x = 0;
 	pos.y = 0;
 	tileMapDispl = glm::vec2(tileMapPos);
+	hitbox = glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 	
 }
@@ -62,7 +63,7 @@ void TreeEnemy::update(int deltaTime) {
 			pos.x += 2;
 			sprite->changeAnimation(MOVE_RIGHT);
 		}
-		if (checkCollision()) {
+		if (player->checkCollision(getCollisionBox())) {
 			onEntityHit();
 		}
 	}
@@ -107,15 +108,6 @@ void TreeEnemy::update(int deltaTime) {
 
 glm::vec4 TreeEnemy::getCollisionBox() {
 	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
-}
-
-bool TreeEnemy::checkCollision() {
-	glm::vec4 hitboxplayer = player->getCollisionBox();
-	glm::vec4 hitboxenemy = getCollisionBox();
-	return (hitboxplayer.x < hitboxenemy.x + hitboxenemy.z && // hitboxplayer.left < hitboxenemy.right
-		hitboxplayer.x + hitboxplayer.z > hitboxenemy.x && // hitboxplayer.right > hitboxenemy.left
-		hitboxplayer.y < hitboxenemy.y + hitboxenemy.w && // hitboxplayer.top < hitboxenemy.bottom
-		hitboxplayer.y + hitboxplayer.w > hitboxenemy.y);  // hitboxplayer.bottom > hitboxenemy.top
 }
 
 void TreeEnemy::onEntityHit() {

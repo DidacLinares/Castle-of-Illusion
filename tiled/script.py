@@ -1,35 +1,45 @@
 import json
-import argparse
-
-def convert_json_to_custom(json_file, output_file):
-    with open(json_file, 'r') as f:
-        data = json.load(f)
-
-    tilemap = data['layers'][0]['data']
-    width = data['width']
-    height = data['height']
-
-    with open(output_file, 'w') as f:
-        f.write("TILEMAP\n")
-        f.write(f"{width} {height} -- Size of tile map in tiles\n")
-        f.write("16 16 -- Tile size & block size\n")
-        f.write("images/blocks.png -- Tilesheet\n") # Canviar manualment al necesari
-        f.write("2 2 -- Number of tiles in tilesheet\n") # Canviar manualment al necesari
-
-        for y in range(height):
-            # Sumem 1, perque 0 es espai, i les ids a tiled van de 0 a n.
-            row = tilemap[y * width:(y + 1) * width]
-            formatted_row = ' '.join(str(tile) for tile in row)
-            f.write(formatted_row + '\n')
+import numpy as np
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert JSON tilemap to custom format.")
-    parser.add_argument('json_file', type=str, help="The input JSON file.")
-    parser.add_argument('output_file', type=str, help="The output text file.")
+    file_name = input("Enter the file name: ")
+    print(file_name)
+
+    with open(file_name) as file:
+        data = json.load(file)
     
-    args = parser.parse_args()
+    map_width = data["width"]
+    map_height = data["height"]
+    layers = data["layers"]
 
-    convert_json_to_custom(args.json_file, args.output_file)
+    for layer in layers:
+        matrix = np.full((map_height, map_width), 0)
 
-if __name__ == '__main__':
+
+        x = 0
+        y = 0
+        lowest = layer['data'][0]
+        for tile in layer['data']:
+            tile_id = int(tile)
+
+            matrix[y][x] = tile_id
+            
+            if tile_id < lowest:
+                lowest = tile_id
+
+            x += 1
+            if x == map_width:
+                x = 0
+                y += 1
+
+        if lowest > 0:
+            for y in range(map_height):
+                for x in range(map_width):
+                    matrix[y][x] -= lowest - 1
+
+        output_file = f"{layer['name']}.txt"
+        np.savetxt(output_file, matrix, fmt='%d')
+        print(f"Written matrix for layer {layer['name']} to {output_file}")
+
+if __name__ == "__main__":
     main()

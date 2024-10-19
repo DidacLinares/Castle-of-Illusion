@@ -5,22 +5,19 @@
 #include "Sprite.h"
 #include "TileMap.h"
 
-
-// Player is basically a Sprite that represents the player. As such it has
-// all properties it needs to track its movement, jumping, and collisions.
-
-
 class Entity {
 
 public:
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) = 0;
 	virtual void update(int deltaTime) = 0;
-	void render();
+	virtual void render();
+
+	glm::vec4 getCollisionBox();
+	virtual void onEntityHit() = 0;
 
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
 	glm::vec2 getPosition();
-	virtual glm::vec4 getCollisionBox() = 0;
 
 	void setLives(int lives);
 	int getLives();
@@ -31,8 +28,6 @@ public:
 	bool isDead();
 	void setDead(bool dead);
 
-	virtual void onEntityHit() = 0;
-
 protected:
 	glm::vec2 tileMapDispl, pos;
 	Texture spritesheet;
@@ -40,15 +35,13 @@ protected:
 	TileMap* map;
 	bool dead = false;
 	bool invulnerable;
+	float hitbox_x, hitbox_y;
 
 	float invulnerableTimeLeft;
 	float invulnerableDuration = 1500.0f; // 1.5 seconds in milliseconds
 
-	int lives = 3;
+	int lives;
 };
 
 
 #endif // _ENTITY_INCLUDE
-
-
-#pragma once

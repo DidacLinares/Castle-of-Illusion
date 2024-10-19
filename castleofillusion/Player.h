@@ -18,8 +18,6 @@ public:
 	virtual void update(int deltaTime);
 	virtual void render();
 	
-	virtual glm::vec4 getCollisionBox();
-
 	bool isPlayerGroundPounding();
 	bool movingLeft();
 	bool isHit();
@@ -29,8 +27,10 @@ public:
 
 	void setGodMode(bool godMode);
 	bool isGodMode();
-	
+	bool checkCollision(glm::vec4 hitboxentity);
+
 private:
+
 	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY;

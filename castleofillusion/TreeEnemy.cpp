@@ -44,8 +44,9 @@ void TreeEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	pos.x = 0;
 	pos.y = 0;
 	tileMapDispl = glm::vec2(tileMapPos);
+	hitbox_x = 24;
+	hitbox_y = 32;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
-	
 }
 
 void TreeEnemy::update(int deltaTime) {
@@ -54,20 +55,15 @@ void TreeEnemy::update(int deltaTime) {
 		if (sprite->animation() == MOVE_LEFT) pos.x -= 2;
 		else pos.x += 2;
 
-		if (map->collisionMoveRight(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
-			pos.x -= 2;
+		if (map->collisionMoveRight(getCollisionBox(), &pos.x)) {
+			//pos.x -= 2;
 			sprite->changeAnimation(MOVE_LEFT);
 		}
-		if (map->collisionMoveLeft(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
-			pos.x += 2;
+		if (map->collisionMoveLeft(getCollisionBox(), &pos.x)) {
+			//pos.x += 2;
 			sprite->changeAnimation(MOVE_RIGHT);
 		}
-
-		if (!map->collisionMoveDown(pos, glm::vec2(HITBOX_X, HITBOX_Y), &pos.y)) {
-			pos.y += 1;
-		}
-
-		if (checkCollision()) {
+		if (player->checkCollision(getCollisionBox())) {
 			onEntityHit();
 		}
 	}
@@ -107,24 +103,6 @@ void TreeEnemy::update(int deltaTime) {
 		else sprite->changeAnimation(DIE_RIGHT);
 	}
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
-}
-
-
-glm::vec4 TreeEnemy::getCollisionBox() {
-	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
-}
-
-bool TreeEnemy::checkCollision() {
-	glm::vec4 hitboxplayer = player->getCollisionBox();
-	glm::vec4 hitboxenemy = glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
-	return (hitboxplayer.x < hitboxenemy.x + hitboxenemy.z && // hitboxplayer.left < hitboxenemy.right
-		hitboxplayer.x + hitboxplayer.z > hitboxenemy.x && // hitboxplayer.right > hitboxenemy.left
-		hitboxplayer.y < hitboxenemy.y + hitboxenemy.w && // hitboxplayer.top < hitboxenemy.bottom
-		hitboxplayer.y + hitboxplayer.w > hitboxenemy.y);  // hitboxplayer.bottom > hitboxenemy.top
-}
-
-void TreeEnemy::setPlayer(Player *player) {
-	this->player = player;
 }
 
 void TreeEnemy::onEntityHit() {

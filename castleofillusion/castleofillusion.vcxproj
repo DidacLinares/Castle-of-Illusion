@@ -12,9 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FlowerEnemy.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Cake.h" />
+    <ClInclude Include="NonPlayerEntity.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
@@ -25,10 +28,13 @@
     <ClInclude Include="TreeEnemy.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Cake.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FlowerEnemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NonPlayerEntity.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />

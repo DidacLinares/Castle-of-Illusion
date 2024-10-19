@@ -62,6 +62,11 @@ void TreeEnemy::update(int deltaTime) {
 			pos.x += 2;
 			sprite->changeAnimation(MOVE_RIGHT);
 		}
+
+		if (!map->collisionMoveDown(pos, glm::vec2(HITBOX_X, HITBOX_Y), &pos.y)) {
+			pos.y += 1;
+		}
+
 		if (checkCollision()) {
 			onEntityHit();
 		}

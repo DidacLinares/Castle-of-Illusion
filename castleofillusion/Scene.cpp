@@ -18,6 +18,7 @@
 
 #define INIT_ENEMY_X_TILES 8
 #define INIT_ENEMY_Y_TILES 8
+
 Scene::Scene() {
 	map = NULL;
 	player = NULL;
@@ -50,6 +51,11 @@ void Scene::init() {
 	enemy->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
 	enemy->setTileMap(map);
 
+	flower = new FlowerEnemy();
+	flower->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flower->setPosition(glm::vec2(6 * map->getTileSize(), 12 * map->getTileSize()));
+	flower->setTileMap(map);
+
 	// View at player position
 	glm::vec2 pos = player->getPosition();
 
@@ -62,6 +68,7 @@ void Scene::update(int deltaTime) {
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	if(enemy != nullptr) enemy->update(deltaTime);
+	if (flower != nullptr) flower->update(deltaTime);
 	else if (Game::instance().getKey(GLFW_KEY_F)) {
 		enemy = new TreeEnemy();
 		enemy->setPlayer(player);
@@ -98,6 +105,14 @@ void Scene::render() {
 			enemy = nullptr;
 		}
 		else if (enemy != nullptr) enemy->render();
+	}
+
+	if (flower != nullptr) {
+		if (flower->isDead()) {
+			delete flower;
+			flower = nullptr;
+		}
+		else if (flower != nullptr) flower->render();
 	}
 }
 

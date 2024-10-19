@@ -30,7 +30,10 @@ private:
 	void initShaders();
 
 private:
-	TileMap *map;
+	TileMap* map;
+	TileMap* layer_0;
+	TileMap* layer_1;
+	TileMap* layer_2;
 	Player* player;
 	std::vector<NonPlayerEntity*> entityArray;
 	ShaderProgram texProgram;

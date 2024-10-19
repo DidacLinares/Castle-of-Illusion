@@ -10,6 +10,7 @@
 #include "TreeEnemy.h"
 #include "Cake.h"
 #include "Block.h"
+#include "FlowerEnemy.h"
 
 
 // Scene contains all the entities of our game.

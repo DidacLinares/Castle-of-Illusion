@@ -50,18 +50,11 @@ void FlowerEnemy::update(int deltaTime) {
 	sprite->update(deltaTime);
 
 	if (!dying) {
-		if (!map->collisionMoveDown(pos, glm::vec2(HITBOX_X, HITBOX_Y), &pos.y)) {
-			pos.y += 2;
-		}
 	}
 
 	else {
 
 	}
-}
-
-glm::vec4 FlowerEnemy::getCollisionBox() {
-	return glm::vec4(pos.x, pos.y, HITBOX_X, HITBOX_Y);
 }
 
 void FlowerEnemy::onEntityHit() {

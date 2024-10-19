@@ -3,15 +3,14 @@
 
 #include "Sprite.h"
 #include "TileMap.h"
-#include "Entity.h"
+#include "NonPlayerEntity.h"
 
 #pragma once
-class FlowerEnemy : public Entity {
+class FlowerEnemy : public NonPlayerEntity {
 
 public:
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	virtual void update(int deltaTime);
-	virtual glm::vec4 getCollisionBox();
 
 	void onEntityHit();
 

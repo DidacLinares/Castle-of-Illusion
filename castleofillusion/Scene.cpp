@@ -65,10 +65,11 @@ void Scene::init() {
 	entityArray[2]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
 	entityArray[2]->setTileMap(map);
 
-	flower = new FlowerEnemy();
-	flower->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	flower->setPosition(glm::vec2(6 * map->getTileSize(), 12 * map->getTileSize()));
-	flower->setTileMap(map);
+	entityArray.push_back(new FlowerEnemy());
+	entityArray[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[3]->setPlayer(player);
+	entityArray[3]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[3]->setTileMap(map);
 
 	// View at player position
 	glm::vec2 pos = player->getPosition();
@@ -119,14 +120,6 @@ void Scene::render() {
 		if (entityArray[i] != nullptr) {
 			entityArray[i]->render();
 		}
-	}
-
-	if (flower != nullptr) {
-		if (flower->isDead()) {
-			delete flower;
-			flower = nullptr;
-		}
-		else if (flower != nullptr) flower->render();
 	}
 }
 

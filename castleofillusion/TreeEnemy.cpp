@@ -55,12 +55,12 @@ void TreeEnemy::update(int deltaTime) {
 		if (sprite->animation() == MOVE_LEFT) pos.x -= 2;
 		else pos.x += 2;
 
-		if (map->collisionMoveRight(getCollisionBox(), &pos.x)) {
-			//pos.x -= 2;
+		if (map->collisionMoveRight(pos,glm::vec2(hitbox_x,hitbox_y))) {
+			pos.x -= 2;
 			sprite->changeAnimation(MOVE_LEFT);
 		}
-		if (map->collisionMoveLeft(getCollisionBox(), &pos.x)) {
-			//pos.x += 2;
+		if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
+			pos.x += 2;
 			sprite->changeAnimation(MOVE_RIGHT);
 		}
 		if (player->checkCollision(getCollisionBox())) {

@@ -31,8 +31,8 @@ Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Te
 	currentAnimation = -1;
 	position = glm::vec2(0.f);
 
-	//texture->setMinFilter(GL_NEAREST);
-	//texture->setMagFilter(GL_NEAREST);
+	texture->setMinFilter(GL_NEAREST);
+	texture->setMagFilter(GL_NEAREST);
 }
 
 void Sprite::update(int deltaTime) {

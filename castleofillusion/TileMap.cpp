@@ -146,118 +146,90 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program) 
 // Method collisionMoveDown also corrects Y coordinate if the box is
 // already intersecting a tile below.
 
-bool TileMap::collisionMoveLeft(const glm::vec4& hitbox,float *posX) const {
-	glm::vec2 topLeftRayStart = glm::vec2(hitbox.x, hitbox.y);  // Top-left corner
-	glm::vec2 bottomLeftRayStart = glm::vec2(hitbox.x, hitbox.y + hitbox.w - 1);  // Bottom-left corner
-	glm::vec2 middleLeftRayStart = glm::vec2(hitbox.x, hitbox.y + hitbox.w / 2);  // Middle-left (halfway down)
+bool TileMap::collisionMoveLeft(glm::vec2& pos, const glm::vec2& size) const
+{
+	int x, y0, y1;
 
-	int x = (topLeftRayStart.x - 1) / tileSize;  // Check the tile to the left
-
-	// Get the top, middle, and bottom Y positions
-	int topY = topLeftRayStart.y / tileSize;
-	int middleY = middleLeftRayStart.y / tileSize;
-	int bottomY = bottomLeftRayStart.y / tileSize;
-
-	// Cast rays along the left side (top, middle, and bottom)
-	if (map[topY * mapSize.x + x] != 0 || map[middleY * mapSize.x + x] != 0 || map[bottomY * mapSize.x + x] != 0) {
-		*posX = tileSize * x + tileSize + 1; // Colocar al borde del tile
-		return true;  // Collision detected on any ray
+	x = pos.x / tileSize;
+	y0 = pos.y / tileSize;
+	y1 = (pos.y + size.y - 1) / tileSize;
+	for (int y = y0; y <= y1; y++) {
+		if (map[y * mapSize.x + x] != 0) {
+			pos.x = (x * tileSize) + tileSize;
+			return true;
+		}
 	}
 
-	return false;  // No collision detected
+	return false;
 }
 
+bool TileMap::collisionMoveRight(glm::vec2& pos, const glm::vec2& size) const {
+	int x, y0, y1;
 
-bool TileMap::collisionMoveRight(const glm::vec4& hitbox, float* posX) const {
-	glm::vec2 topRightRayStart = glm::vec2(hitbox.x + hitbox.z - 1, hitbox.y);  // Top-right corner
-	glm::vec2 bottomRightRayStart = glm::vec2(hitbox.x + hitbox.z - 1, hitbox.y + hitbox.w - 1);  // Bottom-right corner
-	glm::vec2 middleRightRayStart = glm::vec2(hitbox.x + hitbox.z - 1, hitbox.y + hitbox.w / 2);  // Middle-right (halfway down)
-
-	int x = (topRightRayStart.x + 1) / tileSize;  // Check the tile to the right
-
-	// Get the top, middle, and bottom Y positions
-	int topY = topRightRayStart.y / tileSize;
-	int middleY = middleRightRayStart.y / tileSize;
-	int bottomY = bottomRightRayStart.y / tileSize;
-
-	// Cast rays along the right side (top, middle, and bottom)
-	if (map[topY * mapSize.x + x] != 0 || map[middleY * mapSize.x + x] != 0 || map[bottomY * mapSize.x + x] != 0) {
-		*posX = tileSize * x - hitbox.z; // Colocar al borde del tile
-		return true;  // Collision detected on any ray
+	x = (pos.x + size.x) / tileSize;
+	y0 = pos.y / tileSize;
+	y1 = (pos.y + size.y - 1) / tileSize;
+	for (int y = y0; y <= y1; y++) {
+		if (map[y * mapSize.x + x] != 0) {
+			pos.x = x * tileSize - size.x;
+			return true;
+		}
 	}
 
-	return false;  // No collision detected
+	return false;
 }
 
+bool TileMap::collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, float* posY) const {
+	int x0, x1, y;
 
-bool TileMap::collisionMoveDownLeft(const glm::vec4& hitbox, float* posY) const {
-	glm::vec2 leftBottomRayStart = glm::vec2(hitbox.x, hitbox.y + hitbox.w - 1);  // Bottom-left corner (pos.x, pos.y + height)
-	int y = (leftBottomRayStart.y + 1) / tileSize;  // Check the tile below the bottom-left corner
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+	for (int x = x0; x <= x1; x++) {
+		if (map[y * mapSize.x + x] != 0) {
+			if (*posY - tileSize * y + size.y <= 5) {
+				*posY = tileSize * y - size.y;
+				return true;
+			}
+		}
+	}
 
-	// Get the x position of the left-bottom corner
+	return false;
+}
+
+#include <vector>
+
+bool TileMap::raycast(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const {
+	
+	// Bottom-left corner
+	glm::vec2 leftBottomRayStart = glm::vec2(pos.x, pos.y + size.y - 1);
+	int leftY = (leftBottomRayStart.y + 1) / tileSize; // Check the tile below
 	int leftX = leftBottomRayStart.x / tileSize;
 
-	// Cast ray downward from the bottom-left corner
-	if (map[y * mapSize.x + leftX] != 0) {
-		// Adjust the position if collision happens
-		if (*posY - tileSize * y + hitbox.w <= 5) {
-			*posY = tileSize * y - hitbox.w;
-		}
-		return true;  // Collision detected
-	}
-
-	return false;  // No collision detected
-}
-
-
-bool TileMap::collisionMoveDownCenter(const glm::vec4& hitbox, float* posY) const {
-	glm::vec2 middleBottomRayStart = glm::vec2(hitbox.x + hitbox.z / 2, hitbox.y + hitbox.w - 1);  // Middle-bottom (halfway across)
-
-	int y = (middleBottomRayStart.y + 1) / tileSize;  // Check the tile below
-
-	// Get the X position for the middle-bottom ray
+	// Middle-bottom
+	glm::vec2 middleBottomRayStart = glm::vec2(pos.x + size.x / 2, pos.y + size.y - 1);
+	int middleY = (middleBottomRayStart.y + 1) / tileSize; // Check the tile below
 	int middleX = middleBottomRayStart.x / tileSize;
 
-	// Cast ray downward (middle-bottom)
-	if (map[y * mapSize.x + middleX] != 0) {
-		// Adjust the position if collision happens
-		if (*posY - tileSize * y + hitbox.w <= 5) {
-			*posY = tileSize * y - hitbox.w;
-		}
-		return true;  // Collision detected
-	}
-
-	return false;  // No collision detected
-}
-
-
-bool TileMap::collisionMoveDownRight(const glm::vec4& hitbox, float* posY) const {
-	glm::vec2 rightBottomRayStart = glm::vec2(hitbox.x + hitbox.z - 1, hitbox.y + hitbox.w - 1);  // Bottom-right corner
-	int y = (rightBottomRayStart.y + 1) / tileSize;  // Check the tile below the bottom-right corner
-
-	// Get the x position of the right-bottom corner
+	// Bottom-right corner
+	glm::vec2 rightBottomRayStart = glm::vec2(pos.x + size.x - 1, pos.y + size.y - 1);
+	int rightY = (rightBottomRayStart.y + 1) / tileSize; // Check the tile below
 	int rightX = rightBottomRayStart.x / tileSize;
 
-	// Cast ray downward from the bottom-right corner
-	if (map[y * mapSize.x + rightX] != 0) {
-		// Adjust the position if collision happens
-		if (*posY - tileSize * y + hitbox.w <= 5) {
-			*posY = tileSize * y - hitbox.w;
-		}
-		return true;  // Collision detected
+	// Check colisiones
+	if (map[leftY * mapSize.x + leftX] != 0) {
+		collisions[0] = true; // Collision detected at left
+	}
+	if (map[middleY * mapSize.x + middleX] != 0) {
+		collisions[1] = true; // Collision detected at center
+	}
+	if (map[rightY * mapSize.x + rightX] != 0) {
+		collisions[2] = true; // Collision detected at right
 	}
 
-	return false;  // No collision detected
+	// Devuelve true si se detectó alguna colisión
+	return collisions[0] || collisions[1] || collisions[2];
 }
-
-
-
-
-
-
-
-
-
 
 
 

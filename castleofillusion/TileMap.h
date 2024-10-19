@@ -29,11 +29,11 @@ public:
 	
 	int getTileSize() const { return tileSize; }
 
-	bool collisionMoveLeft(const glm::vec4& hitbox, float* posX) const;
-	bool collisionMoveRight(const glm::vec4& hitbox, float* posX) const;
-	bool collisionMoveDownLeft(const glm::vec4& hitbox, float* posY) const;
-	bool collisionMoveDownCenter(const glm::vec4& hitbox, float* posY) const;
-	bool collisionMoveDownRight(const glm::vec4& hitbox, float* posY) const;
+	bool collisionMoveLeft(glm::vec2& pos, const glm::vec2& size) const;
+	bool collisionMoveRight(glm::vec2& pos, const glm::vec2& size) const;
+	bool collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, float* posY) const;
+
+	bool TileMap::raycast(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const;
 
 private:
 	bool loadLevel(const string &levelFile);

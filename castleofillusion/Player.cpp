@@ -223,8 +223,8 @@ void Player::update(int deltaTime) {
 		speedX = 0;
 	}
 	vector<bool> raycast(3,false);
-	map->raycast(pos, glm::vec2(hitbox_x, hitbox_y), raycast);
-	if (sprite->animation() == STAND_LEFT && raycast[0] && !raycast[1] && !raycast[2]) {
+	map->raycastDown(pos, glm::vec2(hitbox_x, hitbox_y), raycast);
+	if (sprite->animation() == STAND_LEFT && raycast[0] && !raycast[1] && !raycast[2]) { // 0 esquerra, 1 centre, 2 dreta
 		sprite->changeAnimation(BALANCE_LEFT);
 	}
 	if (sprite->animation() == STAND_RIGHT && !raycast[0] && !raycast[1] && raycast[2]) {

@@ -66,6 +66,9 @@ void TreeEnemy::update(int deltaTime) {
 		if (player->checkCollision(getCollisionBox())) {
 			onEntityHit();
 		}
+		pos.y += 4;
+		map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y),&pos.y);
+		
 	}
 	else {
 		deathTime += deltaTime; 

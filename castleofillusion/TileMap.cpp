@@ -196,36 +196,29 @@ bool TileMap::collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, flo
 	return false;
 }
 
-bool TileMap::raycast(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const {
+void TileMap::raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const {
 	
-	// Bottom-left corner
 	glm::vec2 leftBottomRayStart = glm::vec2(pos.x, pos.y + size.y - 1);
-	int leftY = (leftBottomRayStart.y + 1) / tileSize; // Check the tile below
+	int leftY = (leftBottomRayStart.y + 1) / tileSize; 
 	int leftX = leftBottomRayStart.x / tileSize;
 
-	// Middle-bottom
 	glm::vec2 middleBottomRayStart = glm::vec2(pos.x + size.x / 2, pos.y + size.y - 1);
-	int middleY = (middleBottomRayStart.y + 1) / tileSize; // Check the tile below
+	int middleY = (middleBottomRayStart.y + 1) / tileSize; 
 	int middleX = middleBottomRayStart.x / tileSize;
 
-	// Bottom-right corner
 	glm::vec2 rightBottomRayStart = glm::vec2(pos.x + size.x - 1, pos.y + size.y - 1);
-	int rightY = (rightBottomRayStart.y + 1) / tileSize; // Check the tile below
+	int rightY = (rightBottomRayStart.y + 1) / tileSize; 
 	int rightX = rightBottomRayStart.x / tileSize;
 
-	// Check colisiones
 	if (map[leftY * mapSize.x + leftX] != 0) {
-		collisions[0] = true; // Collision detected at left
+		collisions[0] = true; 
 	}
 	if (map[middleY * mapSize.x + middleX] != 0) {
-		collisions[1] = true; // Collision detected at center
+		collisions[1] = true; 
 	}
 	if (map[rightY * mapSize.x + rightX] != 0) {
-		collisions[2] = true; // Collision detected at right
+		collisions[2] = true; 
 	}
-
-	// Devuelve true si se detectó alguna colisión
-	return collisions[0] || collisions[1] || collisions[2];
 }
 
 

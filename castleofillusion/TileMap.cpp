@@ -187,35 +187,14 @@ bool TileMap::collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, flo
 	y = (pos.y + size.y - 1) / tileSize;
 	for (int x = x0; x <= x1; x++) {
 		if (map[y * mapSize.x + x] != 0) {
-			int tile = map[y * mapSize.x + x];
-			if(tile != 0) {
-				if (tile == 7 || tile == 8 || tile == 9|| tile == 10 || tile == 11 || tile == 38|| tile == 32) {
-					*posY = adjustYForRamp(pos.x, y, tileSize);
+			if(*posY - tileSize * y + size.y <= 5) {
+					*posY = tileSize * y - size.y;
 					return true;
-
-				}
-				else if(*posY - tileSize * y + size.y <= 5) {
-						*posY = tileSize * y - size.y;
-						return true;
-				}
 			}
 		}
 	}
-
 	return false;
 }
-
-float TileMap::adjustYForRamp(float posX, int y, float tileSize) const {
-	int tileIndex = posX / tileSize; // Determina el índice del tile en el eje X
-	float positionInTile = posX - (tileIndex * tileSize); // Posición dentro del tile
-
-	// La Y ajustada será la altura base de la tile menos la posición dentro del tile
-	// Asumimos que la altura máxima de la rampa es igual a tileSize
-	float rampHeight = (tileSize - positionInTile); // Rampa sube un pixel por cada pixel en X
-
-	return (y * tileSize) + rampHeight; // Altura ajustada sobre la rampa
-}
-
 
 bool TileMap::raycast(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const {
 	

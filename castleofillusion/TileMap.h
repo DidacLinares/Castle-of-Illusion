@@ -38,8 +38,6 @@ public:
 private:
 	bool loadLevel(const string &levelFile);
 	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
-	float adjustYForRamp(float posX, int y, float tileSize) const;
-
 
 private:
 	GLuint vao;

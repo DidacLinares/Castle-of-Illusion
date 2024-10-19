@@ -22,7 +22,7 @@
 #define BLINK_TIME 200
 
 enum PlayerAnims {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, CROUCH_LEFT, CROUCH_RIGHT, GROUND_POUND_LEFT, GROUND_POUND_RIGHT, JUMP_LEFT, JUMP_RIGHT, FALL_LEFT, FALL_RIGHT, BREAKING_LEFT, BREAKING_RIGHT
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, CROUCH_LEFT, CROUCH_RIGHT, GROUND_POUND_LEFT, GROUND_POUND_RIGHT, JUMP_LEFT, JUMP_RIGHT, FALL_LEFT, FALL_RIGHT, BREAKING_LEFT, BREAKING_RIGHT, BALANCE_LEFT, BALANCE_RIGHT
 };
 
 
@@ -37,7 +37,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(25, 33), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(14);
+	sprite->setNumberAnimations(16);
 
 	sprite->setAnimationSpeed(STAND_LEFT, 4);
 	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.f));
@@ -99,7 +99,13 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	sprite->setAnimationSpeed(FALL_RIGHT, 1);
 	sprite->addKeyframe(FALL_RIGHT, glm::vec2(3 * OFFSET_X, OFFSET_Y));
 
+	sprite->setAnimationSpeed(BALANCE_LEFT, 8);
+	sprite->addKeyframe(BALANCE_LEFT, glm::vec2(15 * OFFSET_X, 0.f));
+	sprite->addKeyframe(BALANCE_LEFT, glm::vec2(15 * OFFSET_X, OFFSET_Y));
 
+	sprite->setAnimationSpeed(BALANCE_RIGHT, 8);
+	sprite->addKeyframe(BALANCE_RIGHT, glm::vec2(15 * OFFSET_X, 0.f));
+	sprite->addKeyframe(BALANCE_RIGHT, glm::vec2(15 * OFFSET_X, OFFSET_Y));
 		
 	sprite->changeAnimation(STAND_RIGHT);
 	tileMapDispl = glm::vec2(tileMapPos);
@@ -202,19 +208,25 @@ void Player::update(int deltaTime) {
 		}
 	}
 	else {
-		if (sprite->animation() == MOVE_LEFT || sprite->animation() == CROUCH_LEFT || sprite->animation() == BREAKING_LEFT && !crouching && !groundpounding) sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == CROUCH_RIGHT || sprite->animation() == BREAKING_RIGHT && !crouching && !groundpounding) sprite->changeAnimation(STAND_RIGHT);
+		if ((sprite->animation() == MOVE_LEFT || sprite->animation() == CROUCH_LEFT || sprite->animation() == BREAKING_LEFT) && !crouching && !groundpounding) sprite->changeAnimation(STAND_LEFT);
+		else if ((sprite->animation() == MOVE_RIGHT || sprite->animation() == CROUCH_RIGHT || sprite->animation() == BREAKING_RIGHT) && !crouching && !groundpounding) sprite->changeAnimation(STAND_RIGHT);
 	}
 
-	if (map->collisionMoveRight(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
-		pos.x -= speedX;
+	if (map->collisionMoveRight(getCollisionBox(), &pos.x)) {
+		//pos.x -= speedX;
 		sprite->changeAnimation(STAND_RIGHT);
 		speedX = 0;
 	}
-	if (map->collisionMoveLeft(pos, glm::vec2(HITBOX_X, HITBOX_Y))) {
-		pos.x -= speedX;
+	if (map->collisionMoveLeft(getCollisionBox(), &pos.x)) {
+		//pos.x -= speedX;
 		sprite->changeAnimation(STAND_LEFT);
 		speedX = 0;
+	}
+	if (sprite->animation() == STAND_LEFT && !map->collisionMoveDownCenter(getCollisionBox(), &pos.y) && map->collisionMoveDownLeft(getCollisionBox(), &pos.y) && !map->collisionMoveDownRight(getCollisionBox(), &pos.y)) {
+		sprite->changeAnimation(BALANCE_LEFT);
+	}
+	if (sprite->animation() == STAND_RIGHT && !map->collisionMoveDownCenter(getCollisionBox(), &pos.y) && map->collisionMoveDownRight(getCollisionBox(), &pos.y) && !map->collisionMoveDownLeft(getCollisionBox(), &pos.y)) {
+		sprite->changeAnimation(BALANCE_RIGHT);
 	}
 	/*
 	if (Game::instance().getKey(GLFW_KEY_W) && !bJumping && !falling) {
@@ -257,7 +269,9 @@ void Player::update(int deltaTime) {
 		else {
 			pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
 			if (jumpAngle > 90) {
-				bJumping = !map->collisionMoveDown(pos, glm::vec2(HITBOX_X, HITBOX_Y), &pos.y);
+				bJumping = !map->collisionMoveDownLeft(getCollisionBox(), &pos.y);
+				bJumping = !map->collisionMoveDownCenter(getCollisionBox(), &pos.y);
+				bJumping = !map->collisionMoveDownRight(getCollisionBox(), &pos.y);
 				if (!groundpounding && sprite->animation() != GROUND_POUND_LEFT && movingLeft()) sprite->changeAnimation(FALL_LEFT);
 				else if (!groundpounding && sprite->animation() != GROUND_POUND_RIGHT) sprite->changeAnimation(FALL_RIGHT);
 			}
@@ -286,7 +300,7 @@ void Player::update(int deltaTime) {
 }
 
 void Player::checkGroundCollision() {
-	if (map->collisionMoveDown(pos, glm::vec2(HITBOX_X, HITBOX_Y), &pos.y)) {
+	if (map->collisionMoveDownLeft(getCollisionBox(), &pos.y) || map->collisionMoveDownRight(getCollisionBox(), &pos.y) || map->collisionMoveDownCenter(getCollisionBox(), &pos.y)) {
 		falling = false;
 		groundpounding = false;
 		if (sprite->animation() == GROUND_POUND_LEFT || sprite->animation() == JUMP_LEFT || sprite->animation() == FALL_LEFT) sprite->changeAnimation(STAND_LEFT);

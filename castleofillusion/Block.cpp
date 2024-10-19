@@ -27,13 +27,10 @@ void Block::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 }
 
 void Block::update(int deltaTime) {
+	
+
 }
 
 void Block::onEntityHit() {
 	
 }
-
-glm::vec4 Block::getCollisionBox() {
-	return glm::vec4(0, 0, 0, 0);
-}
-

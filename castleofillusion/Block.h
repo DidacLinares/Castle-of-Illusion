@@ -11,9 +11,7 @@ public:
 
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	virtual void update(int deltaTime);
-	virtual void onEntityHit();
-	virtual glm::vec4 getCollisionBox();
-	
+	virtual void onEntityHit();	
 };
 
 #endif // _BLOCK_INCLUDE

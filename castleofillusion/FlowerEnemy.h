@@ -18,6 +18,9 @@ private:
 	bool dying = false;
 	int deathFase = 1;
 	int deathTime = 0;
+
+	int timeSinceLastAttack = 0;
+	bool attacking = false;
 };
 
 #endif // _FLOWERENEMY_INCLUDE

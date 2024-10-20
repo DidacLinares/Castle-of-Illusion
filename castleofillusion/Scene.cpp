@@ -45,7 +45,7 @@ void Scene::init() {
 
 	player = new Player();
 	player->setSoundEngine(soundEngine);
-	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	player->init(glm::ivec2(SCREEN_X, SCREEN_Y - 5), texProgram); // canviat per alinear la hitbox al sprite, reajustar si dona problemes
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 
@@ -64,7 +64,7 @@ void Scene::init() {
 	entityArray.push_back(new Block());
 	entityArray[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[2]->setPlayer(player);
-	entityArray[2]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[2]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 1) * map->getTileSize(), (13) * map->getTileSize()));
 	entityArray[2]->setTileMap(map);
 
 	// View at player position

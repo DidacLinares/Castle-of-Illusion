@@ -226,6 +226,10 @@ void TileMap::raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vect
 	}
 }
 
+void TileMap::setTileAsBlock(int tileX, int tileY,int value) {
+	map[tileY * mapSize.x + tileX] = value;
+}
+
 
 
 

@@ -34,6 +34,7 @@ public:
 	bool collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, float* posY) const;
 
 	void raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const;
+	void setTileAsBlock(int tileX, int tileY, int value);
 
 private:
 	bool loadLevel(const string &levelFile);

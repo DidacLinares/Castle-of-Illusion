@@ -14,7 +14,7 @@
 #define GRAVITY 0.0075
 
 #define OFFSET_X 0.0625
-#define OFFSET_Y 0.5
+#define OFFSET_Y 0.2
 
 #define HITBOX_X 20
 #define HITBOX_Y 32
@@ -36,7 +36,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	lives = 3;
 	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(25, 33), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(25, 38), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(16);
 
 	sprite->setAnimationSpeed(STAND_LEFT, 4);
@@ -125,13 +125,13 @@ void Player::update(int deltaTime) {
 	if (Game::instance().getKey(GLFW_KEY_G)) {
 		setGodMode(!isGodMode());
 		cout << "God mode: " << isGodMode() << endl;
+		Game::instance().keyReleased(GLFW_KEY_G);
 	}
-
 	if (Game::instance().getKey(GLFW_KEY_H)) {
-		setLives(3);
-		cout << "Lives: " << getLives() << endl;
+			setLives(3);
+			cout << "Lives: " << getLives() << endl;
+			Game::instance().keyReleased(GLFW_KEY_H);
 	}
-
 	crouching = false;
 	if (Game::instance().getKey(GLFW_KEY_S)) {
 		if (bJumping || falling) {

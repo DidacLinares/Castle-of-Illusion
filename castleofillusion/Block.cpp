@@ -33,7 +33,6 @@ void Block::update(int deltaTime) {
 	map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
 	if (Game::instance().getKey(GLFW_KEY_F)) {
 		pickedUp = !pickedUp;
-		pickedPressed = true;
 		Game::instance().keyReleased(GLFW_KEY_F);
 	}
 		

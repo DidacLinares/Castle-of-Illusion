@@ -1,7 +1,7 @@
 #ifndef _PLAYER_INCLUDE
 #define _PLAYER_INCLUDE
 
-
+#include <irrKlang.h>
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Entity.h"
@@ -28,9 +28,11 @@ public:
 	void setGodMode(bool godMode);
 	bool isGodMode();
 	bool checkCollision(glm::vec4 hitboxentity);
+	void setSoundEngine(irrklang::ISoundEngine* soundEngine);
 
 private:
-
+	irrklang::ISoundEngine* soundEngine;
+	irrklang::ISoundSource* jumpSound; 
 	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY;

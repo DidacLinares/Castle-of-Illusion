@@ -34,7 +34,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	hit = false;
 	speedX = 0;
 	lives = 3;
-
+	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(25, 33), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(16);
@@ -308,6 +308,9 @@ void Player::checkGroundCollision() {
 		if (Game::instance().getKey(GLFW_KEY_W)) {
 			if (sprite->animation() == MOVE_LEFT || sprite->animation() == CROUCH_LEFT || sprite->animation() == STAND_LEFT || sprite->animation() == GROUND_POUND_RIGHT) sprite->changeAnimation(JUMP_LEFT);
 			else sprite->changeAnimation(JUMP_RIGHT);
+			if (jumpSound && !soundEngine->isCurrentlyPlaying(jumpSound->getName())) {
+				soundEngine->play2D(jumpSound);
+			}
 			bJumping = true;
 			jumpAngle = 0;
 			startY = pos.y;
@@ -364,4 +367,8 @@ bool Player::checkCollision(glm::vec4 hitboxentity) {
 		hitbox.x + hitbox.z > hitboxentity.x && // hitboxplayer.right > hitboxenemy.left
 		hitbox.y < hitboxentity.y + hitboxentity.w && // hitboxplayer.top < hitboxenemy.bottom
 		hitbox.y + hitbox.w > hitboxentity.y);  // hitboxplayer.bottom > hitboxenemy.top
+}
+
+void Player::setSoundEngine(irrklang::ISoundEngine* soundEngine) {
+	this->soundEngine = soundEngine;
 }

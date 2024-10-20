@@ -36,6 +36,7 @@ Scene::~Scene() {
 
 void Scene::init() {
 	initShaders();
+	soundEngine = irrklang::createIrrKlangDevice();
 	//map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_0 = TileMap::createTileMap("levels/sky_background_0.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_1 = TileMap::createTileMap("levels/sky_background_1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -43,6 +44,7 @@ void Scene::init() {
 	map = TileMap::createTileMap("levels/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	player = new Player();
+	player->setSoundEngine(soundEngine);
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
@@ -69,7 +71,8 @@ void Scene::init() {
 	glm::vec2 pos = player->getPosition();
 
 	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / 2, pos.x + float(SCREEN_WIDTH) / 2, pos.y + float(SCREEN_HEIGHT) / 2, pos.y - float(SCREEN_HEIGHT) / 2);
-	
+	//glViewport(0, 300, 1280, 720 - 300);  // UI
+
 	currentTime = 0.0f;
 }
 
@@ -95,6 +98,7 @@ void Scene::render() {
 	// Center the camera at player position
 	glm::vec2 pos = player->getPosition();
 	int zoom = 8;
+	//projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / zoom, pos.x + float(SCREEN_WIDTH) / zoom, pos.y + float(SCREEN_HEIGHT - 300) / zoom, pos.y - float(SCREEN_HEIGHT - 300) / zoom); // UI
 	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / zoom, pos.x + float(SCREEN_WIDTH) / zoom, pos.y + float(SCREEN_HEIGHT) / zoom, pos.y - float(SCREEN_HEIGHT) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);

@@ -33,7 +33,7 @@ public:
 	bool collisionMoveRight(glm::vec2& pos, const glm::vec2& size) const;
 	bool collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, float* posY) const;
 
-	void TileMap::raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const;
+	void raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const;
 
 private:
 	bool loadLevel(const string &levelFile);

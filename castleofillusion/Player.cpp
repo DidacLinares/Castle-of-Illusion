@@ -14,7 +14,7 @@
 #define GRAVITY 0.0075
 
 #define OFFSET_X 0.0625
-#define OFFSET_Y 0.5
+#define OFFSET_Y 0.2
 
 #define HITBOX_X 20
 #define HITBOX_Y 32
@@ -34,9 +34,9 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	hit = false;
 	speedX = 0;
 	lives = 3;
-
+	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(25, 33), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(25, 38), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(16);
 
 	sprite->setAnimationSpeed(STAND_LEFT, 4);
@@ -125,13 +125,13 @@ void Player::update(int deltaTime) {
 	if (Game::instance().getKey(GLFW_KEY_G)) {
 		setGodMode(!isGodMode());
 		cout << "God mode: " << isGodMode() << endl;
+		Game::instance().keyReleased(GLFW_KEY_G);
 	}
-
 	if (Game::instance().getKey(GLFW_KEY_H)) {
-		setLives(3);
-		cout << "Lives: " << getLives() << endl;
+			setLives(3);
+			cout << "Lives: " << getLives() << endl;
+			Game::instance().keyReleased(GLFW_KEY_H);
 	}
-
 	crouching = false;
 	if (Game::instance().getKey(GLFW_KEY_S)) {
 		if (bJumping || falling) {
@@ -212,22 +212,24 @@ void Player::update(int deltaTime) {
 		else if ((sprite->animation() == MOVE_RIGHT || sprite->animation() == CROUCH_RIGHT || sprite->animation() == BREAKING_RIGHT) && !crouching && !groundpounding) sprite->changeAnimation(STAND_RIGHT);
 	}
 
-	if (map->collisionMoveRight(getCollisionBox(), &pos.x)) {
+	if (map->collisionMoveRight(pos,glm::vec2(hitbox_x,hitbox_y))) {
 		//pos.x -= speedX;
 		sprite->changeAnimation(STAND_RIGHT);
 		speedX = 0;
 	}
-	if (map->collisionMoveLeft(getCollisionBox(), &pos.x)) {
+	if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
 		//pos.x -= speedX;
 		sprite->changeAnimation(STAND_LEFT);
 		speedX = 0;
 	}
-	if (sprite->animation() == STAND_LEFT && !map->collisionMoveDownCenter(getCollisionBox(), &pos.y) && map->collisionMoveDownLeft(getCollisionBox(), &pos.y) && !map->collisionMoveDownRight(getCollisionBox(), &pos.y)) {
+	vector<bool> raycast(3,false);
+	map->raycastDown(pos, glm::vec2(hitbox_x, hitbox_y), raycast);
+	if (sprite->animation() == STAND_LEFT && raycast[0] && !raycast[1] && !raycast[2]) { // 0 esquerra, 1 centre, 2 dreta
 		sprite->changeAnimation(BALANCE_LEFT);
 	}
-	if (sprite->animation() == STAND_RIGHT && !map->collisionMoveDownCenter(getCollisionBox(), &pos.y) && map->collisionMoveDownRight(getCollisionBox(), &pos.y) && !map->collisionMoveDownLeft(getCollisionBox(), &pos.y)) {
+	if (sprite->animation() == STAND_RIGHT && !raycast[0] && !raycast[1] && raycast[2]) {
 		sprite->changeAnimation(BALANCE_RIGHT);
-	}
+	} 
 	/*
 	if (Game::instance().getKey(GLFW_KEY_W) && !bJumping && !falling) {
 		startY = pos.y;
@@ -269,9 +271,7 @@ void Player::update(int deltaTime) {
 		else {
 			pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
 			if (jumpAngle > 90) {
-				bJumping = !map->collisionMoveDownLeft(getCollisionBox(), &pos.y);
-				bJumping = !map->collisionMoveDownCenter(getCollisionBox(), &pos.y);
-				bJumping = !map->collisionMoveDownRight(getCollisionBox(), &pos.y);
+				bJumping = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
 				if (!groundpounding && sprite->animation() != GROUND_POUND_LEFT && movingLeft()) sprite->changeAnimation(FALL_LEFT);
 				else if (!groundpounding && sprite->animation() != GROUND_POUND_RIGHT) sprite->changeAnimation(FALL_RIGHT);
 			}
@@ -300,7 +300,7 @@ void Player::update(int deltaTime) {
 }
 
 void Player::checkGroundCollision() {
-	if (map->collisionMoveDownLeft(getCollisionBox(), &pos.y) || map->collisionMoveDownRight(getCollisionBox(), &pos.y) || map->collisionMoveDownCenter(getCollisionBox(), &pos.y)) {
+	if (map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y),&pos.y)) {
 		falling = false;
 		groundpounding = false;
 		if (sprite->animation() == GROUND_POUND_LEFT || sprite->animation() == JUMP_LEFT || sprite->animation() == FALL_LEFT) sprite->changeAnimation(STAND_LEFT);
@@ -308,6 +308,9 @@ void Player::checkGroundCollision() {
 		if (Game::instance().getKey(GLFW_KEY_W)) {
 			if (sprite->animation() == MOVE_LEFT || sprite->animation() == CROUCH_LEFT || sprite->animation() == STAND_LEFT || sprite->animation() == GROUND_POUND_RIGHT) sprite->changeAnimation(JUMP_LEFT);
 			else sprite->changeAnimation(JUMP_RIGHT);
+			if (jumpSound && !soundEngine->isCurrentlyPlaying(jumpSound->getName())) {
+				soundEngine->play2D(jumpSound);
+			}
 			bJumping = true;
 			jumpAngle = 0;
 			startY = pos.y;
@@ -364,4 +367,8 @@ bool Player::checkCollision(glm::vec4 hitboxentity) {
 		hitbox.x + hitbox.z > hitboxentity.x && // hitboxplayer.right > hitboxenemy.left
 		hitbox.y < hitboxentity.y + hitboxentity.w && // hitboxplayer.top < hitboxenemy.bottom
 		hitbox.y + hitbox.w > hitboxentity.y);  // hitboxplayer.bottom > hitboxenemy.top
+}
+
+void Player::setSoundEngine(irrklang::ISoundEngine* soundEngine) {
+	this->soundEngine = soundEngine;
 }

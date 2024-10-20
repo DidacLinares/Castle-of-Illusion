@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include <vector>
+#include <irrKlang.h>
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -35,6 +36,7 @@ private:
 	TileMap* layer_1;
 	TileMap* layer_2;
 	Player* player;
+	irrklang::ISoundEngine* soundEngine;
 	std::vector<NonPlayerEntity*> entityArray;
 	ShaderProgram texProgram;
 	float currentTime;

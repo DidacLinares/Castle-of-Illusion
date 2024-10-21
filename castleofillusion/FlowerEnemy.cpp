@@ -14,6 +14,7 @@
 
 #define DETECTION_RADIUS 50
 #define ATTACK_COOLDOWN 3000
+#define DEATH_ANGLE_STEP 4
 
 
 enum FlowerAnims {
@@ -83,40 +84,28 @@ void FlowerEnemy::update(int deltaTime) {
 	}
 		
 	else {
-		deathTime += deltaTime;
-		switch (deathFase) {
-		case 1:
-			pos.y -= 2;
-			pos.x += 2;
+		if (sprite->animation() != DIE) {
+			startX = pos.x;
+			startY = pos.y;
+			sprite->changeAnimation(DIE);
+		}
 
-			if (deathTime >= MAX_RISE_TIME) {
-				deathFase = 2;
-			}
-			break;
-		case 2:
-			pos.y -= 1;
-			pos.x += 1;
-			if (deathTime >= MAX_RISE_TIME + 50) {
-				deathFase = 3;
-			}
-			break;
-		case 3:
-			pos.y += 0.5f;
-			pos.x += 0.5f;
-			if (deathTime >= MAX_RISE_TIME + 150) {
-				deathFase = 4;
-			}
-			break;
-		default:
-			pos.y += 2;
+		deathAngle += DEATH_ANGLE_STEP;
+		deathTime += deltaTime;
+
+		if (deathAngle >= 220 && !dead) {
 			if (deathTime >= MAX_DEATH_TIME) {
 				dead = true;
 			}
-			break;
 		}
 
-		sprite->changeAnimation(DIE);
+		if (!dead) {
+			pos.y = int(startY - 50 * sin(3.14159 * deathAngle / 180.f));
+			pos.x += 0.5;
+		}
 	}
+
+	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
 
 void FlowerEnemy::onEntityHit() {

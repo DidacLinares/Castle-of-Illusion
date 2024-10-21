@@ -19,6 +19,9 @@ private:
 	int deathFase = 1;
 	int deathTime = 0;
 
+	float startX, startY = 0;
+	int deathAngle = 0;
+
 	int timeSinceLastAttack = 0;
 	bool attacking = false;
 };

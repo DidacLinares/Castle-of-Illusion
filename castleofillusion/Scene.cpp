@@ -21,6 +21,8 @@
 #define INIT_ENEMY_X_TILES 8
 #define INIT_ENEMY_Y_TILES 8
 
+#define REMOVE_AT 60
+
 Scene::Scene() {
 	map = NULL;
 	player = NULL;
@@ -96,8 +98,12 @@ void Scene::update(int deltaTime) {
 		}
 	}
 
-	// Remove null pointers to avoid memory leaks
-	entityArray.resize(std::remove(entityArray.begin(), entityArray.end(), nullptr) - entityArray.begin()); 
+	if (nextRemove++ >= REMOVE_AT) {
+		nextRemove = 0;
+
+		// Remove null pointers to avoid memory leaks
+		entityArray.erase(std::remove(entityArray.begin(), entityArray.end(), nullptr), entityArray.end());
+	}
 }
 
 void Scene::render() {

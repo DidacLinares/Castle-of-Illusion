@@ -47,6 +47,8 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	glm::mat4 view;
+
+	int nextRemove = 0;
 };
 
 

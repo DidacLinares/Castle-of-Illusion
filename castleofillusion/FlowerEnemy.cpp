@@ -13,13 +13,14 @@
 #define MAX_RISE_TIME 200
 #define MAX_DEATH_TIME 1000
 
-#define DETECTION_RADIUS 50
+#define PREPARE_ATTACK_RADIUS 100
+#define ATTACK_RADIUS 50
 #define ATTACK_COOLDOWN 3000
 #define DEATH_ANGLE_STEP 4
 
 
 enum FlowerAnims {
-	STAND, ATTACK, DIE
+	STAND, DUMMY, PREPARING_ATTACK, DUMMY2, ATTACK, DIE
 };
 
 
@@ -30,17 +31,29 @@ void FlowerEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgra
 	sprite = Sprite::createSprite(glm::ivec2(16, 24), glm::vec2(OFFSET_X, 1), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(4);
 
+	sprite->setAnimationSpeed(DUMMY, 1);
+	sprite->addKeyframe(DUMMY, glm::vec2(0.f, 0.f));
+
+	sprite->setAnimationSpeed(DUMMY2, 1);
+	sprite->addKeyframe(DUMMY2, glm::vec2(0.f, 0.f));
+
 	sprite->setAnimationSpeed(STAND, 1);
 	sprite->addKeyframe(STAND, glm::vec2(0.f, 0.f));
 
-	sprite->setAnimationSpeed(ATTACK, 2);
-	sprite->addKeyframe(ATTACK, glm::vec2(OFFSET_X, 0.f));
-	sprite->addKeyframe(ATTACK, glm::vec2(2 * OFFSET_X, 0.0f));
+	sprite->setAnimationSpeed(PREPARING_ATTACK, 1);
+	sprite->addKeyframe(PREPARING_ATTACK, glm::vec2(OFFSET_X, 0.f));
+
+	sprite->setAnimationSpeed(ATTACK, 1);
+	sprite->addKeyframe(ATTACK, glm::vec2(2 * OFFSET_X, 0.f));
 
 	sprite->setAnimationSpeed(DIE, 1);
 	sprite->addKeyframe(DIE, glm::vec2(4 * OFFSET_X, 0.f));
 
 	sprite->changeAnimation(0);
+
+	hitbox_x = 16;
+	hitbox_y = 24;
+
 	pos.x = 0;
 	pos.y = 0;
 
@@ -60,15 +73,27 @@ void FlowerEnemy::update(int deltaTime) {
 		float distanceToPlayer = glm::length(playerPos - pos);
 
 		timeSinceLastAttack += deltaTime;
+
+		if (distanceToPlayer < PREPARE_ATTACK_RADIUS && !attacking) {
+			if (sprite->animation() != PREPARING_ATTACK) {
+				sprite->changeAnimation(PREPARING_ATTACK);
+			}
+		}
+		else {
+			if (sprite->animation() != STAND) {
+				sprite->changeAnimation(STAND);
+			}
+		}
 		
 		// Si el jugador está dentro del radio de detección, atacar
-		if (distanceToPlayer < DETECTION_RADIUS && timeSinceLastAttack >= ATTACK_COOLDOWN) {
+		if (distanceToPlayer < ATTACK_RADIUS && timeSinceLastAttack >= ATTACK_COOLDOWN) {
 			attacking = true;
 			if (sprite->animation() != ATTACK) {
 				sprite->changeAnimation(ATTACK);
 			}
 
 			timeSinceLastAttack = 0;
+			cout << "Flowe pos " << pos.x << " " << pos.y << endl;
 
 			// Crear proyectil
 			for (int i = 0; i < 2; ++i) {
@@ -77,7 +102,9 @@ void FlowerEnemy::update(int deltaTime) {
 				projectile->setTileMap(map);
 				projectile->setPlayer(player);
 				// Position centered on top of the enemy
-				projectile->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y - 6)));
+				projectile->setPosition(glm::vec2(int(pos.x - 4), int(pos.y - 12)));
+				
+				cout << "Projectile pos " << projectile->getPosition().x << " " << projectile->getPosition().y << endl;
 				projectile->setDirection(i == 0);
 				Game::instance().getScene()->addEntity(projectile);
 			}

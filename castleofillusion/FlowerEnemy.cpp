@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "FlowerEnemy.h"
 #include "Game.h"
+#include "FlowerProjectile.h"
 
 #define OFFSET_X 0.20
 #define OFFSET_Y 0
@@ -44,7 +45,7 @@ void FlowerEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgra
 	pos.y = 0;
 
 	tileMapDispl = glm::vec2(tileMapPos);
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
+	sprite->setPosition(glm::vec2(pos.x, pos.y));
 
 }
 
@@ -68,10 +69,20 @@ void FlowerEnemy::update(int deltaTime) {
 			}
 
 			timeSinceLastAttack = 0;
-			// Aquí puedes añadir la lógica del ataque, como reducir la vida del jugador
+
+			// Crear proyectil
+			for (int i = 0; i < 2; ++i) {
+				FlowerProjectile* projectile = new FlowerProjectile();
+				projectile->init(glm::ivec2(tileMapDispl), Game::instance().getScene()->getShaderProgram());
+				projectile->setTileMap(map);
+				projectile->setPlayer(player);
+				// Position centered on top of the enemy
+				projectile->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y - 6)));
+				projectile->setDirection(i == 0);
+				Game::instance().getScene()->addEntity(projectile);
+			}
 		}
 		else {
-			// Si el jugador no está cerca, vuelve a la animación de estar quieto
 			if (timeSinceLastAttack >= 1000 && attacking) {
 				sprite->changeAnimation(STAND);
 				attacking = false;

@@ -95,6 +95,9 @@ void Scene::update(int deltaTime) {
 			}
 		}
 	}
+
+	// Remove null pointers to avoid memory leaks
+	entityArray.resize(std::remove(entityArray.begin(), entityArray.end(), nullptr) - entityArray.begin()); 
 }
 
 void Scene::render() {
@@ -158,4 +161,6 @@ void Scene::initShaders() {
 }
 
 
-
+void Scene::addEntity(NonPlayerEntity* entity) {
+	entityArray.push_back(entity);
+}

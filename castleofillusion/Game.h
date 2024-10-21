@@ -17,19 +17,19 @@ class Game {
 
 private:
 	Game() {}
-	
+
 public:
-	static Game &instance()
+	static Game& instance()
 	{
 		static Game G;
-	
+
 		return G;
 	}
-	
+
 	void init();
 	bool update(int deltaTime);
 	void render();
-	
+
 	// Input callback methods
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -38,6 +38,8 @@ public:
 	void mouseRelease(int button);
 
 	bool getKey(int key) const;
+
+	Scene* getScene() { return &scene; }
 
 private:
 	bool bPlay; // Continue to play game?

@@ -15,6 +15,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FlowerEnemy.h" />
+    <ClInclude Include="FlowerProjectile.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Cake.h" />
     <ClInclude Include="NonPlayerEntity.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Cake.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FlowerEnemy.cpp" />
+    <ClCompile Include="FlowerProjectile.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NonPlayerEntity.cpp" />

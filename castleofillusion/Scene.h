@@ -28,6 +28,10 @@ public:
 	void update(int deltaTime);
 	void render();
 
+	void addEntity(NonPlayerEntity* entity);
+
+	ShaderProgram& getShaderProgram() { return texProgram; }
+
 private:
 	void initShaders();
 

@@ -42,6 +42,3 @@ void Game::mouseRelease(int button) {
 bool Game::getKey(int key) const {
 	return keys[key];
 }
-
-
-

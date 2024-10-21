@@ -21,6 +21,8 @@
 #define INIT_ENEMY_X_TILES 8
 #define INIT_ENEMY_Y_TILES 8
 
+#define REMOVE_AT 60
+
 Scene::Scene() {
 	map = NULL;
 	player = NULL;
@@ -67,6 +69,12 @@ void Scene::init() {
 	entityArray[2]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 1) * map->getTileSize(), (13) * map->getTileSize()));
 	entityArray[2]->setTileMap(map);
 
+	entityArray.push_back(new FlowerEnemy());
+	entityArray[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[3]->setPlayer(player);
+	entityArray[3]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[3]->setTileMap(map);
+
 	// View at player position
 	glm::vec2 pos = player->getPosition();
 
@@ -88,6 +96,13 @@ void Scene::update(int deltaTime) {
 				entityArray[i] = nullptr;
 			}
 		}
+	}
+
+	if (nextRemove++ >= REMOVE_AT) {
+		nextRemove = 0;
+
+		// Remove null pointers to avoid memory leaks
+		entityArray.erase(std::remove(entityArray.begin(), entityArray.end(), nullptr), entityArray.end());
 	}
 }
 
@@ -152,4 +167,6 @@ void Scene::initShaders() {
 }
 
 
-
+void Scene::addEntity(NonPlayerEntity* entity) {
+	entityArray.push_back(entity);
+}

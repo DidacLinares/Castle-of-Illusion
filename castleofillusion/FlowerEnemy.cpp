@@ -29,7 +29,7 @@ void FlowerEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgra
 	timeSinceLastAttack = ATTACK_COOLDOWN;
 	spritesheet.loadFromFile("images/FlowerEnemy.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(16, 24), glm::vec2(OFFSET_X, 1), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(4);
+	sprite->setNumberAnimations(6);
 
 	sprite->setAnimationSpeed(DUMMY, 1);
 	sprite->addKeyframe(DUMMY, glm::vec2(0.f, 0.f));
@@ -93,7 +93,6 @@ void FlowerEnemy::update(int deltaTime) {
 			}
 
 			timeSinceLastAttack = 0;
-			cout << "Flowe pos " << pos.x << " " << pos.y << endl;
 
 			// Crear proyectil
 			for (int i = 0; i < 2; ++i) {
@@ -104,14 +103,13 @@ void FlowerEnemy::update(int deltaTime) {
 				// Position centered on top of the enemy
 				projectile->setPosition(glm::vec2(int(pos.x - 4), int(pos.y - 12)));
 				
-				cout << "Projectile pos " << projectile->getPosition().x << " " << projectile->getPosition().y << endl;
 				projectile->setDirection(i == 0);
 				Game::instance().getScene()->addEntity(projectile);
 			}
 		}
 		else {
 			if (timeSinceLastAttack >= 1000 && attacking) {
-				sprite->changeAnimation(STAND);
+				//sprite->changeAnimation(STAND);
 				attacking = false;
 			}
 		}

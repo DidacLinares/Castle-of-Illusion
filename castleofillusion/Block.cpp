@@ -109,8 +109,6 @@ void Block::update(int deltaTime) {
 			throwed = true;
 			transition = false;
 			pickedUp = false;
-			jumpAngle = 0;
-			startY = pos.y;
 		}
 	} 
 	if (!pickedUp && !throwed && !falling) {

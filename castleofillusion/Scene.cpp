@@ -113,8 +113,7 @@ void Scene::render() {
 	// Center the camera at player position
 	glm::vec2 pos = player->getPosition();
 	int zoom = 8;
-	//projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / zoom, pos.x + float(SCREEN_WIDTH) / zoom, pos.y + float(SCREEN_HEIGHT - 300) / zoom, pos.y - float(SCREEN_HEIGHT - 300) / zoom); // UI
-	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / zoom, pos.x + float(SCREEN_WIDTH) / zoom, pos.y + float(SCREEN_HEIGHT) / zoom, pos.y - float(SCREEN_HEIGHT) / zoom);
+	projection = glm::ortho(pos.x - float(SCREEN_WIDTH) / zoom, pos.x + float(SCREEN_WIDTH) / zoom, pos.y + float(SCREEN_HEIGHT) / zoom, pos.y - float(SCREEN_HEIGHT - 200) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -134,6 +133,18 @@ void Scene::render() {
 			entityArray[i]->render();
 		}
 	}
+	glViewport(0, 0, 1280, 200);
+	texProgram.use();
+	projection = glm::ortho(0.f,float(SCREEN_WIDTH), float(200), 0.f);
+	texProgram.setUniformMatrix4f("projection", projection);
+	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::mat4(1.0f);
+	texProgram.setUniformMatrix4f("modelview", modelview);
+	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+	layer_0->render();
+
+	glViewport(0, 200, 1280, 720 - 200);
 }
 
 void Scene::initShaders() {

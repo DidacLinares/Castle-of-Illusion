@@ -22,7 +22,8 @@
 #define BLINK_TIME 200
 
 enum PlayerAnims {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, CROUCH_LEFT, CROUCH_RIGHT, GROUND_POUND_LEFT, GROUND_POUND_RIGHT, JUMP_LEFT, JUMP_RIGHT, FALL_LEFT, FALL_RIGHT, BREAKING_LEFT, BREAKING_RIGHT, BALANCE_LEFT, BALANCE_RIGHT
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, CROUCH_LEFT, CROUCH_RIGHT, GROUND_POUND_LEFT, GROUND_POUND_RIGHT, JUMP_LEFT, JUMP_RIGHT, FALL_LEFT, FALL_RIGHT, BREAKING_LEFT, BREAKING_RIGHT, BALANCE_LEFT, BALANCE_RIGHT,
+	PREPARED_TO_GRAB_LEFT, PREPARED_TO_GRAB_RIGHT, GRABBING_LEFT, GRABBING_RIGHT, STAND_GRABBED_LEFT, STAND_GRABBED_RIGHT, MOVE_GRABBED_LEFT, MOVE_GRABBED_RIGHT
 };
 
 
@@ -37,7 +38,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(25, 38), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(16);
+	sprite->setNumberAnimations(24);
 
 	sprite->setAnimationSpeed(STAND_LEFT, 4);
 	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.f));
@@ -107,6 +108,42 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	sprite->addKeyframe(BALANCE_RIGHT, glm::vec2(15 * OFFSET_X, 0.f));
 	sprite->addKeyframe(BALANCE_RIGHT, glm::vec2(15 * OFFSET_X, OFFSET_Y));
 		
+
+	sprite->setAnimationSpeed(PREPARED_TO_GRAB_LEFT, 1);
+	sprite->addKeyframe(PREPARED_TO_GRAB_LEFT, glm::vec2(0.f, 2*OFFSET_Y));
+
+	sprite->setAnimationSpeed(PREPARED_TO_GRAB_RIGHT, 1);
+	sprite->addKeyframe(PREPARED_TO_GRAB_RIGHT, glm::vec2(0.f, 2*OFFSET_Y));
+
+	sprite->setAnimationSpeed(GRABBING_LEFT, 1);
+	sprite->addKeyframe(GRABBING_RIGHT, glm::vec2(4 * OFFSET_X, 2 * OFFSET_Y));
+
+	sprite->setAnimationSpeed(GRABBING_RIGHT, 1);
+	sprite->addKeyframe(GRABBING_RIGHT, glm::vec2(4 * OFFSET_X, 2 * OFFSET_Y));
+
+	sprite->setAnimationSpeed(STAND_GRABBED_LEFT, 1);
+	sprite->addKeyframe(STAND_GRABBED_LEFT, glm::vec2(4 *OFFSET_X, 2 * OFFSET_Y));
+
+	sprite->setAnimationSpeed(STAND_GRABBED_RIGHT, 1);
+	sprite->addKeyframe(STAND_GRABBED_RIGHT, glm::vec2(4 * OFFSET_X, 2 * OFFSET_Y));
+
+	sprite->setAnimationSpeed(MOVE_GRABBED_LEFT, 6);
+	sprite->addKeyframe(MOVE_GRABBED_LEFT, glm::vec2(0, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_LEFT, glm::vec2(1 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_LEFT, glm::vec2(2 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_LEFT, glm::vec2(3 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_LEFT, glm::vec2(4 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_LEFT, glm::vec2(5 * OFFSET_X, 3 * OFFSET_Y));
+
+	sprite->setAnimationSpeed(MOVE_GRABBED_RIGHT, 6);
+	sprite->addKeyframe(MOVE_GRABBED_RIGHT, glm::vec2(0, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_RIGHT, glm::vec2(1 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_RIGHT, glm::vec2(2 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_RIGHT, glm::vec2(3 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_RIGHT, glm::vec2(4 * OFFSET_X, 3 * OFFSET_Y));
+	sprite->addKeyframe(MOVE_GRABBED_RIGHT, glm::vec2(5 * OFFSET_X, 3 * OFFSET_Y));
+
+
 	sprite->changeAnimation(STAND_RIGHT);
 	tileMapDispl = glm::vec2(tileMapPos);
 	hitbox_x = 20;
@@ -176,13 +213,15 @@ void Player::update(int deltaTime) {
 		}
 	}
 	else if(Game::instance().getKey(GLFW_KEY_A) && !crouching) {
-		if (sprite->animation() != MOVE_LEFT && sprite->animation() != GROUND_POUND_LEFT && sprite->animation() != JUMP_LEFT && sprite->animation() != FALL_LEFT && !groundpounding) sprite->changeAnimation(MOVE_LEFT);
+		if (object && sprite->animation() != MOVE_GRABBED_LEFT) sprite->changeAnimation(MOVE_GRABBED_LEFT);
+		else if (sprite->animation() != MOVE_LEFT && sprite->animation() != GROUND_POUND_LEFT && sprite->animation() != JUMP_LEFT && sprite->animation() != FALL_LEFT && !groundpounding) sprite->changeAnimation(MOVE_LEFT);
 		speedX -= ACCELERATION * deltaTime;
 		if (speedX <= -MAX_SPEED) speedX = -MAX_SPEED;
 		pos.x += speedX;
 	}
 	else if (Game::instance().getKey(GLFW_KEY_D) && !crouching) {
-		if (sprite->animation() != MOVE_RIGHT && sprite->animation() != GROUND_POUND_RIGHT && sprite->animation() != JUMP_RIGHT && sprite->animation() != FALL_RIGHT && !groundpounding) sprite->changeAnimation(MOVE_RIGHT);
+		if (object && sprite->animation() != MOVE_GRABBED_RIGHT) sprite->changeAnimation(MOVE_GRABBED_RIGHT);
+		else if (sprite->animation() != MOVE_RIGHT && sprite->animation() != GROUND_POUND_RIGHT && sprite->animation() != JUMP_RIGHT && sprite->animation() != FALL_RIGHT && !groundpounding) sprite->changeAnimation(MOVE_RIGHT);
 		speedX += ACCELERATION * deltaTime;
 		if (speedX >= MAX_SPEED) speedX = MAX_SPEED;
 		pos.x += speedX;
@@ -296,6 +335,18 @@ void Player::update(int deltaTime) {
 			invulnerable = false;
 		}
 	}
+	if (object) {
+		switch (sprite->animation()) {
+		case STAND_LEFT:
+			sprite->changeAnimation(STAND_GRABBED_LEFT);
+			break;
+		case STAND_RIGHT:
+			sprite->changeAnimation(STAND_GRABBED_RIGHT);
+			break;
+		default:
+			break;
+		}
+	}
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
 
@@ -371,4 +422,20 @@ bool Player::checkCollision(glm::vec4 hitboxentity) {
 
 void Player::setSoundEngine(irrklang::ISoundEngine* soundEngine) {
 	this->soundEngine = soundEngine;
+}
+
+void Player::grabAnimation() {
+	if (movingLeft()) sprite->changeAnimation(PREPARED_TO_GRAB_LEFT);
+	else sprite->changeAnimation(PREPARED_TO_GRAB_RIGHT);
+}
+
+void Player::setObject(bool object) {
+	this->object = object;
+}
+
+bool Player::getObject() {
+	return object;
+}
+bool Player::moving() {
+	return speedX != 0;
 }

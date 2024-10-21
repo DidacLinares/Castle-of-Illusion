@@ -4,6 +4,7 @@
 
 #define OFFSET_X 0.125
 #define OFFSET_Y 0.5
+#define JUMP_ANGLE_STEP 4
 
 #define HITBOX_X 16
 #define HITBOX_Y 16
@@ -32,60 +33,104 @@ void Block::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 }
 
 void Block::update(int deltaTime) {
-	pos.y += 4;
-	map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
-	if (Game::instance().getKey(GLFW_KEY_F) && !transition) {
-		transition = true;
-		Game::instance().keyReleased(GLFW_KEY_F);
-	}
-	if (transition && !pickedUp) {
-		transition = false;
-		if (map->setTileAsBlock(tileX, tileY, 0)) {
-			pickedUp = true;
-		};
-	}
-	if (pickedUp && !falling) {
-		pos = player->getPosition();
+	if (throwed) {
+		pos.y += 1;
+		map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
+		if (left) {
+			pos.x -= 4;
+			if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
+				throwed = false;
+				tileX = pos.x / tileSize;
+				tileY = pos.y / tileSize;
+				pos.x = tileX * tileSize;
+				pos.y = tileY * tileSize;
+				falling = true;
+			}
+		}
+		else {
+			pos.x += 4;
+			if (map->collisionMoveRight(pos, glm::vec2(hitbox_x, hitbox_y))) {
+				throwed = false;
+				tileX = pos.x / tileSize;
+				tileY = pos.y / tileSize;
+				pos.x = tileX * tileSize;
+				pos.y = tileY * tileSize;
+				falling = true;
+			}
+		}
+		sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
+		return;
 	}
 	if (falling) {
 		pos.y += 4;
 		if (map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y)) {
 			tileY = pos.y / tileSize;
+			pos.y = tileY * tileSize;
 			if (map->setTileAsBlock(tileX, tileY, 1000)) {
 				pickedUp = false;
 				falling = false;
 			}
 		}
 	}
-	if (transition && pickedUp) {
-		transition = false;
+	if (pickedUp && !falling && !transition) {
 		pos = player->getPosition();
-		int tileXtmp = pos.x / tileSize;
-		int tileYtmp = pos.y / tileSize;
-		tileX = tileXtmp + 1; // Cambiar a colocar cap a on mira (if movingLeft -> -1 i no + 1)
-		tileY = tileYtmp + 1;
-		pos.x = tileX * tileSize;
-		pos.y = tileY * tileSize;
-		pos.y += 4;
-		bool fallingtmp = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
-		if (fallingtmp && map->isTileValidAsBlock(tileX, tileY)) {
-			falling = true;
+		if (Game::instance().getKey(GLFW_KEY_F) && !transition) {
+			transition = true;
+			player->setObject(false);
+			Game::instance().keyReleased(GLFW_KEY_F);
 		}
-		else if (!fallingtmp) {
-			if (map->setTileAsBlock(tileX, tileY, 1000)) {
-				pickedUp = false;
-				player->setPosition(glm::vec2(tileXtmp * tileSize, tileYtmp * tileSize));
+	}
+	if (transition && pickedUp) {
+		if (!player->moving()) {
+			transition = false;
+			pos = player->getPosition();
+			int tileXtmp = pos.x / tileSize;
+			int tileYtmp = pos.y / tileSize;
+			if (player->movingLeft()) tileX = tileXtmp - 1;
+			else tileX = tileXtmp + 1;
+			tileY = tileYtmp + 1;
+			pos.x = tileX * tileSize;
+			pos.y = tileY * tileSize;
+			pos.y += 4;
+			bool fallingtmp = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
+			if (fallingtmp && map->isTileValidAsBlock(tileX, tileY)) {
+				falling = true;
+			}
+			else if (!fallingtmp) {
+				if (map->setTileAsBlock(tileX, tileY, 1000)) {
+					pickedUp = false;
+					player->setPosition(glm::vec2(tileXtmp * tileSize, tileYtmp * tileSize));
+				}
+				else pos = player->getPosition();
 			}
 		}
+		else {
+			left = player->movingLeft();
+			throwed = true;
+			transition = false;
+			pickedUp = false;
+			jumpAngle = 0;
+			startY = pos.y;
+		}
 	} 
-	if (!pickedUp) {
+	if (!pickedUp && !throwed && !falling) {
 		tileX = pos.x / tileSize;
 		tileY = pos.y / tileSize;
 		map->setTileAsBlock(tileX, tileY,1000);
+		if (player->checkCollision(glm::vec4(pos.x - 1,pos.y,hitbox_x + 2,hitbox_y))) {
+			player->grabAnimation();
+			if (Game::instance().getKey(GLFW_KEY_F)) {
+				if (map->setTileAsBlock(tileX, tileY, 0)) {
+					pickedUp = true;
+					player->setObject(true);
+					Game::instance().keyReleased(GLFW_KEY_F);
+				}
+			}
+		}
     }
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
 void Block::onEntityHit() {
-	
+		
 }

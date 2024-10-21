@@ -13,7 +13,7 @@ public:
 	virtual void update(int deltaTime);
 	virtual void onEntityHit();	
 private:
-	bool pickedUp = false, transition = false, falling = false;
+	bool pickedUp = false, transition = false, falling = false,throwed = false,left = false;
 	int tileX, tileY,tileSize;
 
 };

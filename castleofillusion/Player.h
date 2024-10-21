@@ -29,6 +29,10 @@ public:
 	bool isGodMode();
 	bool checkCollision(glm::vec4 hitboxentity);
 	void setSoundEngine(irrklang::ISoundEngine* soundEngine);
+	void grabAnimation();
+	bool getObject();
+	bool moving();
+	void setObject(bool object);
 
 private:
 	irrklang::ISoundEngine* soundEngine;
@@ -37,7 +41,7 @@ private:
 	int jumpAngle;
 	float speedX,speedY, startY;
 	int max = 800;
-	bool godMode = false;
+	bool godMode = false,object = false;
 };
 
 

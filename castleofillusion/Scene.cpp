@@ -62,10 +62,10 @@ void Scene::init() {
 	entityArray[1]->setTileMap(map);
 
 	entityArray.push_back(new Block());
+	entityArray[2]->setTileMap(map);
 	entityArray[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[2]->setPlayer(player);
 	entityArray[2]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 1) * map->getTileSize(), (13) * map->getTileSize()));
-	entityArray[2]->setTileMap(map);
 
 	// View at player position
 	glm::vec2 pos = player->getPosition();

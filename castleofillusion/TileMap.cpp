@@ -226,8 +226,19 @@ void TileMap::raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vect
 	}
 }
 
-void TileMap::setTileAsBlock(int tileX, int tileY,int value) {
-	map[tileY * mapSize.x + tileX] = value;
+bool TileMap::setTileAsBlock(int tileX, int tileY,int value) {
+	if (tileX >= 0 && tileX < mapSize.x && tileY >= 0 && tileY < mapSize.y && (map[tileY * mapSize.x + tileX] == 0 || map[tileY * mapSize.x + tileX] == 1000)) {
+		map[tileY * mapSize.x + tileX] = value;
+		return true;
+	}
+	return false;
+}
+
+bool TileMap::isTileValidAsBlock(int tileX, int tileY) {
+	if (tileX >= 0 && tileX < mapSize.x && tileY >= 0 && tileY < mapSize.y && (map[tileY * mapSize.x + tileX] == 0 || map[tileY * mapSize.x + tileX] == 1000)) {
+		return true;
+	}
+	return false;
 }
 
 

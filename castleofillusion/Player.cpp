@@ -387,7 +387,7 @@ bool Player::isHit() {
 	return hit;
 }
 
-void Player::onEntityHit() {
+void Player::onEntityHit(bool isPlayer) {
 	if (isGodMode()) return;
 	cout << "Lives before: " << lives<< endl;
 

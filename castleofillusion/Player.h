@@ -22,7 +22,7 @@ public:
 	bool movingLeft();
 	bool isHit();
 
-	void onEntityHit();
+	virtual void onEntityHit(bool isPlayer = true);
 	void checkGroundCollision();
 
 	void setGodMode(bool godMode);

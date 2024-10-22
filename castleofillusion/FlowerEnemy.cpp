@@ -144,8 +144,8 @@ void FlowerEnemy::update(int deltaTime) {
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
 
-void FlowerEnemy::onEntityHit() {
-	if (player->isPlayerGroundPounding()) {
+void FlowerEnemy::onEntityHit(bool isPlayer) {
+	if (player->isPlayerGroundPounding() || !isPlayer) {
 		dying = true;
 	}
 	else {

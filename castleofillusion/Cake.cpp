@@ -32,7 +32,7 @@ void Cake::update(int deltaTime) {
 	}
 }
 
-void Cake::onEntityHit() {
+void Cake::onEntityHit(bool IsPlayer) {
 	int playerLives = player->getLives();
 	if (playerLives < 3) {
 		player->setLives(++playerLives);

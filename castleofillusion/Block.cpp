@@ -58,6 +58,15 @@ void Block::update(int deltaTime) {
 				falling = true;
 			}
 		}
+		entities = Game::instance().getScene()->getEnemies();
+		for (int i = 0; i < entities.size(); ++i) {
+			if (entities[i] != nullptr && entities[i] != this) {
+				if (checkCollision(entities[i]->getCollisionBox())) {
+					entities[i]->onEntityHit(false);
+					onEntityHit();
+				};
+			}
+		}
 		sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 		return;
 	}
@@ -129,6 +138,14 @@ void Block::update(int deltaTime) {
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
-void Block::onEntityHit() {
+void Block::onEntityHit(bool IsPlayer) {
 		
+}
+
+bool Block::checkCollision(glm::vec4 hitboxentity) {
+	glm::vec4 hitbox = getCollisionBox();
+	return (hitbox.x < hitboxentity.x + hitboxentity.z && // hitboxplayer.left < hitboxenemy.right
+		hitbox.x + hitbox.z > hitboxentity.x && // hitboxplayer.right > hitboxenemy.left
+		hitbox.y < hitboxentity.y + hitboxentity.w && // hitboxplayer.top < hitboxenemy.bottom
+		hitbox.y + hitbox.w > hitboxentity.y);  // hitboxplayer.bottom > hitboxenemy.top
 }

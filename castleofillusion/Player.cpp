@@ -439,3 +439,16 @@ bool Player::getObject() {
 bool Player::moving() {
 	return speedX != 0;
 }
+
+int Player::getLives() {
+	return lives;
+}
+
+
+int Player::getTries() {
+	return tries;
+}
+
+int Player::getScore() {
+	return score;
+}

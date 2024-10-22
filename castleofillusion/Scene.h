@@ -27,9 +27,13 @@ public:
 	void init();
 	void update(int deltaTime);
 	void render();
+	void renderInterface();
 
 	void addEntity(NonPlayerEntity* entity);
+	void initNumbers();
+	void initDummies();
 
+	std::vector<NonPlayerEntity*>& getEnemies();
 	ShaderProgram& getShaderProgram() { return texProgram; }
 
 private:
@@ -43,11 +47,18 @@ private:
 	Player* player;
 	irrklang::ISoundEngine* soundEngine;
 	std::vector<NonPlayerEntity*> entityArray;
+
+	std::vector<int> numberMaping;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
 	glm::mat4 view;
-
+	Sprite* numberSprite;
+	Texture spritesheetNumbers;
+	Sprite* interfaceBackgroundSprite;
+	Texture spritesheetinterfaceBackground;
+	Sprite* starSprite;
+	Texture spritesheetStar;
 	int nextRemove = 0;
 };
 

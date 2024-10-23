@@ -44,7 +44,7 @@ private:
 	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY;
-	int tries = 3,score = 0;
+	int tries = 3,score = 123456;
 	bool godMode = false,object = false;
 };
 

@@ -30,14 +30,15 @@ public:
 	void renderInterface();
 
 	void addEntity(NonPlayerEntity* entity);
-	void initNumbers();
-	void initDummies();
 
 	std::vector<NonPlayerEntity*>& getEnemies();
 	ShaderProgram& getShaderProgram() { return texProgram; }
 
 private:
 	void initShaders();
+	void initInterface();
+	void initNumbers();
+	void initDummies();
 
 private:
 	TileMap* map;
@@ -59,7 +60,7 @@ private:
 	Texture spritesheetinterfaceBackground;
 	Sprite* starSprite;
 	Texture spritesheetStar;
-	int nextRemove = 0;
+	int nextRemove = 0,time = 300;
 };
 
 

@@ -253,12 +253,12 @@ void Player::update(int deltaTime) {
 
 	if (map->collisionMoveRight(pos,glm::vec2(hitbox_x,hitbox_y))) {
 		//pos.x -= speedX;
-		sprite->changeAnimation(STAND_RIGHT);
+		if(sprite->animation() != STAND_RIGHT) sprite->changeAnimation(STAND_RIGHT);
 		speedX = 0;
 	}
 	if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
 		//pos.x -= speedX;
-		sprite->changeAnimation(STAND_LEFT);
+		if (sprite->animation() != STAND_LEFT) sprite->changeAnimation(STAND_LEFT);
 		speedX = 0;
 	}
 	vector<bool> raycast(3,false);
@@ -329,8 +329,6 @@ void Player::update(int deltaTime) {
 
 	if (invulnerable) {
 		invulnerableTimeLeft -= deltaTime;
-		/*cout << "Invulnerable time left: " << invulnerableTimeLeft << endl;
-		cout << "Delta time: " << deltaTime << endl; */
 		if (invulnerableTimeLeft <= 0.0f) {
 			invulnerable = false;
 		}

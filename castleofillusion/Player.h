@@ -42,9 +42,9 @@ public:
 private:
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound; 
-	bool bJumping,falling, crouching, groundpounding, hit;
+	bool bJumping,falling,shortenedJump, crouching, groundpounding, hit;
 	int jumpAngle;
-	float speedX,speedY, startY;
+	float speedX,speedY, startY,maxY;
 	int tries = 3,score = 0;
 	bool godMode = false,object = false;
 };

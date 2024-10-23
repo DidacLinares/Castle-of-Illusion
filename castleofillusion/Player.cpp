@@ -33,6 +33,7 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	crouching = false;
 	groundpounding = false;
 	hit = false;
+	shortenedJump = false;
 	speedX = 0;
 	lives = 3;
 	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
@@ -171,7 +172,7 @@ void Player::update(int deltaTime) {
 	}
 	crouching = false;
 	if (Game::instance().getKey(GLFW_KEY_S)) {
-		if (bJumping || falling) {
+		if (falling) {
 			if (movingLeft()) {
 				sprite->changeAnimation(GROUND_POUND_LEFT);
 			}
@@ -180,7 +181,7 @@ void Player::update(int deltaTime) {
 			}
 			groundpounding = true;
 		}
-		else {
+		else if(!bJumping) {
 			if (movingLeft()) {
 				sprite->changeAnimation(CROUCH_LEFT);
 			}
@@ -303,14 +304,24 @@ void Player::update(int deltaTime) {
 		
 	if (bJumping) {
 		jumpAngle += JUMP_ANGLE_STEP;
+		if (!Game::instance().getKey(GLFW_KEY_W) && !falling && startY - pos.y > 40 && jumpAngle < 90) {
+			falling = true;
+			shortenedJump = true;
+			maxY = startY - pos.y;
+			jumpAngle = 92;
+		}
+		//if (groundpounding) jumpAngle += 1;
 		if (jumpAngle == 180) {
 			bJumping = false;
 			pos.y = startY;
 		}
 		else {
-			pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+
+			if(!shortenedJump) pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+			else pos.y = int(startY - maxY * sin(3.14159f * jumpAngle / 180.f));
 			if (jumpAngle > 90) {
 				bJumping = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
+				falling = true;
 				if (!groundpounding && sprite->animation() != GROUND_POUND_LEFT && movingLeft()) sprite->changeAnimation(FALL_LEFT);
 				else if (!groundpounding && sprite->animation() != GROUND_POUND_RIGHT) sprite->changeAnimation(FALL_RIGHT);
 			}
@@ -319,12 +330,6 @@ void Player::update(int deltaTime) {
 	else {
 		pos.y += FALL_STEP;
 		checkGroundCollision();
-		if (groundpounding) {
-			pos.y += FALL_STEP;
-			checkGroundCollision();
-			pos.y += FALL_STEP;
-			checkGroundCollision();
-		}
 	}
 
 	if (invulnerable) {
@@ -352,6 +357,7 @@ void Player::checkGroundCollision() {
 	if (map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y),&pos.y)) {
 		falling = false;
 		groundpounding = false;
+		shortenedJump = false;
 		if (sprite->animation() == GROUND_POUND_LEFT || sprite->animation() == JUMP_LEFT || sprite->animation() == FALL_LEFT) sprite->changeAnimation(STAND_LEFT);
 		else if (sprite->animation() == GROUND_POUND_RIGHT || sprite->animation() == JUMP_RIGHT || sprite->animation() == FALL_RIGHT) sprite->changeAnimation(STAND_RIGHT);
 		if (Game::instance().getKey(GLFW_KEY_W)) {

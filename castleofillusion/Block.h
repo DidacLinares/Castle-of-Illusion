@@ -3,8 +3,6 @@
 
 
 #include "NonPlayerEntity.h"
-#include "Scene.h"
-
 
 class Block : public NonPlayerEntity
 {
@@ -15,7 +13,7 @@ public:
 	virtual void onEntityHit(bool IsPlayer = true);
 
 	bool checkCollision(glm::vec4 hitboxentity);
-private:
+protected:
 	bool pickedUp = false, transition = false, falling = false,throwed = false,left = false;
 	int tileX, tileY,tileSize;
 	vector<NonPlayerEntity*> entities;

@@ -450,3 +450,7 @@ int Player::getTries() {
 int Player::getScore() {
 	return score;
 }
+
+void Player::addScore(int points) {
+	score += points;
+}

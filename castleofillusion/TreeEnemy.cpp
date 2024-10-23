@@ -98,8 +98,9 @@ void TreeEnemy::update(int deltaTime) {
 }
 
 void TreeEnemy::onEntityHit(bool isPlayer) {
-	if (player->isPlayerGroundPounding() || !isPlayer) {
+	if (player->isPlayerGroundPounding() ||!isPlayer) {
 		dying = true;
+		if(isPlayer) player->addScore(10);
 	}
 	else {
 		if (player->isInvulnerable()) {

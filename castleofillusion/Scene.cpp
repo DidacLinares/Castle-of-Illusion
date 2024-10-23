@@ -69,11 +69,27 @@ void Scene::init() {
 	entityArray[2]->setPlayer(player);
 	entityArray[2]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 1) * map->getTileSize(), (13) * map->getTileSize()));
 
-	entityArray.push_back(new FlowerEnemy());
+	Chest* chest = new Chest();
+	chest->setObjectToSpawn(0);
+	entityArray.push_back(chest);
+	entityArray[3]->setTileMap(map);
 	entityArray[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[3]->setPlayer(player);
-	entityArray[3]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
-	entityArray[3]->setTileMap(map);
+	entityArray[3]->setPosition(glm::vec2((INIT_PLAYER_X_TILES - 1) * map->getTileSize(), (13) * map->getTileSize()));
+
+	chest = new Chest();
+	chest->setObjectToSpawn(1);
+	entityArray.push_back(chest);
+	entityArray[4]->setTileMap(map);
+	entityArray[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[4]->setPlayer(player);
+	entityArray[4]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 2) * map->getTileSize(), (13) * map->getTileSize()));
+
+	entityArray.push_back(new FlowerEnemy());
+	entityArray[5]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[5]->setPlayer(player);
+	entityArray[5]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[5]->setTileMap(map);
 
 	initInterface();
 	// View at player position
@@ -215,7 +231,7 @@ void Scene::renderInterface() {
 	}
 	int score = player->getScore();
 	for (int i = 0; i < 6; ++i) {
-		numberSprite->setPosition(glm::vec2(800 + i * 35, 65));
+		numberSprite->setPosition(glm::vec2(840 + i * 35, 100));
 		int n;
 		switch (i) {
 		case 5:

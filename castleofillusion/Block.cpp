@@ -45,6 +45,7 @@ void Block::update(int deltaTime) {
 				pos.x = tileX * tileSize;
 				pos.y = tileY * tileSize;
 				falling = true;
+				onEntityHit();
 			}
 		}
 		else {
@@ -56,6 +57,7 @@ void Block::update(int deltaTime) {
 				pos.x = tileX * tileSize;
 				pos.y = tileY * tileSize;
 				falling = true;
+				onEntityHit();
 			}
 		}
 		entities = Game::instance().getScene()->getEnemies();
@@ -63,6 +65,7 @@ void Block::update(int deltaTime) {
 			if (entities[i] != nullptr && entities[i] != this) {
 				if (checkCollision(entities[i]->getCollisionBox())) {
 					entities[i]->onEntityHit(false);
+					player->addScore(10);
 					onEntityHit();
 				};
 			}

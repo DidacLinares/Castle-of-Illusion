@@ -37,6 +37,7 @@ public:
 	int getLives();
 	int getTries();
 	int getScore();
+	void addScore(int points);
 
 private:
 	irrklang::ISoundEngine* soundEngine;
@@ -44,7 +45,7 @@ private:
 	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY;
-	int tries = 3,score = 123456;
+	int tries = 3,score = 0;
 	bool godMode = false,object = false;
 };
 

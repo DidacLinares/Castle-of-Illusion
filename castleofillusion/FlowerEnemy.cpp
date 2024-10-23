@@ -147,6 +147,7 @@ void FlowerEnemy::update(int deltaTime) {
 void FlowerEnemy::onEntityHit(bool isPlayer) {
 	if (player->isPlayerGroundPounding() || !isPlayer) {
 		dying = true;
+		if (isPlayer) player->addScore(10);
 	}
 	else {
 		if (player->isInvulnerable()) {

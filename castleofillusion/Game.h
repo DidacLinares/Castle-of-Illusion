@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "Scene.h"
 #include "MainScene.h"
+#include "MainMenu.h"
 
 
 #define SCREEN_WIDTH 1280
@@ -48,6 +49,7 @@ private:
 							    // we can have access at any time
 	Scene scene;
 	MainScene mainScene;
+	MainMenu mainMenu;
 
 };
 

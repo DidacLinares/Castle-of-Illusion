@@ -7,18 +7,18 @@ void Game::init() {
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	//scene.init();
-	mainScene.init();
+	mainMenu.init();
 }
 
 bool Game::update(int deltaTime) {
-	mainScene.update(deltaTime);
+	mainMenu.update(deltaTime);
 
 	return bPlay;
 }
 
 void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	mainScene.render();
+	mainMenu.render();
 }
 
 void Game::keyPressed(int key) {

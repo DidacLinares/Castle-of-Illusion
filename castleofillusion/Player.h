@@ -40,6 +40,8 @@ public:
 	void addScore(int points);
 
 private:
+	void changeAnim(int anim);
+
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound; 
 	bool bJumping,falling,shortenedJump, crouching, groundpounding, hit;

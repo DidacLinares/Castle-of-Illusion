@@ -178,14 +178,15 @@ void Scene::render() {
 	layer_1->render();
 	layer_2->render();
 	map->render();
-	player->render();
+
 	int size = entityArray.size();
 	for (int i = 0; i < size; ++i) {
 		if (entityArray[i] != nullptr) {
 			entityArray[i]->render();
 		}
 	}
-
+	
+	player->render();
 	renderInterface();
 }
 

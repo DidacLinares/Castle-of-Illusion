@@ -86,6 +86,9 @@ void Block::update(int deltaTime) {
 	}
 	if (pickedUp && !falling && !transition) {
 		pos = player->getPosition();
+		if (!player->movingLeft()) {
+			pos.x += 4;
+		}
 		if (Game::instance().getKey(GLFW_KEY_F) && !transition) {
 			transition = true;
 			player->setObject(false);
@@ -127,12 +130,13 @@ void Block::update(int deltaTime) {
 		tileX = pos.x / tileSize;
 		tileY = pos.y / tileSize;
 		map->setTileAsBlock(tileX, tileY,1000);
-		if (player->checkCollision(glm::vec4(pos.x - 1,pos.y,hitbox_x + 2,hitbox_y))) {
+		if (!player->getObject() && player->checkCollision(glm::vec4(pos.x - 1,pos.y,hitbox_x + 2,hitbox_y))) {
 			player->grabAnimation();
 			if (Game::instance().getKey(GLFW_KEY_F)) {
 				if (map->setTileAsBlock(tileX, tileY, 0)) {
 					pickedUp = true;
 					player->setObject(true);
+
 					Game::instance().keyReleased(GLFW_KEY_F);
 				}
 			}

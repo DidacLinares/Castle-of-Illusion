@@ -16,21 +16,41 @@
 
 
 MainScene::MainScene() {
-	menu = NULL;
 }
 
 MainScene::~MainScene() {
-	if (menu != NULL)
-		delete menu;
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
 }
 
 
 void MainScene::init() {
 	initShaders();
-	soundEngine = irrklang::createIrrKlangDevice();
 
-	menu = TileMap::createTileMap("levels/main_scene/main_scene.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
+	imageTexture.loadFromFile("images/main_screen.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	imageTexture.setMinFilter(GL_NEAREST);
+	imageTexture.setMagFilter(GL_NEAREST);
+
+	projection = glm::ortho(0.0f, float(SCREEN_X), float(SCREEN_Y), 0.0f);
+
+	GLfloat vertices[] = { 0.0f,  0.0f, 0.0f, 0.0f, float(SCREEN_X), 0.0f, 1.0f, 0.0f, float(SCREEN_X), float(SCREEN_Y),  1.0f, 1.0f, 0.0f, float(SCREEN_Y),  0.0f, 1.0f };
+
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+
+	glBindVertexArray(vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
 }
 
 void MainScene::update(int deltaTime) {
@@ -42,33 +62,19 @@ void MainScene::render() {
 
 	texProgram.use();
 
-	// Ajustamos la proyección al tamaño completo del viewport
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
+	// Configuración de la proyección y la vista
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
 	modelview = glm::mat4(1.0f);
-
-	// Tamaño de la portada, ajustar según el tamaño real de tu imagen
-	float imageWidth = 248.0f; // Ajusta según el ancho real de la imagen
-	float imageHeight = 192.0f; // Ajusta según el alto real de la imagen
-	
-
-	// Calculamos la traslación para centrar la imagen en el viewport
-	float xOffset = (SCREEN_WIDTH - imageWidth) / 2.0f;
-	float yOffset = (SCREEN_HEIGHT - imageHeight) / 2.0f;
-
-	// Aplicamos la traslación
-	modelview = glm::mat4(1.0f);
-	modelview = glm::translate(modelview, glm::vec3(xOffset, yOffset, 0.0f));
-	modelview = glm::scale(modelview, glm::vec3(2, 2, 1.0f));
-	modelview = glm::translate(modelview, glm::vec3(0.0f, 0.0f, 0.0f));
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
-	
+	// Bind de la textura
+	imageTexture.use();
 
-	menu->render();
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+	glBindVertexArray(0);
 }
 
 void MainScene::initShaders() {

@@ -23,15 +23,10 @@ private:
 	void initShaders();
 
 private:
-	TileMap* menu;
-
-	irrklang::ISoundEngine* soundEngine;
-
 	ShaderProgram texProgram;
-
+	Texture imageTexture;
 	glm::mat4 projection;
-	glm::mat4 view;
-
+	GLuint vao, vbo;
 };
 
 #endif // _MAIN_SCENE_INCLUDE

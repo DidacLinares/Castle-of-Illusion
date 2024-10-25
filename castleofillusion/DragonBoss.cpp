@@ -76,6 +76,12 @@ void DragonBoss::update(int deltaTime) {
 		return;
 	}
 
+	invulnerableTimeLeft -= deltaTime;
+
+	if (invulnerableTimeLeft <= 0) {
+		invulnerable = false;
+	}
+
 	float distanceToPlayer = glm::length(player->getPosition() - pos);
 
 
@@ -92,8 +98,11 @@ void DragonBoss::render() {
 
 
 void DragonBoss::onEntityHit(bool isPlayer) {
-	if (player->isPlayerGroundPounding()) {
+	if (!isPlayer) {
+		if (this->isInvulnerable()) return;
+		
 		--lives;
+		this->setInvulnerable(true);
 
 		if (lives == 0) {
 			dead = true;

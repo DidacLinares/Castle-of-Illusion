@@ -33,7 +33,7 @@ int main(void) {
 	if (!glfwInit()) return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Castle of Illusion Starring Mickey Mouse", NULL, NULL);
 
 	if (!window) {
 		glfwTerminate();

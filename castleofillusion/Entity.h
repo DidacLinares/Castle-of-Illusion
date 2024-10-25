@@ -13,10 +13,10 @@ public:
 	virtual void render();
 
 	glm::vec4 getCollisionBox();
-	virtual void onEntityHit() = 0;
+	virtual void onEntityHit(bool isPlayer = true) = 0;
 
 	void setTileMap(TileMap* tileMap);
-	virtual void setPosition(const glm::vec2& pos);
+	void setPosition(const glm::vec2& pos);
 	glm::vec2 getPosition();
 
 	void setLives(int lives);

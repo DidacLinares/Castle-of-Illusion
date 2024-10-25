@@ -13,12 +13,15 @@
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="Block.h" />
-    <ClInclude Include="DragonBoss.h" />
+    <ClInclude Include="Chest.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FlowerEnemy.h" />
     <ClInclude Include="FlowerProjectile.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Cake.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="NonPlayerEntity.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
@@ -32,12 +35,15 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Cake.cpp" />
-    <ClCompile Include="DragonBoss.cpp" />
+    <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FlowerEnemy.cpp" />
     <ClCompile Include="FlowerProjectile.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="NonPlayerEntity.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />

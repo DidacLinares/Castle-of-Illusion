@@ -22,7 +22,7 @@ public:
 	bool movingLeft();
 	bool isHit();
 
-	void onEntityHit();
+	virtual void onEntityHit(bool isPlayer = true);
 	void checkGroundCollision();
 
 	void setGodMode(bool godMode);
@@ -34,13 +34,20 @@ public:
 	bool moving();
 	void setObject(bool object);
 
+	int getLives();
+	int getTries();
+	int getScore();
+	void addScore(int points);
+
 private:
+	void changeAnim(int anim);
+
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound; 
-	bool bJumping,falling, crouching, groundpounding, hit;
+	bool bJumping,falling,shortenedJump, crouching, groundpounding, hit;
 	int jumpAngle;
-	float speedX,speedY, startY;
-	int max = 800;
+	float speedX,speedY, startY,maxY;
+	int tries = 3,score = 0;
 	bool godMode = false,object = false;
 };
 

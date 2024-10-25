@@ -5,6 +5,8 @@
 #include "Game.h"
 #include "Entity.h"
 
+#include "DragonBoss.h"
+
 
 // Mirar que fa aixo
 #define SCREEN_X 32
@@ -74,6 +76,12 @@ void Scene::init() {
 	entityArray[3]->setPlayer(player);
 	entityArray[3]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
 	entityArray[3]->setTileMap(map);
+
+	entityArray.push_back(new DragonBoss());
+	entityArray[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[4]->setPlayer(player);
+	entityArray[4]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 30) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[4]->setTileMap(map);
 
 	// View at player position
 	glm::vec2 pos = player->getPosition();

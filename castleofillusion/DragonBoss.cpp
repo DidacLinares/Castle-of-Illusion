@@ -8,7 +8,7 @@
 #define OFFSET_HEAD_X 0.33
 
 enum DragonBossBodyAnim {
-	DUMMY
+	DUMMY, BODY
 };
 
 enum DragonBossHeadAnim {
@@ -21,12 +21,19 @@ void DragonBoss::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram
 
 	spritesheet.loadFromFile("images/DragonBossBody.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(75, 110), glm::vec2(OFFSET_BODY_X, 1), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(1);
+	sprite->setNumberAnimations(2);
 
 	sprite->setAnimationSpeed(DUMMY, 1);
 	sprite->addKeyframe(DUMMY, glm::vec2(0.f, 0.f));
 
-	sprite->changeAnimation(0);
+	sprite->setAnimationSpeed(BODY, 2);
+	sprite->addKeyframe(BODY, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(BODY, glm::vec2(OFFSET_BODY_X, 0.f));
+	sprite->addKeyframe(BODY, glm::vec2(2 * OFFSET_BODY_X, 0.f));
+	sprite->addKeyframe(BODY, glm::vec2(OFFSET_BODY_X, 0.f));
+	sprite->addKeyframe(BODY, glm::vec2(0.f, 0.f));
+
+	sprite->changeAnimation(BODY);
 
 	headSpriteSheet.loadFromFile("images/DragonBossHead.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	headSprite = Sprite::createSprite(glm::ivec2(50, 32), glm::vec2(OFFSET_HEAD_X, 1), &headSpriteSheet, &shaderProgram);
@@ -51,16 +58,19 @@ void DragonBoss::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram
 	headSprite->setAnimationSpeed(HEAD_RIGHT, 1);
 	headSprite->addKeyframe(HEAD_RIGHT, glm::vec2(2 * OFFSET_HEAD_X, 0.f));
 
+	headSprite->changeAnimation(HEAD_DOWN_LEFT);
+
 	pos.x = 0;
 	pos.y = 0;
 	tileMapDispl = glm::vec2(tileMapPos);
 	hitbox_x = 75;
 	hitbox_y = 110;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
-	headSprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y - 20)));
+	headSprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
 void DragonBoss::update(int deltaTime) {
+	headSprite->update(deltaTime);
 	sprite->update(deltaTime);
 
 	if (dead) {
@@ -71,6 +81,16 @@ void DragonBoss::update(int deltaTime) {
 
 	
 }
+
+void DragonBoss::render() {
+	if (dead) {
+		return;
+	}
+
+	headSprite->render();
+	sprite->render();
+}
+
 
 void DragonBoss::onEntityHit() {
 	if (player->isPlayerGroundPounding()) {
@@ -88,4 +108,16 @@ void DragonBoss::onEntityHit() {
 	}
 
 	player->onEntityHit();
+}
+
+void DragonBoss::setPosition(const glm::vec2& pos) {
+	this->pos = pos;
+	sprite->setPosition(glm::vec2(tileMapDispl.x + pos.x, tileMapDispl.y + pos.y));
+
+	if (headSprite->animation() == HEAD_DOWN_LEFT || headSprite->animation() == HEAD_DOWN_RIGHT) {
+		headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 18, tileMapDispl.y + pos.y + 11));
+	}
+	else {
+		headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 25, tileMapDispl.y + pos.y + 11));
+	}
 }

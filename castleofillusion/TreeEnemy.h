@@ -21,7 +21,7 @@ public:
 
 private:
 	bool dying = false;
-	int deathFase = 1;
+	int deathTime = 0;
 	int deathAngle = 0;
 
 	float startX, startY = 0;

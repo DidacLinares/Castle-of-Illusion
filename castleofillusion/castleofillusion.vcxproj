@@ -18,6 +18,8 @@
     <ClInclude Include="FlowerProjectile.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Cake.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="NonPlayerEntity.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
@@ -36,6 +38,8 @@
     <ClCompile Include="FlowerProjectile.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="NonPlayerEntity.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />

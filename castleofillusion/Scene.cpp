@@ -40,10 +40,10 @@ void Scene::init() {
 	initShaders();
 	soundEngine = irrklang::createIrrKlangDevice();
 	//map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	layer_0 = TileMap::createTileMap("levels/sky_background_0.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	layer_1 = TileMap::createTileMap("levels/sky_background_1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	layer_2 = TileMap::createTileMap("levels/trees.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	map = TileMap::createTileMap("levels/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	layer_0 = TileMap::createTileMap("levels/level01/sky_background_0.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	layer_1 = TileMap::createTileMap("levels/level01/sky_background_1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	layer_2 = TileMap::createTileMap("levels/level01/trees.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/level01/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	player = new Player();
 	player->setSoundEngine(soundEngine);

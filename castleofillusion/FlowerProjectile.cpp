@@ -57,15 +57,13 @@ void FlowerProjectile::update(int deltaTime) {
 	}
 }
 
-void FlowerProjectile::onEntityHit(bool isPlayer) {
-	if (isPlayer) {
-		if (player->isInvulnerable()) {
-			return;
-		}
-		else {
-			player->onEntityHit();
-		}
-
-		dead = true;
+void FlowerProjectile::onEntityHit() {
+	if (player->isInvulnerable()) {
+		return;
 	}
+	else {
+		player->onEntityHit();
+	}
+
+	dead = true;
 }

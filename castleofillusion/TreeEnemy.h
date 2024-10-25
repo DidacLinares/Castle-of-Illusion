@@ -17,7 +17,7 @@ public:
 	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	virtual void update(int deltaTime);
 
-	virtual void onEntityHit(bool player = true);
+	void onEntityHit();
 
 private:
 	bool dying = false;

@@ -13,7 +13,7 @@ public:
 	virtual void render();
 
 	glm::vec4 getCollisionBox();
-	virtual void onEntityHit(bool isPlayer = true) = 0;
+	virtual void onEntityHit() = 0;
 
 	void setTileMap(TileMap* tileMap);
 	virtual void setPosition(const glm::vec2& pos);

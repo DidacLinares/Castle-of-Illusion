@@ -45,7 +45,6 @@ void Block::update(int deltaTime) {
 				pos.x = tileX * tileSize;
 				pos.y = tileY * tileSize;
 				falling = true;
-				onEntityHit();
 			}
 		}
 		else {
@@ -57,17 +56,6 @@ void Block::update(int deltaTime) {
 				pos.x = tileX * tileSize;
 				pos.y = tileY * tileSize;
 				falling = true;
-				onEntityHit();
-			}
-		}
-		entities = Game::instance().getScene()->getEnemies();
-		for (int i = 0; i < entities.size(); ++i) {
-			if (entities[i] != nullptr && entities[i] != this) {
-				if (checkCollision(entities[i]->getCollisionBox())) {
-					entities[i]->onEntityHit(false);
-					player->addScore(10);
-					onEntityHit();
-				};
 			}
 		}
 		sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
@@ -86,9 +74,6 @@ void Block::update(int deltaTime) {
 	}
 	if (pickedUp && !falling && !transition) {
 		pos = player->getPosition();
-		if (!player->movingLeft()) {
-			pos.x += 4;
-		}
 		if (Game::instance().getKey(GLFW_KEY_F) && !transition) {
 			transition = true;
 			player->setObject(false);
@@ -130,13 +115,12 @@ void Block::update(int deltaTime) {
 		tileX = pos.x / tileSize;
 		tileY = pos.y / tileSize;
 		map->setTileAsBlock(tileX, tileY,1000);
-		if (!player->getObject() && player->checkCollision(glm::vec4(pos.x - 1,pos.y,hitbox_x + 2,hitbox_y))) {
+		if (player->checkCollision(glm::vec4(pos.x - 1,pos.y,hitbox_x + 2,hitbox_y))) {
 			player->grabAnimation();
 			if (Game::instance().getKey(GLFW_KEY_F)) {
 				if (map->setTileAsBlock(tileX, tileY, 0)) {
 					pickedUp = true;
 					player->setObject(true);
-
 					Game::instance().keyReleased(GLFW_KEY_F);
 				}
 			}
@@ -145,14 +129,6 @@ void Block::update(int deltaTime) {
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
-void Block::onEntityHit(bool IsPlayer) {
+void Block::onEntityHit() {
 		
-}
-
-bool Block::checkCollision(glm::vec4 hitboxentity) {
-	glm::vec4 hitbox = getCollisionBox();
-	return (hitbox.x < hitboxentity.x + hitboxentity.z && // hitboxplayer.left < hitboxenemy.right
-		hitbox.x + hitbox.z > hitboxentity.x && // hitboxplayer.right > hitboxenemy.left
-		hitbox.y < hitboxentity.y + hitboxentity.w && // hitboxplayer.top < hitboxenemy.bottom
-		hitbox.y + hitbox.w > hitboxentity.y);  // hitboxplayer.bottom > hitboxenemy.top
 }

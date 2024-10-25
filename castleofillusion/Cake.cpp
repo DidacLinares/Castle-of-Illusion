@@ -27,15 +27,12 @@ void Cake::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 }
 
 void Cake::update(int deltaTime) {
-	pos.y += 4;
-	map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
 	if (player->checkCollision(getCollisionBox())) {
 		onEntityHit();
 	}
-	setPosition(pos);
 }
 
-void Cake::onEntityHit(bool IsPlayer) {
+void Cake::onEntityHit() {
 	int playerLives = player->getLives();
 	if (playerLives < 3) {
 		player->setLives(++playerLives);

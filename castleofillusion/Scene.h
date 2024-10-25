@@ -12,7 +12,7 @@
 #include "Cake.h"
 #include "Block.h"
 #include "FlowerEnemy.h"
-
+#include "Chest.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -27,13 +27,18 @@ public:
 	void init();
 	void update(int deltaTime);
 	void render();
+	void renderInterface();
 
 	void addEntity(NonPlayerEntity* entity);
 
+	std::vector<NonPlayerEntity*>& getEnemies();
 	ShaderProgram& getShaderProgram() { return texProgram; }
 
 private:
 	void initShaders();
+	void initInterface();
+	void initNumbers();
+	void initDummies();
 
 private:
 	TileMap* map;
@@ -43,12 +48,19 @@ private:
 	Player* player;
 	irrklang::ISoundEngine* soundEngine;
 	std::vector<NonPlayerEntity*> entityArray;
+
+	std::vector<int> numberMaping;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
 	glm::mat4 view;
-
-	int nextRemove = 0;
+	Sprite* numberSprite;
+	Texture spritesheetNumbers;
+	Sprite* interfaceBackgroundSprite;
+	Texture spritesheetinterfaceBackground;
+	Sprite* starSprite;
+	Texture spritesheetStar;
+	int nextRemove = 0,time = 300;
 };
 
 

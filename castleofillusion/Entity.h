@@ -16,7 +16,7 @@ public:
 	virtual void onEntityHit(bool isPlayer = true) = 0;
 
 	void setTileMap(TileMap* tileMap);
-	void setPosition(const glm::vec2& pos);
+	virtual void setPosition(const glm::vec2& pos);
 	glm::vec2 getPosition();
 
 	void setLives(int lives);

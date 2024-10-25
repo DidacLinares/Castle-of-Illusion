@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Game.h"
 #include "Entity.h"
+#include "DragonBoss.h"
 
 
 // Mirar que fa aixo
@@ -90,6 +91,12 @@ void Scene::init() {
 	entityArray[5]->setPlayer(player);
 	entityArray[5]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
 	entityArray[5]->setTileMap(map);
+
+	entityArray.push_back(new DragonBoss());
+	entityArray[6]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[6]->setPlayer(player);
+	entityArray[6]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 30) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[6]->setTileMap(map);
 
 	initInterface();
 	// View at player position

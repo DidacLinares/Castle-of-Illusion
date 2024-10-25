@@ -7,7 +7,7 @@ public:
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	virtual void update(int deltaTime);
 
-	void onEntityHit();
+	virtual void onEntityHit(bool isPlayer = true);
 
 	void setDirection(bool right) { goingRight = right; }
 

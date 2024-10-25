@@ -1,15 +1,15 @@
-#ifndef _CAKE_INCLUDE
-#define _CAKE_INCLUDE
+#ifndef _COIN_INCLUDE
+#define _COIN_INCLUDE
 
 #include "NonPlayerEntity.h"
 
-class Cake : public NonPlayerEntity {
+class Coin : public NonPlayerEntity {
 public:
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	virtual void update(int deltaTime);
 	virtual void onEntityHit(bool IsPlayer = true);
-	
+
 };
 
 
-#endif // _CAKE_INCLUDE
+#endif // _COIN_INCLUDE

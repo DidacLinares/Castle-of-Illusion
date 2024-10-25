@@ -1,5 +1,5 @@
-#ifndef _MAIN_SCENE_INCLUDE
-#define _MAIN_SCENE_INCLUDE
+#ifndef _TITLE_SCENE_INCLUDE
+#define _TITLE_SCENE_INCLUDE
 
 #pragma once
 #include <glm/glm.hpp>
@@ -9,11 +9,11 @@
 #include "TileMap.h"
 
 
-class MainScene {
+class TitleScreen {
 
 public:
-	MainScene();
-	~MainScene();
+	TitleScreen();
+	~TitleScreen();
 
 	void init();
 	void update(int deltaTime);
@@ -29,5 +29,5 @@ private:
 	GLuint vao, vbo;
 };
 
-#endif // _MAIN_SCENE_INCLUDE
+#endif // _TITLE_SCENE_INCLUDE
 

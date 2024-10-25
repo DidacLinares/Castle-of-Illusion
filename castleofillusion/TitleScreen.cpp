@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
-#include "MainScene.h"
+#include "TitleScreen.h"
 #include "Game.h"
 
 
@@ -15,16 +15,16 @@
 
 
 
-MainScene::MainScene() {
+TitleScreen::TitleScreen() {
 }
 
-MainScene::~MainScene() {
+TitleScreen::~TitleScreen() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 }
 
 
-void MainScene::init() {
+void TitleScreen::init() {
 	initShaders();
 
 	imageTexture.loadFromFile("images/main_screen.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -53,11 +53,16 @@ void MainScene::init() {
 	glBindVertexArray(0);
 }
 
-void MainScene::update(int deltaTime) {
+void TitleScreen::update(int deltaTime) {
+	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
+		Game::instance().changeScene(Game::MAIN_MENU);
+	}
 
+	Game::instance().keyReleased(GLFW_KEY_ENTER);
+	Game::instance().keyReleased(GLFW_KEY_SPACE);
 }
 
-void MainScene::render() {
+void TitleScreen::render() {
 	glm::mat4 modelview;
 
 	texProgram.use();
@@ -77,7 +82,7 @@ void MainScene::render() {
 	glBindVertexArray(0);
 }
 
-void MainScene::initShaders() {
+void TitleScreen::initShaders() {
 	Shader vShader, fShader;
 
 	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");

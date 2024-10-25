@@ -80,6 +80,25 @@ void MainMenu::init() {
 void MainMenu::update(int deltaTime) {
 	arrow->update(deltaTime);
 
+	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
+		
+		switch (selectedOption) {
+			case 0:
+				Game::instance().changeScene(Game::PRACTICE_LEVEL);
+				break;
+			case 1:
+				//Game::instance().changeScene(Game::INSTRUCTIONS);
+				break;
+			case 2:
+				//Game::instance().changeScene(Game::CREDITS);
+				break;
+		}
+
+		Game::instance().keyReleased(GLFW_KEY_ENTER);
+		Game::instance().keyReleased(GLFW_KEY_SPACE);
+		return;
+	}
+
 	if (selectedOption == 0) {
 		// Jugar
 		if (Game::instance().getKey(GLFW_KEY_W) || Game::instance().getKey(GLFW_KEY_UP)) {

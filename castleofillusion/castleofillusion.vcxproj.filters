@@ -17,7 +17,8 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TreeEnemy.cpp" />
-    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TreeEnemy.h" />
-    <ClInclude Include="MainScene.h" />
+    <ClInclude Include="TitleScreen.h" />
+    <ClInclude Include="MainMenu.h" />
   </ItemGroup>
 </Project>

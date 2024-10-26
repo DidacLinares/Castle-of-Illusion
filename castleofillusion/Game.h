@@ -6,6 +6,9 @@
 #include "Scene.h"
 #include "TitleScreen.h"
 #include "MainMenu.h"
+#include "CreditsScreen.h"
+#include "SelectLevelScreen.h"
+#include "EscScreen.h"
 
 
 #define SCREEN_WIDTH 1280
@@ -25,6 +28,8 @@ public:
 	enum GameStatus {
 		TITLE,
 		MAIN_MENU,
+		CREDITS_MENU,
+		SELECT_LEVEL,
 		PRACTICE_LEVEL,
 		MAIN_LEVEL,
 		PAUSE,
@@ -54,6 +59,12 @@ public:
 	Scene* getScene() { return scene; }
 
 	void changeScene(int newStatus);
+	int getSceneId() { return status; }
+
+	void setPaused(bool paused);
+	bool isPaused() { return paused; }
+
+	void close() { bPlay = false; }
 
 private:
 	void renderScene(int status);
@@ -61,13 +72,17 @@ private:
 
 private:
 	bool bPlay; // Continue to play game?
-	bool keys[GLFW_KEY_LAST+1]; // Store key states so that 
-							    // we can have access at any time
-	Scene* scene;
-	TitleScreen* titleScreen;
-	MainMenu* mainMenu;
+	bool keys[GLFW_KEY_LAST + 1]; // Store key states so that 
+	// we can have access at any time
+	Scene* scene = nullptr;
+	SelectLevelScreen* selectLevelScreen = nullptr;
+	TitleScreen* titleScreen = nullptr;
+	MainMenu* mainMenu = nullptr;
+	CreditsScreen* creditsScreen = nullptr;
+	EscScreen* escScreen = nullptr;
 
 	int status = 0;
+	bool paused = false;
 };
 
 

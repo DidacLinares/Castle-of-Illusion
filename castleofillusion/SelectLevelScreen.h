@@ -1,7 +1,8 @@
 
-#ifndef _MAIN_MENU_INCLUDE
-#define _MAIN_MENU_INCLUDE
+#ifndef _SELECT_LEVEL_INCLUDE
+#define _SELECT_LEVEL_INCLUDE
 
+#pragma once
 #include <glm/glm.hpp>
 #include <vector>
 #include <irrKlang.h>
@@ -9,11 +10,11 @@
 #include "TileMap.h"
 #include "Sprite.h"
 
-class MainMenu {
+class SelectLevelScreen {
 
 public:
-	MainMenu();
-	~MainMenu();
+	SelectLevelScreen();
+	~SelectLevelScreen();
 
 	void init();
 	void update(int deltaTime);
@@ -37,4 +38,4 @@ private:
 	GLuint vao, vbo;
 };
 
-#endif // _MAIN_MENU_INCLUDE
+#endif // _SELECT_LEVEL_INCLUDE

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
-#include "MainMenu.h"
+#include "EscScreen.h"
 #include "Game.h"
 
 
@@ -15,11 +15,10 @@
 
 
 
-MainMenu::MainMenu() {
+EscScreen::EscScreen() {
 }
 
-MainMenu::~MainMenu() {
-	if (arrow != nullptr) delete arrow;
+EscScreen::~EscScreen() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 }
@@ -28,10 +27,10 @@ enum Animation {
 	DUMMY, ARROW
 };
 
-void MainMenu::init() {
+void EscScreen::init() {
 	initShaders();
 
-	imageTexture.loadFromFile("images/main_menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	imageTexture.loadFromFile("images/esc_menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	imageTexture.setMinFilter(GL_NEAREST);
 	imageTexture.setMagFilter(GL_NEAREST);
 
@@ -78,21 +77,35 @@ void MainMenu::init() {
 	arrow->setPosition(glm::vec2(float(arrowX), float(arrowY)));
 }
 
-void MainMenu::update(int deltaTime) {
+void EscScreen::update(int deltaTime) {
 	arrow->update(deltaTime);
 
+	if (Game::instance().getKey(GLFW_KEY_ESCAPE)) {
+		Game::instance().setPaused(false);
+		Game::instance().keyReleased(GLFW_KEY_ESCAPE);
+		return;
+	}
+
 	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
-		
+
 		switch (selectedOption) {
-			case 0:
-				Game::instance().changeScene(Game::SELECT_LEVEL);
-				break;
-			case 1:
-				//Game::instance().changeScene(Game::INSTRUCTIONS);
-				break;
-			case 2:
-				Game::instance().changeScene(Game::CREDITS_MENU);
-				break;
+		case 0:
+			Game::instance().setPaused(false);
+			break;
+		case 1:
+			Game::instance().setPaused(false);
+			Game::instance().changeScene(Game::instance().getSceneId());
+			break;
+		case 2:
+			Game::instance().setPaused(false);
+
+			if (Game::instance().getSceneId() == Game::MAIN_MENU) {
+				Game::instance().close();
+			}
+			else {
+				Game::instance().changeScene(Game::MAIN_MENU);
+			}
+			break;
 		}
 
 		Game::instance().keyReleased(GLFW_KEY_ENTER);
@@ -112,8 +125,8 @@ void MainMenu::update(int deltaTime) {
 				arrow->changeAnimation(ARROW);
 			}
 		}
-		arrowX = 33;
-		arrowY = 26;
+		arrowX = 26;
+		arrowY = 25;
 	}
 	else if (selectedOption == 1) {
 		// Instruccions
@@ -127,8 +140,8 @@ void MainMenu::update(int deltaTime) {
 				arrow->changeAnimation(ARROW);
 			}
 		}
-		arrowX = 18;
-		arrowY = 38;
+		arrowX = 28;
+		arrowY = 46;
 	}
 	else {
 		// Credits
@@ -143,8 +156,8 @@ void MainMenu::update(int deltaTime) {
 			}
 		}
 
-		arrowX = 30;
-		arrowY = 52;
+		arrowX = 32;
+		arrowY = 67;
 	}
 
 	Game::instance().keyReleased(GLFW_KEY_W);
@@ -155,7 +168,11 @@ void MainMenu::update(int deltaTime) {
 	arrow->setPosition(glm::vec2(float(arrowX), float(arrowY)));
 }
 
-void MainMenu::render() {
+void EscScreen::render() {
+	if (Game::instance().getSceneId() == Game::PRACTICE_LEVEL || Game::instance().getSceneId() == Game::MAIN_LEVEL) {
+		glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	}
+
 	glm::mat4 modelview;
 
 	texProgram.use();
@@ -177,7 +194,7 @@ void MainMenu::render() {
 	arrow->render();
 }
 
-void MainMenu::initShaders() {
+void EscScreen::initShaders() {
 	Shader vShader, fShader;
 
 	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");

@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Game.h"
+#include <iostream>
 
 void Game::init() {
 	bPlay = true;
@@ -11,6 +12,23 @@ void Game::init() {
 }
 
 bool Game::update(int deltaTime) {
+	if (!paused && getKey(GLFW_KEY_ESCAPE)) {
+		setPaused(true);
+
+		keyReleased(GLFW_KEY_ESCAPE);
+	}
+
+	if (paused) {
+		if (escScreen == nullptr) {
+			escScreen = new EscScreen();
+			escScreen->init();
+		}
+
+		escScreen->update(deltaTime);
+		
+		return bPlay;
+	}
+
 	updateScene(status, deltaTime);
 
 	return bPlay;
@@ -19,12 +37,15 @@ bool Game::update(int deltaTime) {
 void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (paused) {
+		escScreen->render();
+		return;
+	}
+
 	renderScene(status);
 }
 
 void Game::keyPressed(int key) {
-	if (key == GLFW_KEY_ESCAPE) // Escape code
-		bPlay = false;
 	keys[key] = true;
 }
 
@@ -53,6 +74,12 @@ void Game::changeScene(int newStatus) {
 	case MAIN_MENU:
 		delete mainMenu;
 		break;
+	case SELECT_LEVEL:
+		delete selectLevelScreen;
+		break;
+	case CREDITS_MENU:
+		delete creditsScreen;
+		break;
 	case PRACTICE_LEVEL:
 		delete scene;
 		break;
@@ -65,9 +92,17 @@ void Game::changeScene(int newStatus) {
 			titleScreen = new TitleScreen();
 			titleScreen->init();
 			break;
+		case SELECT_LEVEL:
+			selectLevelScreen = new SelectLevelScreen();
+			selectLevelScreen->init();
+			break;
 		case MAIN_MENU:
 			mainMenu = new MainMenu();
 			mainMenu->init();
+			break;
+		case CREDITS_MENU:
+			creditsScreen = new CreditsScreen();
+			creditsScreen->init();
 			break;
 		case PRACTICE_LEVEL:
 			scene = new Scene();
@@ -81,8 +116,14 @@ void Game::renderScene(int status) {
 		case TITLE:
 			titleScreen->render();
 			break;
+		case SELECT_LEVEL:
+			selectLevelScreen->render();
+			break;
 		case MAIN_MENU:
 			mainMenu->render();
+			break;
+		case CREDITS_MENU:
+			creditsScreen->render();
 			break;
 		case PRACTICE_LEVEL:
 			scene->render();
@@ -95,11 +136,26 @@ void Game::updateScene(int status, int deltaTime) {
 	case TITLE:
 		titleScreen->update(deltaTime);
 		break;
+	case SELECT_LEVEL:
+		selectLevelScreen->update(deltaTime);
+		break;
 	case MAIN_MENU:
 		mainMenu->update(deltaTime);
+		break;
+	case CREDITS_MENU:
+		creditsScreen->update(deltaTime);
 		break;
 	case PRACTICE_LEVEL:
 		scene->update(deltaTime);
 		break;
 	}
+}
+
+void Game::setPaused(bool paused) {
+	if (!paused) {
+		delete escScreen;
+		escScreen = nullptr;
+	}
+
+	this->paused = paused;
 }

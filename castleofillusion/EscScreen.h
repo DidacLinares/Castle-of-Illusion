@@ -1,6 +1,6 @@
 
-#ifndef _MAIN_MENU_INCLUDE
-#define _MAIN_MENU_INCLUDE
+#ifndef _ESC_SCREEN_INCLUDE
+#define _ESC_SCREEN_INCLUDE
 
 #include <glm/glm.hpp>
 #include <vector>
@@ -9,11 +9,11 @@
 #include "TileMap.h"
 #include "Sprite.h"
 
-class MainMenu {
+class EscScreen {
 
 public:
-	MainMenu();
-	~MainMenu();
+	EscScreen();
+	~EscScreen();
 
 	void init();
 	void update(int deltaTime);
@@ -37,4 +37,4 @@ private:
 	GLuint vao, vbo;
 };
 
-#endif // _MAIN_MENU_INCLUDE
+#endif // _ESC_SCREEN_INCLUDE

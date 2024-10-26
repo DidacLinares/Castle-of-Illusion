@@ -1,7 +1,8 @@
 
-#ifndef _MAIN_MENU_INCLUDE
-#define _MAIN_MENU_INCLUDE
+#ifndef _CREDITS_SCREEN_INCLUDE
+#define _CREDITS_SCREEN_INCLUDE
 
+#pragma once
 #include <glm/glm.hpp>
 #include <vector>
 #include <irrKlang.h>
@@ -9,11 +10,11 @@
 #include "TileMap.h"
 #include "Sprite.h"
 
-class MainMenu {
+class CreditsScreen {
 
 public:
-	MainMenu();
-	~MainMenu();
+	CreditsScreen();
+	~CreditsScreen();
 
 	void init();
 	void update(int deltaTime);
@@ -27,11 +28,6 @@ private:
 	Texture imageTexture;
 
 	Texture arrowTexture;
-	Sprite* arrow;
-
-	int arrowX, arrowY;
-
-	int selectedOption = 0;
 
 	glm::mat4 projection;
 	GLuint vao, vbo;

@@ -5,6 +5,11 @@
 #include "Game.h"
 
 
+Entity::~Entity()
+{
+	if (sprite != nullptr) delete sprite;
+}
+
 void Entity::render() {
 	sprite->render();
 }

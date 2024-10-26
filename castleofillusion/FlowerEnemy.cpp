@@ -66,6 +66,8 @@ void FlowerEnemy::update(int deltaTime) {
 	sprite->update(deltaTime);
 
 	if (!dying) {
+		pos.y += 4;
+		map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
 		// Obtener la posición del jugador
 		glm::vec2 playerPos = player->getPosition();
 
@@ -146,8 +148,8 @@ void FlowerEnemy::update(int deltaTime) {
 
 void FlowerEnemy::onEntityHit(bool isPlayer) {
 	if (player->isPlayerGroundPounding() || !isPlayer) {
+		if (!dying) player->addScore(10);
 		dying = true;
-		if (isPlayer) player->addScore(10);
 	}
 	else {
 		if (player->isInvulnerable()) {

@@ -22,6 +22,7 @@
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="DragonBoss.cpp" />
+    <ClCompile Include="illusionGem.cpp" />
     <ClCompile Include="CreditsScreen.cpp" />
     <ClCompile Include="SelectLevelScreen.cpp" />
     <ClCompile Include="EscScreen.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="DragonBoss.h" />
+    <ClInclude Include="illusionGem.h" />
     <ClInclude Include="CreditsScreen.h" />
     <ClInclude Include="SelectLevelScreen.h" />
     <ClInclude Include="EscScreen.h" />

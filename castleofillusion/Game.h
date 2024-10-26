@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "TitleScreen.h"
 #include "MainMenu.h"
+#include "irrKlang.h"
 #include "CreditsScreen.h"
 #include "SelectLevelScreen.h"
 #include "EscScreen.h"
@@ -57,7 +58,7 @@ public:
 	bool getKey(int key) const;
 
 	Scene* getScene() { return scene; }
-
+	
 	void changeScene(int newStatus);
 	int getSceneId() { return status; }
 
@@ -80,6 +81,7 @@ private:
 	MainMenu* mainMenu = nullptr;
 	CreditsScreen* creditsScreen = nullptr;
 	EscScreen* escScreen = nullptr;
+  irrklang::ISoundEngine* soundEngine;
 
 	int status = 0;
 	bool paused = false;

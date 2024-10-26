@@ -24,7 +24,7 @@ public:
 	Scene();
 	~Scene();
 
-	void init();
+	void init(irrklang::ISoundEngine* soundEngine);
 	void update(int deltaTime);
 	void render();
 	void renderInterface();
@@ -33,6 +33,7 @@ public:
 
 	std::vector<NonPlayerEntity*>& getEnemies();
 	ShaderProgram& getShaderProgram() { return texProgram; }
+	void changeScene() { endLevel = true; }
 
 private:
 	void initShaders();
@@ -48,7 +49,7 @@ private:
 	Player* player;
 	irrklang::ISoundEngine* soundEngine;
 	std::vector<NonPlayerEntity*> entityArray;
-
+	bool endLevel = false;
 	std::vector<int> numberMaping;
 	ShaderProgram texProgram;
 	float currentTime;

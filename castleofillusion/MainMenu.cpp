@@ -19,6 +19,7 @@ MainMenu::MainMenu() {
 }
 
 MainMenu::~MainMenu() {
+	if (arrow != nullptr) delete arrow;
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 }

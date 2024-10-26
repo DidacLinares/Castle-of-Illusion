@@ -26,12 +26,6 @@ enum PlayerAnims {
 	PREPARED_TO_GRAB_LEFT, PREPARED_TO_GRAB_RIGHT, GRABBING_LEFT, GRABBING_RIGHT, STAND_GRABBED_LEFT, STAND_GRABBED_RIGHT, MOVE_GRABBED_LEFT, MOVE_GRABBED_RIGHT, JUMP_GRABBED_LEFT, JUMP_GRABBED_RIGHT, FALL_GRABBED_LEFT, FALL_GRABBED_RIGHT
 };
 
-Player::~Player()
-{
-	if (jumpSound != nullptr) jumpSound->drop();
-	jumpSound = nullptr;
-}
-
 void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	bJumping = false;
 	falling = false;
@@ -41,7 +35,6 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	shortenedJump = false;
 	speedX = 0;
 	lives = 3;
-	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
 	spritesheet.loadFromFile("images/mickey.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(25, 38), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(24);
@@ -470,8 +463,9 @@ bool Player::checkCollision(glm::vec4 hitboxentity) {
 		hitbox.y + hitbox.w > hitboxentity.y);  // hitboxplayer.bottom > hitboxenemy.top
 }
 
-void Player::setSoundEngine(irrklang::ISoundEngine* soundEngine) {
+void Player::setSoundEngineAndSounds(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* jumpSound) {
 	this->soundEngine = soundEngine;
+	this->jumpSound = jumpSound;
 }
 
 void Player::grabAnimation() {

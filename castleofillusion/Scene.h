@@ -24,7 +24,7 @@ public:
 	Scene();
 	~Scene();
 
-	void init(irrklang::ISoundEngine* soundEngine);
+	void init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound);
 	void update(int deltaTime);
 	void render();
 	void renderInterface();
@@ -48,6 +48,7 @@ private:
 	TileMap* layer_2;
 	Player* player;
 	irrklang::ISoundEngine* soundEngine;
+	irrklang::ISoundSource* jumpSound;
 	std::vector<NonPlayerEntity*> entityArray;
 	bool endLevel = false;
 	std::vector<int> numberMaping;

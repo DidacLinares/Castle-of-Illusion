@@ -81,7 +81,8 @@ private:
 	MainMenu* mainMenu = nullptr;
 	CreditsScreen* creditsScreen = nullptr;
 	EscScreen* escScreen = nullptr;
-  irrklang::ISoundEngine* soundEngine;
+	irrklang::ISoundEngine* soundEngine;
+	irrklang::ISoundSource* jumpSound;
 
 	int status = 0;
 	bool paused = false;

@@ -48,20 +48,18 @@ Scene::~Scene() {
 }
 
 
-void Scene::init(irrklang::ISoundEngine* soundEngine) {
+void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound) {
 	initShaders();
 	this->soundEngine = soundEngine;
+	this->jumpSound = jumpSound;
 	//map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_0 = TileMap::createTileMap("levels/level01/sky_background_0.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_1 = TileMap::createTileMap("levels/level01/sky_background_1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_2 = TileMap::createTileMap("levels/level01/trees.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	map = TileMap::createTileMap("levels/level01/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	player = new Player();
-	delete player;
-	player = nullptr;
 
 	player = new Player();
-	player->setSoundEngine(soundEngine);
+	player->setSoundEngineAndSounds(soundEngine,jumpSound);
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y - 5), texProgram); // canviat per alinear la hitbox al numberSprite, reajustar si dona problemes
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);

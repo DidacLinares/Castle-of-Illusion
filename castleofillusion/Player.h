@@ -15,8 +15,6 @@ class Player : public Entity {
 
 public:
 
-	~Player();
-
 	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	virtual void update(int deltaTime);
 	virtual void render();
@@ -31,7 +29,7 @@ public:
 	void setGodMode(bool godMode);
 	bool isGodMode();
 	bool checkCollision(glm::vec4 hitboxentity);
-	void setSoundEngine(irrklang::ISoundEngine* soundEngine);
+	void setSoundEngineAndSounds(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* jumpSound);
 	void grabAnimation();
 	bool getObject();
 	bool moving();

@@ -7,6 +7,7 @@ void Game::init() {
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	soundEngine = irrklang::createIrrKlangDevice();
+	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
 	titleScreen = new TitleScreen();
 	titleScreen->init();
 }
@@ -106,7 +107,7 @@ void Game::changeScene(int newStatus) {
 			break;
 		case PRACTICE_LEVEL:
 			scene = new Scene();
-			scene->init(soundEngine);
+			scene->init(soundEngine,jumpSound);
 			break;
 	}
 }

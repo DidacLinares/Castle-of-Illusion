@@ -64,7 +64,7 @@ void Block::update(int deltaTime) {
 		for (int i = 0; i < entities.size(); ++i) {
 			if (entities[i] != nullptr && entities[i] != this) {
 				if (checkCollision(entities[i]->getCollisionBox())) {
-					entities[i]->onEntityHit(false);
+					entities[i]->onEntityHit(false); // Arreglar que block  interactui molts cops amb la entity que mor, suman punts de mes
 					player->addScore(10);
 					onEntityHit();
 				};

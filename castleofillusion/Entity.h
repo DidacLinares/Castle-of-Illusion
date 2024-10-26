@@ -8,6 +8,8 @@
 class Entity {
 
 public:
+	~Entity();
+
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) = 0;
 	virtual void update(int deltaTime) = 0;
 	virtual void render();

@@ -26,6 +26,10 @@ enum PlayerAnims {
 	PREPARED_TO_GRAB_LEFT, PREPARED_TO_GRAB_RIGHT, GRABBING_LEFT, GRABBING_RIGHT, STAND_GRABBED_LEFT, STAND_GRABBED_RIGHT, MOVE_GRABBED_LEFT, MOVE_GRABBED_RIGHT, JUMP_GRABBED_LEFT, JUMP_GRABBED_RIGHT, FALL_GRABBED_LEFT, FALL_GRABBED_RIGHT
 };
 
+Player::~Player()
+{
+	if (jumpSound != nullptr) delete jumpSound;
+}
 
 void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	bJumping = false;

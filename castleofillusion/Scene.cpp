@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Entity.h"
 #include "DragonBoss.h"
+#include "illusionGem.h"
 
 
 // Mirar que fa aixo
@@ -30,21 +31,34 @@ Scene::Scene() {
 }
 
 Scene::~Scene() {
-	if(map != NULL)
-		delete map;
-	if(player != NULL)
-		delete player;
+	int size = entityArray.size();
+	for (int i = 0; i < size; ++i) {
+		if (entityArray[i] != nullptr) {
+			delete entityArray[i];
+		}
+	}
+	if(map != NULL) delete map;
+	if(player != NULL) delete player;
+	if (layer_0 != nullptr) delete layer_0;
+	if (layer_1 != nullptr) delete layer_1;
+	if (layer_2 != nullptr) delete layer_2;
+	if(numberSprite != nullptr) delete numberSprite;
+	if (interfaceBackgroundSprite != nullptr) delete interfaceBackgroundSprite;
+	if (starSprite != nullptr) delete starSprite;
 }
 
 
-void Scene::init() {
+void Scene::init(irrklang::ISoundEngine* soundEngine) {
 	initShaders();
-	soundEngine = irrklang::createIrrKlangDevice();
+	this->soundEngine = soundEngine;
 	//map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_0 = TileMap::createTileMap("levels/level01/sky_background_0.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_1 = TileMap::createTileMap("levels/level01/sky_background_1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_2 = TileMap::createTileMap("levels/level01/trees.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	map = TileMap::createTileMap("levels/level01/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	player = new Player();
+	delete player;
+	player = nullptr;
 
 	player = new Player();
 	player->setSoundEngine(soundEngine);
@@ -92,11 +106,12 @@ void Scene::init() {
 	entityArray[5]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
 	entityArray[5]->setTileMap(map);
 
-	entityArray.push_back(new DragonBoss());
+	entityArray.push_back(new IllusionGem());
 	entityArray[6]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[6]->setPlayer(player);
-	entityArray[6]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 30) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[6]->setPosition(glm::vec2((91) * map->getTileSize(), (5) * map->getTileSize()));
 	entityArray[6]->setTileMap(map);
+
 
 	initInterface();
 	// View at player position
@@ -195,6 +210,10 @@ void Scene::render() {
 	
 	player->render();
 	renderInterface();
+	if (endLevel) {
+		glViewport(0, 0, 1280, 720);
+		Game::instance().changeScene(Game::TITLE);
+	}
 }
 
 void Scene::renderInterface() {

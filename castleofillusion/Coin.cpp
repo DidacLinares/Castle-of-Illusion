@@ -34,8 +34,10 @@ void Coin::update(int deltaTime) {
 	setPosition(pos);
 }
 
-void Coin::onEntityHit(bool IsPlayer) {
-	player->addScore(10);
-	dead = true;
+void Coin::onEntityHit(bool isPlayer) {
+	if (isPlayer) {
+		player->addScore(10);
+		dead = true;
+	}
 }
 

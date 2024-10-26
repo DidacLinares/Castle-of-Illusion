@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "TitleScreen.h"
 #include "MainMenu.h"
+#include "irrKlang.h"
 
 
 #define SCREEN_WIDTH 1280
@@ -52,7 +53,7 @@ public:
 	bool getKey(int key) const;
 
 	Scene* getScene() { return scene; }
-
+	
 	void changeScene(int newStatus);
 
 private:
@@ -66,6 +67,7 @@ private:
 	Scene* scene;
 	TitleScreen* titleScreen;
 	MainMenu* mainMenu;
+	irrklang::ISoundEngine* soundEngine;
 
 	int status = 0;
 };

@@ -14,6 +14,9 @@
 class Player : public Entity {
 
 public:
+
+	~Player();
+
 	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	virtual void update(int deltaTime);
 	virtual void render();

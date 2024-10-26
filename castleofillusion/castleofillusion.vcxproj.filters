@@ -19,6 +19,10 @@
     <ClCompile Include="TreeEnemy.cpp" />
     <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="DragonBoss.cpp" />
+    <ClCompile Include="illusionGem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
@@ -39,5 +43,9 @@
     <ClInclude Include="TreeEnemy.h" />
     <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Chest.h" />
+    <ClInclude Include="Coin.h" />
+    <ClInclude Include="DragonBoss.h" />
+    <ClInclude Include="illusionGem.h" />
   </ItemGroup>
 </Project>

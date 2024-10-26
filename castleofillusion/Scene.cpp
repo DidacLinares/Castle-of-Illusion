@@ -159,6 +159,12 @@ void Scene::initInterface() {
 }
 
 void Scene::update(int deltaTime) {
+	if (endLevel) {
+		glViewport(0, 0, 1280, 720);
+		Game::instance().changeScene(Game::MAIN_MENU);
+		return;
+	}
+
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	int size = entityArray.size();
@@ -210,10 +216,6 @@ void Scene::render() {
 	
 	player->render();
 	renderInterface();
-	if (endLevel) {
-		glViewport(0, 0, 1280, 720);
-		Game::instance().changeScene(Game::TITLE);
-	}
 }
 
 void Scene::renderInterface() {

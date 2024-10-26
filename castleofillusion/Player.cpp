@@ -28,7 +28,8 @@ enum PlayerAnims {
 
 Player::~Player()
 {
-	if (jumpSound != nullptr) delete jumpSound;
+	if (jumpSound != nullptr) jumpSound->drop();
+	jumpSound = nullptr;
 }
 
 void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {

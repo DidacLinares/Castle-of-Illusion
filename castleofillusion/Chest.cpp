@@ -30,6 +30,7 @@ void Chest::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 void Chest::onEntityHit(bool isPlayer) {
 	dead = true;
+	player->addScore(10);
 	Cake* cake;
 	Coin* coin;
 	switch (objectToSpawn) {

@@ -1,5 +1,5 @@
-#ifndef _TREEENEMY_INCLUDE
-#define _TREEENEMY_INCLUDE
+#ifndef _ARMADILLO_INCLUDE
+#define _ARMADILLO_INCLUDE
 
 
 #include "Sprite.h"
@@ -11,25 +11,27 @@
 // all properties it needs to track its movement, jumping, and collisions.
 
 
-class TreeEnemy: public NonPlayerEntity {
+class Armadillo : public NonPlayerEntity {
 
 public:
-	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	virtual void update(int deltaTime);
 
 	virtual void onEntityHit(bool player = true);
 
 private:
-	bool dying = false;
+	bool dying = false, rolling = false;;
 	int deathFase = 1;
 	int deathTime = 0;
 	int deathAngle = 0;
+	int rollTimer = 0;
+	int unrollTimer = 0;
 
 	float startX, startY = 0;
 
 };
 
 
-#endif // _TREEENEMY_INCLUDE
+#endif // _ARMADILLO_INCLUDE
 
 

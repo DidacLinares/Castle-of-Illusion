@@ -15,8 +15,6 @@ class Player : public Entity {
 
 public:
 
-	~Player();
-
 	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	virtual void update(int deltaTime);
 	virtual void render();
@@ -31,7 +29,7 @@ public:
 	void setGodMode(bool godMode);
 	bool isGodMode();
 	bool checkCollision(glm::vec4 hitboxentity);
-	void setSoundEngine(irrklang::ISoundEngine* soundEngine);
+	void setSoundEngineAndSounds(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* jumpSound);
 	void grabAnimation();
 	bool getObject();
 	bool moving();
@@ -49,9 +47,12 @@ private:
 	irrklang::ISoundSource* jumpSound; 
 	bool bJumping,falling,shortenedJump, crouching, groundpounding, hit;
 	int jumpAngle;
-	float speedX,speedY, startY,maxY;
+	float speedX,speedY, startY,maxY,startX = 0;
 	int tries = 3,score = 0;
-	bool godMode = false,object = false;
+	bool godMode = false, object = false, dying = false;
+	int deathFase = 1;
+	int deathTime = 0;
+	int deathAngle = 0;
 };
 
 

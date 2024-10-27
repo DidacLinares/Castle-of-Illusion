@@ -228,6 +228,7 @@ void TileMap::raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vect
 
 bool TileMap::setTileAsBlock(int tileX, int tileY,int value) {
 	if (tileX >= 0 && tileX < mapSize.x && tileY >= 0 && tileY < mapSize.y && (map[tileY * mapSize.x + tileX] == 0 || map[tileY * mapSize.x + tileX] == 1000)) {
+		if (value == 1000 && map[tileY * mapSize.x + tileX] == 1000) return false;
 		map[tileY * mapSize.x + tileX] = value;
 		return true;
 	}

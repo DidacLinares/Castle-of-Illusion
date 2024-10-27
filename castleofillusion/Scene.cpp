@@ -187,6 +187,13 @@ void Scene::initInterface() {
 void Scene::update(int deltaTime) {
 	if (endLevel) {
 		glViewport(0, 0, 1280, 720);
+
+		if (player->isDead()) {
+			Game::instance().removeTry();
+			Game::instance().changeScene(Game::GAME_OVER);
+			return;
+		}
+
 		Game::instance().changeScene(Game::MAIN_MENU);
 		return;
 	}
@@ -289,7 +296,7 @@ void Scene::renderInterface() {
 		starSprite->render();
 	}
 	//TriesS
-	int tries = player->getTries();
+	int tries = Game::instance().getTries();
 	for (int i = 0; i < 2;++i) {
 		numberSprite->setPosition(glm::vec2(680+ i * 35 , 100));
 		int n;

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
-#include "MainMenu.h"
+#include "GameOverScreen.h"
 #include "Game.h"
 
 
@@ -15,11 +15,10 @@
 
 
 
-MainMenu::MainMenu() {
+GameOverScreen::GameOverScreen() {
 }
 
-MainMenu::~MainMenu() {
-	if (arrow != nullptr) delete arrow;
+GameOverScreen::~GameOverScreen() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 }
@@ -28,10 +27,10 @@ enum Animation {
 	DUMMY, ARROW
 };
 
-void MainMenu::init() {
+void GameOverScreen::init() {
 	initShaders();
 
-	imageTexture.loadFromFile("images/main_menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	imageTexture.loadFromFile("images/game_over.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	imageTexture.setMinFilter(GL_NEAREST);
 	imageTexture.setMagFilter(GL_NEAREST);
 
@@ -76,27 +75,25 @@ void MainMenu::init() {
 	arrowY = SCREEN_Y / 2;
 
 	arrow->setPosition(glm::vec2(float(arrowX), float(arrowY)));
-
-	if (Game::instance().getTries() == 0) {
-		Game::instance().setTries(3);
-	}
 }
 
-void MainMenu::update(int deltaTime) {
+void GameOverScreen::update(int deltaTime) {
 	arrow->update(deltaTime);
 
 	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
-		
+
 		switch (selectedOption) {
-			case 0:
-				Game::instance().changeScene(Game::SELECT_LEVEL);
-				break;
-			case 1:
-				//Game::instance().changeScene(Game::INSTRUCTIONS);
-				break;
-			case 2:
-				Game::instance().changeScene(Game::CREDITS_MENU);
-				break;
+		case 0:
+			if (Game::instance().getTries() == 0) {
+				Game::instance().changeScene(Game::TITLE);
+			}
+			else {
+				Game::instance().changeScene(Game::instance().getLastScene());
+			}
+			break;
+		case 1:
+			Game::instance().changeScene(Game::MAIN_MENU);
+			break;
 		}
 
 		Game::instance().keyReleased(GLFW_KEY_ENTER);
@@ -105,9 +102,9 @@ void MainMenu::update(int deltaTime) {
 	}
 
 	if (selectedOption == 0) {
-		// Jugar
+		// Reintentar
 		if (Game::instance().getKey(GLFW_KEY_W) || Game::instance().getKey(GLFW_KEY_UP)) {
-			selectedOption = 2;
+			selectedOption = 1;
 			arrow->changeAnimation(ARROW);
 		}
 		else {
@@ -116,28 +113,13 @@ void MainMenu::update(int deltaTime) {
 				arrow->changeAnimation(ARROW);
 			}
 		}
-		arrowX = 33;
-		arrowY = 26;
+		arrowX = 25;
+		arrowY = 48;
 	}
 	else if (selectedOption == 1) {
-		// Instruccions
+		// Sortir
 		if (Game::instance().getKey(GLFW_KEY_W) || Game::instance().getKey(GLFW_KEY_UP)) {
 			selectedOption = 0;
-			arrow->changeAnimation(ARROW);
-		}
-		else {
-			if (Game::instance().getKey(GLFW_KEY_S) || Game::instance().getKey(GLFW_KEY_DOWN)) {
-				selectedOption = 2;
-				arrow->changeAnimation(ARROW);
-			}
-		}
-		arrowX = 18;
-		arrowY = 38;
-	}
-	else {
-		// Credits
-		if (Game::instance().getKey(GLFW_KEY_W) || Game::instance().getKey(GLFW_KEY_UP)) {
-			selectedOption = 1;
 			arrow->changeAnimation(ARROW);
 		}
 		else {
@@ -146,9 +128,10 @@ void MainMenu::update(int deltaTime) {
 				arrow->changeAnimation(ARROW);
 			}
 		}
-
-		arrowX = 30;
-		arrowY = 52;
+		arrowX = 32;
+		arrowY = 65;
+	}
+	else {
 	}
 
 	Game::instance().keyReleased(GLFW_KEY_W);
@@ -159,7 +142,11 @@ void MainMenu::update(int deltaTime) {
 	arrow->setPosition(glm::vec2(float(arrowX), float(arrowY)));
 }
 
-void MainMenu::render() {
+void GameOverScreen::render() {
+	if (Game::instance().getSceneId() == Game::PRACTICE_LEVEL || Game::instance().getSceneId() == Game::MAIN_LEVEL) {
+		glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	}
+
 	glm::mat4 modelview;
 
 	texProgram.use();
@@ -181,7 +168,7 @@ void MainMenu::render() {
 	arrow->render();
 }
 
-void MainMenu::initShaders() {
+void GameOverScreen::initShaders() {
 	Shader vShader, fShader;
 
 	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");

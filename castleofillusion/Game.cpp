@@ -81,11 +81,18 @@ void Game::changeScene(int newStatus) {
 	case CREDITS_MENU:
 		delete creditsScreen;
 		break;
+	case GAME_OVER:
+		delete gameOverScreen;
+		break;
 	case PRACTICE_LEVEL:
 		delete scene;
 		break;
+	case PAUSE:
+		if (escScreen != nullptr) delete escScreen;
+		break;
 	}
 
+	lastScene = status;
 	status = newStatus;
 
 	switch (status) {
@@ -109,6 +116,15 @@ void Game::changeScene(int newStatus) {
 			scene = new Scene();
 			scene->init(soundEngine,jumpSound);
 			break;
+		case GAME_OVER:
+			gameOverScreen = new GameOverScreen();
+			gameOverScreen->init();
+			break;
+		case PAUSE:
+			if (escScreen != nullptr) delete escScreen;
+			escScreen = new EscScreen();
+			escScreen->init();
+			break;
 	}
 }
 
@@ -129,6 +145,9 @@ void Game::renderScene(int status) {
 		case PRACTICE_LEVEL:
 			scene->render();
 			break;
+		case GAME_OVER:
+			gameOverScreen->render();
+			break;
 	}
 }
 
@@ -148,6 +167,9 @@ void Game::updateScene(int status, int deltaTime) {
 		break;
 	case PRACTICE_LEVEL:
 		scene->update(deltaTime);
+		break;
+	case GAME_OVER:
+		gameOverScreen->update(deltaTime);
 		break;
 	}
 }

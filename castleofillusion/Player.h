@@ -36,7 +36,6 @@ public:
 	void setObject(bool object);
 
 	int getLives();
-	int getTries();
 	int getScore();
 	void addScore(int points);
 
@@ -48,7 +47,7 @@ private:
 	bool bJumping,falling,shortenedJump, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY,maxY,startX = 0;
-	int tries = 3,score = 0;
+	int score = 0;
 	bool godMode = false, object = false, dying = false;
 	int deathFase = 1;
 	int deathTime = 0;

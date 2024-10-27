@@ -114,7 +114,7 @@ void EscScreen::update(int deltaTime) {
 	}
 
 	if (selectedOption == 0) {
-		// Jugar
+		// Continuar
 		if (Game::instance().getKey(GLFW_KEY_W) || Game::instance().getKey(GLFW_KEY_UP)) {
 			selectedOption = 2;
 			arrow->changeAnimation(ARROW);
@@ -129,7 +129,7 @@ void EscScreen::update(int deltaTime) {
 		arrowY = 25;
 	}
 	else if (selectedOption == 1) {
-		// Instruccions
+		// Reiniciar
 		if (Game::instance().getKey(GLFW_KEY_W) || Game::instance().getKey(GLFW_KEY_UP)) {
 			selectedOption = 0;
 			arrow->changeAnimation(ARROW);
@@ -144,7 +144,7 @@ void EscScreen::update(int deltaTime) {
 		arrowY = 46;
 	}
 	else {
-		// Credits
+		// Sortir
 		if (Game::instance().getKey(GLFW_KEY_W) || Game::instance().getKey(GLFW_KEY_UP)) {
 			selectedOption = 1;
 			arrow->changeAnimation(ARROW);

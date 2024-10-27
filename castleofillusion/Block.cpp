@@ -17,10 +17,10 @@ void Block::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	sprite->setNumberAnimations(2);
 
 	sprite->setAnimationSpeed(0, 1);
-	sprite->addKeyframe(0, glm::vec2(2 * OFFSET_X, 0.f));
+	sprite->addKeyframe(0, glm::vec2(5 * OFFSET_X, OFFSET_Y));
 
 	sprite->setAnimationSpeed(1, 1);
-	sprite->addKeyframe(1, glm::vec2(2 * OFFSET_X, 0.f));
+	sprite->addKeyframe(1, glm::vec2(5 * OFFSET_X, OFFSET_Y));
 
 	sprite->changeAnimation(1);
 	tileMapDispl = glm::vec2(tileMapPos);
@@ -35,37 +35,46 @@ void Block::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 void Block::update(int deltaTime) {
 	if (throwed) {
 		pos.y += 3;
-		map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
-		if (left) {
-			pos.x -= 4;
-			if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
-				throwed = false;
-				tileX = pos.x / tileSize;
-				tileY = pos.y / tileSize;
-				pos.x = tileX * tileSize;
-				pos.y = tileY * tileSize;
-				falling = true;
-				onEntityHit();
-			}
+		if (map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y)) {
+			throwed = false;
+			tileX = pos.x / tileSize;
+			tileY = pos.y / tileSize;
+			pos.x = tileX * tileSize;
+			pos.y = tileY * tileSize;
+			falling = true;
+			onEntityHit();
 		}
 		else {
-			pos.x += 4;
-			if (map->collisionMoveRight(pos, glm::vec2(hitbox_x, hitbox_y))) {
-				throwed = false;
-				tileX = pos.x / tileSize;
-				tileY = pos.y / tileSize;
-				pos.x = tileX * tileSize;
-				pos.y = tileY * tileSize;
-				falling = true;
-				onEntityHit();
+			if (left) {
+				pos.x -= 4;
+				if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
+					throwed = false;
+					tileX = pos.x / tileSize;
+					tileY = pos.y / tileSize;
+					pos.x = tileX * tileSize;
+					pos.y = tileY * tileSize;
+					falling = true;
+					onEntityHit();
+				}
+			}
+			else {
+				pos.x += 4;
+				if (map->collisionMoveRight(pos, glm::vec2(hitbox_x, hitbox_y))) {
+					throwed = false;
+					tileX = pos.x / tileSize;
+					tileY = pos.y / tileSize;
+					pos.x = tileX * tileSize;
+					pos.y = tileY * tileSize;
+					falling = true;
+					onEntityHit();
+				}
 			}
 		}
 		entities = Game::instance().getScene()->getEnemies();
 		for (int i = 0; i < entities.size(); ++i) {
 			if (entities[i] != nullptr && entities[i] != this) {
 				if (checkCollision(entities[i]->getCollisionBox())) {
-					entities[i]->onEntityHit(false); // Arreglar que block  interactui molts cops amb la entity que mor, suman punts de mes
-					player->addScore(10);
+					entities[i]->onEntityHit(false);
 					onEntityHit();
 				};
 			}
@@ -116,7 +125,10 @@ void Block::update(int deltaTime) {
 					pickedUp = false;
 					player->setPosition(glm::vec2(tileXtmp * tileSize, tileYtmp * tileSize));
 				}
-				else pos = player->getPosition();
+				else {
+					pos = player->getPosition();
+					player->setObject(true);
+				}
 			}
 		}
 		else {

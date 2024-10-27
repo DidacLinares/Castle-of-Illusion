@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "DragonBoss.h"
 #include "illusionGem.h"
+#include "BreakeableBlock.h"
 
 
 // Mirar que fa aixo
@@ -123,6 +124,12 @@ void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jum
 	entityArray[6]->setTileMap(map);
 	entityArray[6]->setId(OBJECT);
 
+	entityArray.push_back(new BreakeableBlock());
+	entityArray[7]->setTileMap(map);
+	entityArray[7]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[7]->setPlayer(player);
+	entityArray[7]->setPosition(glm::vec2((11) * map->getTileSize(), (12) * map->getTileSize()));
+	entityArray[7]->setId(OBJECT);
 
 	initInterface();
 	// View at player position

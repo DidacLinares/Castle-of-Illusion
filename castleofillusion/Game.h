@@ -10,6 +10,7 @@
 #include "CreditsScreen.h"
 #include "SelectLevelScreen.h"
 #include "EscScreen.h"
+#include "GameOverScreen.h"
 
 
 #define SCREEN_WIDTH 1280
@@ -61,11 +62,17 @@ public:
 	
 	void changeScene(int newStatus);
 	int getSceneId() { return status; }
+	int getLastScene() { return lastScene; }
 
 	void setPaused(bool paused);
 	bool isPaused() { return paused; }
 
 	void close() { bPlay = false; }
+
+	void setTries(int tries) { this->tries = tries; }
+	void addTry() { tries++; }
+	void removeTry() { tries--; }
+	int getTries() { return tries; }
 
 private:
 	void renderScene(int status);
@@ -81,11 +88,15 @@ private:
 	MainMenu* mainMenu = nullptr;
 	CreditsScreen* creditsScreen = nullptr;
 	EscScreen* escScreen = nullptr;
+	GameOverScreen* gameOverScreen = nullptr;
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound;
 
 	int status = 0;
+	int lastScene = status;
 	bool paused = false;
+
+	int tries = 3;
 };
 
 

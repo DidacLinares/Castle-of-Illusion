@@ -375,6 +375,7 @@ void Player::update(int deltaTime) {
 
 		if (deathAngle >= 220 && !dead) {
 			if (deathTime >= MAX_DEATH_TIME) {
+				dead = true;
 				Game::instance().getScene()->changeScene();
 			}
 		}
@@ -505,11 +506,6 @@ bool Player::moving() {
 
 int Player::getLives() {
 	return lives;
-}
-
-
-int Player::getTries() {
-	return tries;
 }
 
 int Player::getScore() {

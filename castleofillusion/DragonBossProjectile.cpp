@@ -1,9 +1,9 @@
-#include "FlowerProjectile.h"
+#include "DragonBossProjectile.h"
 
 #include "Game.h"
 #include <iostream>
 
-#define OFFSET_X 0.20
+#define OFFSET_X 0.33
 #define OFFSET_Y 0
 
 
@@ -11,15 +11,16 @@ enum ProjectileAnims {
 	MOVING
 };
 
-void FlowerProjectile::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
+void DragonBossProjectile::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	dead = false;
-	spritesheet.loadFromFile("images/FlowerEnemy.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(6, 12), glm::vec2(OFFSET_X / 2, 1), &spritesheet, &shaderProgram);
+	spritesheet.loadFromFile("images/DragonBossProjectile.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(6, 12), glm::vec2(1, 1), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(1);
 
 	sprite->setAnimationSpeed(MOVING, 8);
-	sprite->addKeyframe(MOVING, glm::vec2(3 * OFFSET_X, 0.f));
-	sprite->addKeyframe(MOVING, glm::vec2(3 * OFFSET_X + (OFFSET_X / 2), 0.0f));
+	sprite->addKeyframe(MOVING, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(MOVING, glm::vec2(OFFSET_X, 0.f));
+	sprite->addKeyframe(MOVING, glm::vec2(2 * OFFSET_X, 0.0f));
 
 	hitbox_x = 6;
 	hitbox_y = 12;
@@ -30,18 +31,11 @@ void FlowerProjectile::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderP
 
 	tileMapDispl = glm::vec2(tileMapPos);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
-	
 }
 
-void FlowerProjectile::update(int deltaTime) {
+void DragonBossProjectile::update(int deltaTime) {
 	sprite->update(deltaTime);
 	if (!dead) {
-		if (goingRight) {
-			pos.x = pos.x + 1;
-		}
-		else {
-			pos.x = pos.x - 1;
-		}
 		pos.y += 1;
 
 		if (player->checkCollision(getCollisionBox())) {
@@ -49,6 +43,7 @@ void FlowerProjectile::update(int deltaTime) {
 		}
 
 		if (!dead && map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y)) {
+			cout << "Collision Dragon" << endl;
 			dead = true;
 		}
 
@@ -56,7 +51,7 @@ void FlowerProjectile::update(int deltaTime) {
 	}
 }
 
-void FlowerProjectile::onEntityHit(bool isPlayer) {
+void DragonBossProjectile::onEntityHit(bool isPlayer) {
 	if (isPlayer) {
 		if (player->isInvulnerable()) {
 			return;

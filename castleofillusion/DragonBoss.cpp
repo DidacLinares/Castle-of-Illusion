@@ -3,9 +3,13 @@
 #include <GL/glew.h>
 #include "DragonBoss.h"
 #include "Game.h"
+#include "DragonBossProjectile.h"
 
 #define OFFSET_BODY_X 0.33
 #define OFFSET_HEAD_X 0.33
+
+#define ATTACK_COOLDOWN 800
+#define CHANGE_HEAD_POSITION 100
 
 enum DragonBossBodyAnim {
 	DUMMY, BODY
@@ -81,9 +85,37 @@ void DragonBoss::update(int deltaTime) {
 	if (invulnerableTimeLeft <= 0) {
 		invulnerable = false;
 	}
+		
+	if (timeSinceLastAttack <= ATTACK_COOLDOWN) {
+		timeSinceLastAttack += deltaTime;
+	}
+	else {
+		// ATTACK
+		timeSinceLastAttack = 0;
+		attack = true;
+	}
 
-	float distanceToPlayer = glm::length(player->getPosition() - pos);
+	if (!attack) {
+		timeSinceLastHeadChange += deltaTime;
+		if (timeSinceLastHeadChange >= CHANGE_HEAD_POSITION) {
+			timeSinceLastHeadChange = 0;
+			headSprite->changeAnimation(animCycle);
+			adjustHeadPosition(animCycle);
+			animCycle = (animCycle + 1) % 6;
+		}
+	}
 
+	if (attack) {
+		attack = false;
+		for (int i = 0; i < 1; ++i) {
+			DragonBossProjectile* projectile = new DragonBossProjectile();
+			projectile->init(glm::ivec2(tileMapDispl.x + pos.x + 25, tileMapDispl.y + pos.y + 11), Game::instance().getScene()->getShaderProgram());
+			projectile->setPosition(glm::vec2(tileMapDispl.x + pos.x, tileMapDispl.y + pos.y - 30));
+			projectile->setPlayer(player);
+			projectile->setTileMap(map);
+			Game::instance().getScene()->addEntity(projectile);
+		}
+	}
 
 }
 
@@ -127,5 +159,29 @@ void DragonBoss::setPosition(const glm::vec2& pos) {
 	}
 	else {
 		headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 25, tileMapDispl.y + pos.y + 11));
+	}
+}
+
+void DragonBoss::adjustHeadPosition(int animation) {
+	if (animation == HEAD_DOWN_LEFT || animation == HEAD_DOWN_RIGHT) {
+		headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 18, tileMapDispl.y + pos.y + 11));
+		return;
+	}
+
+	switch (animation) {
+		case HEAD_CLOSE_LEFT:
+			headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 25, tileMapDispl.y + pos.y + 11));
+			break;
+		case HEAD_CLOSE_RIGHT:
+			headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 13, tileMapDispl.y + pos.y + 11));
+			break;
+		case HEAD_LEFT:
+			headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 25, tileMapDispl.y + pos.y + 11));
+			break;
+		case HEAD_RIGHT:
+			headSprite->setPosition(glm::vec2(tileMapDispl.x + pos.x + 13, tileMapDispl.y + pos.y + 11));
+			break;
+		default:
+			break;
 	}
 }

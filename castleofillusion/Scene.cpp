@@ -112,6 +112,12 @@ void Scene::init(irrklang::ISoundEngine* soundEngine) {
 	entityArray[6]->setPosition(glm::vec2((91) * map->getTileSize(), (5) * map->getTileSize()));
 	entityArray[6]->setTileMap(map);
 
+	entityArray.push_back(new DragonBoss());
+	entityArray[7]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[7]->setPlayer(player);
+	entityArray[7]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 2) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[7]->setTileMap(map);
+
 
 	initInterface();
 	// View at player position
@@ -185,6 +191,7 @@ void Scene::update(int deltaTime) {
 		// Remove null pointers to avoid memory leaks
 		entityArray.erase(std::remove(entityArray.begin(), entityArray.end(), nullptr), entityArray.end());
 	}
+
 }
 
 void Scene::render() {

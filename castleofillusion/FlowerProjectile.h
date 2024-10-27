@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _FLOWER_PROJECTILE_INCLUDE
+#define _FLOWER_PROJECTILE_INCLUDE
+
 #include "NonPlayerEntity.h"
 
 class FlowerProjectile : public NonPlayerEntity {
@@ -15,3 +17,4 @@ private:
 	bool goingRight = false;
 };
 
+#endif // _FLOWER_PROJECTILE_INCLUDE

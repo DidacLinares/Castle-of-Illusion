@@ -18,12 +18,22 @@ public:
 	void onEntityHit(bool isPlayer = true);
 
 private:
+	void adjustHeadPosition(int animation);
+
+private:
 	bool dying = false;
 	int deathFase = 1;
 	int deathAngle = 0;
 
 	Texture headSpriteSheet;
 	Sprite* headSprite;
+
+	int timeSinceLastAttack = 0;
+	int timeSinceLastHeadChange = 0;
+
+	int animCycle = 0;
+
+	bool attack = false;
 
 	float startX, startY = 0;
 };

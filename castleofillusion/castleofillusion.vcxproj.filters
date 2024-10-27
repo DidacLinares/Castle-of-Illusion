@@ -28,6 +28,7 @@
     <ClCompile Include="EscScreen.cpp" />
     <ClCompile Include="BreakeableBlock.cpp" />
     <ClCompile Include="Armadillo.cpp" />
+    <ClCompile Include="DragonBossProjectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
@@ -57,5 +58,6 @@
     <ClInclude Include="EscScreen.h" />
     <ClInclude Include="BreakeableBlock.h" />
     <ClInclude Include="Armadillo.h" />
+    <ClInclude Include="DragonBossProjectile.h" />
   </ItemGroup>
 </Project>

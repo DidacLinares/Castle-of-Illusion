@@ -228,6 +228,7 @@ void Scene::update(int deltaTime) {
 		// Remove null pointers to avoid memory leaks
 		entityArray.erase(std::remove(entityArray.begin(), entityArray.end(), nullptr), entityArray.end());
 	}
+
 }
 
 void Scene::render() {

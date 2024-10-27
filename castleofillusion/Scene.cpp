@@ -112,7 +112,6 @@ void Scene::init(irrklang::ISoundEngine* soundEngine) {
 	entityArray[6]->setPosition(glm::vec2((91) * map->getTileSize(), (5) * map->getTileSize()));
 	entityArray[6]->setTileMap(map);
 
-
 	initInterface();
 	// View at player position
 	glm::vec2 pos = player->getPosition();
@@ -185,6 +184,7 @@ void Scene::update(int deltaTime) {
 		// Remove null pointers to avoid memory leaks
 		entityArray.erase(std::remove(entityArray.begin(), entityArray.end(), nullptr), entityArray.end());
 	}
+
 }
 
 void Scene::render() {

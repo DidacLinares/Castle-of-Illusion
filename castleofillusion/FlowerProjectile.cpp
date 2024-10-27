@@ -5,6 +5,7 @@
 
 #define OFFSET_X 0.20
 #define OFFSET_Y 0
+#define ANGLE_STEP 4
 
 
 enum ProjectileAnims {
@@ -30,26 +31,32 @@ void FlowerProjectile::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderP
 
 	tileMapDispl = glm::vec2(tileMapPos);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
-	
 }
 
 void FlowerProjectile::update(int deltaTime) {
 	sprite->update(deltaTime);
 	if (!dead) {
+		attackAngle += ANGLE_STEP;
+		if (attackAngle < 180) {
+			pos.y = int(startY - 30 * sin(3.14159 * attackAngle / 180.f));
+		}
+		else {
+			pos.y += 4;
+		}
+		
+
 		if (goingRight) {
 			pos.x = pos.x + 1;
 		}
 		else {
 			pos.x = pos.x - 1;
 		}
-		pos.y += 1;
 
 		if (player->checkCollision(getCollisionBox())) {
 			onEntityHit();
 		}
 
-		if (!dead && map->collisionMoveDown(pos, glm::vec2(16, 24), &pos.y)) {
-			cout << "Collision with something" << endl;
+		if (!dead && map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y)) {
 			dead = true;
 		}
 

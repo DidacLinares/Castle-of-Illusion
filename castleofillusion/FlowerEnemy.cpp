@@ -13,8 +13,8 @@
 #define MAX_RISE_TIME 200
 #define MAX_DEATH_TIME 1000
 
-#define PREPARE_ATTACK_RADIUS 100
-#define ATTACK_RADIUS 50
+#define PREPARE_ATTACK_RADIUS 150
+#define ATTACK_RADIUS 100
 #define ATTACK_COOLDOWN 3000
 #define DEATH_ANGLE_STEP 4
 
@@ -104,6 +104,7 @@ void FlowerEnemy::update(int deltaTime) {
 				projectile->setPlayer(player);
 				// Position centered on top of the enemy
 				projectile->setPosition(glm::vec2(int(pos.x - 4), int(pos.y - 12)));
+				projectile->setStartY(pos.y - 12);
 				
 				projectile->setDirection(i == 0);
 				Game::instance().getScene()->addEntity(projectile);

@@ -27,6 +27,7 @@
     <ClCompile Include="SelectLevelScreen.cpp" />
     <ClCompile Include="EscScreen.cpp" />
     <ClCompile Include="BreakeableBlock.cpp" />
+    <ClCompile Include="Armadillo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
@@ -55,5 +56,6 @@
     <ClInclude Include="SelectLevelScreen.h" />
     <ClInclude Include="EscScreen.h" />
     <ClInclude Include="BreakeableBlock.h" />
+    <ClInclude Include="Armadillo.h" />
   </ItemGroup>
 </Project>

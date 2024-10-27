@@ -384,6 +384,7 @@ void Player::update(int deltaTime) {
 			pos.x += 0.5;
 		}
 	}
+	if (pos.y >= 240) dying = true;
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
 

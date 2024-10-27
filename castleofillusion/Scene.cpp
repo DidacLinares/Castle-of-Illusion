@@ -113,7 +113,7 @@ void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jum
 	entityArray[5]->setTileMap(map);
 	entityArray[5]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[5]->setPlayer(player);
-	entityArray[5]->setPosition(glm::vec2((62) * map->getTileSize(), (13) * map->getTileSize()));
+	entityArray[5]->setPosition(glm::vec2((49) * map->getTileSize(), (13) * map->getTileSize()));
 	entityArray[5]->setId(OBJECT);
 
 	entityArray.push_back(new IllusionGem());

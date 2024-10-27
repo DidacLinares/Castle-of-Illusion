@@ -20,6 +20,8 @@ public:
 private:
 	void adjustHeadPosition(int animation);
 
+	void spawnProjectile(int i);
+
 private:
 	bool dying = false;
 	int deathFase = 1;
@@ -31,9 +33,12 @@ private:
 	int timeSinceLastAttack = 0;
 	int timeSinceLastHeadChange = 0;
 
+	int attackingTime = 0;
+
 	int animCycle = 0;
 
 	bool attack = false;
+	bool attacking = false;
 
 	float startX, startY = 0;
 };

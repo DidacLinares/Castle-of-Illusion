@@ -8,8 +8,9 @@
 #define OFFSET_BODY_X 0.33
 #define OFFSET_HEAD_X 0.33
 
-#define ATTACK_COOLDOWN 800
-#define CHANGE_HEAD_POSITION 100
+#define ATTACK_COOLDOWN 1400
+#define CHANGE_HEAD_POSITION 167
+#define ATTACKING_TIME 258
 
 enum DragonBossBodyAnim {
 	DUMMY, BODY
@@ -61,7 +62,7 @@ void DragonBoss::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram
 	headSprite->setAnimationSpeed(HEAD_RIGHT, 1);
 	headSprite->addKeyframe(HEAD_RIGHT, glm::vec2(2 * OFFSET_HEAD_X, 0.f));
 
-	headSprite->changeAnimation(HEAD_DOWN_LEFT);
+	headSprite->changeAnimation(animCycle);
 
 	pos.x = 0;
 	pos.y = 0;
@@ -80,6 +81,10 @@ void DragonBoss::update(int deltaTime) {
 		return;
 	}
 
+	if (player->checkCollision(getCollisionBox())) {
+		onEntityHit();
+	}
+
 	invulnerableTimeLeft -= deltaTime;
 
 	if (invulnerableTimeLeft <= 0) {
@@ -95,7 +100,15 @@ void DragonBoss::update(int deltaTime) {
 		attack = true;
 	}
 
-	if (!attack) {
+	if (attacking) {
+		attackingTime += deltaTime;
+		if (attackingTime >= ATTACKING_TIME) {
+			attackingTime = 0;
+			attacking = false;
+		}
+	}
+
+	if (!attacking) {
 		timeSinceLastHeadChange += deltaTime;
 		if (timeSinceLastHeadChange >= CHANGE_HEAD_POSITION) {
 			timeSinceLastHeadChange = 0;
@@ -107,16 +120,11 @@ void DragonBoss::update(int deltaTime) {
 
 	if (attack) {
 		attack = false;
-		for (int i = 0; i < 1; ++i) {
-			DragonBossProjectile* projectile = new DragonBossProjectile();
-			projectile->init(glm::ivec2(tileMapDispl.x + pos.x + 25, tileMapDispl.y + pos.y + 11), Game::instance().getScene()->getShaderProgram());
-			projectile->setPosition(glm::vec2(tileMapDispl.x + pos.x, tileMapDispl.y + pos.y - 30));
-			projectile->setPlayer(player);
-			projectile->setTileMap(map);
-			Game::instance().getScene()->addEntity(projectile);
+		for (int i = 0; i < 3; ++i) {
+			spawnProjectile(i);
 		}
+		attacking = true;
 	}
-
 }
 
 void DragonBoss::render() {
@@ -184,4 +192,47 @@ void DragonBoss::adjustHeadPosition(int animation) {
 		default:
 			break;
 	}
+}
+
+void DragonBoss::spawnProjectile(int i) {
+	float projX, projY = 0.0;
+
+	switch (headSprite->animation()) {
+		case HEAD_DOWN_LEFT:
+		case HEAD_DOWN_RIGHT:
+			projX = pos.x + 13;
+			projY = pos.y + 27;
+			break;
+
+		case HEAD_CLOSE_LEFT:
+			projX = pos.x + 2;
+			projY = pos.y + 28;
+			break;
+
+		case HEAD_CLOSE_RIGHT:
+			projX = pos.x + 30;
+			projY = pos.y + 29;
+			break;
+
+		case HEAD_LEFT:
+			projX = pos.x - 10;
+			projY = pos.y + 22;
+			break;
+
+		case HEAD_RIGHT:
+			projX = pos.x + 40;
+			projY = pos.y + 22;
+			break;
+	}
+
+
+
+	int direction = i % 3;
+	DragonBossProjectile* projectile = new DragonBossProjectile();
+	projectile->init(tileMapDispl, Game::instance().getScene()->getShaderProgram());
+	projectile->setTileMap(map);
+	projectile->setPosition(glm::vec2(projX, projY));
+	projectile->setDirection(direction);
+	projectile->setPlayer(player);
+	Game::instance().getScene()->addEntity(projectile);
 }

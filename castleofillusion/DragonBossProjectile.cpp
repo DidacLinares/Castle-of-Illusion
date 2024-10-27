@@ -14,16 +14,18 @@ enum ProjectileAnims {
 void DragonBossProjectile::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	dead = false;
 	spritesheet.loadFromFile("images/DragonBossProjectile.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(6, 12), glm::vec2(1, 1), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(OFFSET_X, 1), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(1);
 
-	sprite->setAnimationSpeed(MOVING, 8);
+	sprite->setAnimationSpeed(MOVING, 5);
 	sprite->addKeyframe(MOVING, glm::vec2(0.f, 0.f));
 	sprite->addKeyframe(MOVING, glm::vec2(OFFSET_X, 0.f));
 	sprite->addKeyframe(MOVING, glm::vec2(2 * OFFSET_X, 0.0f));
+	sprite->addKeyframe(MOVING, glm::vec2(OFFSET_X, 0.f));
+	sprite->addKeyframe(MOVING, glm::vec2(0.f, 0.f));
 
-	hitbox_x = 6;
-	hitbox_y = 12;
+	hitbox_x = 5;
+	hitbox_y = 5;
 
 	sprite->changeAnimation(0);
 	pos.x = 0;
@@ -36,14 +38,26 @@ void DragonBossProjectile::init(const glm::ivec2& tileMapPos, ShaderProgram& sha
 void DragonBossProjectile::update(int deltaTime) {
 	sprite->update(deltaTime);
 	if (!dead) {
-		pos.y += 1;
+
+		switch (direction) {
+			case LEFT:
+				pos.x -= 0.5;
+				pos.y += 1.5;
+				break;
+			case RIGHT:
+				pos.x += 0.5;
+				pos.y += 1.5;
+				break;
+			case DOWN:
+				pos.y += 1.5;
+				break;
+		}
 
 		if (player->checkCollision(getCollisionBox())) {
 			onEntityHit();
 		}
 
 		if (!dead && map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y)) {
-			cout << "Collision Dragon" << endl;
 			dead = true;
 		}
 

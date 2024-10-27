@@ -298,20 +298,20 @@ void Player::update(int deltaTime) {
 
 		if (bJumping) {
 			jumpAngle += JUMP_ANGLE_STEP;
-			if (!Game::instance().getKey(GLFW_KEY_W) && !falling && startY - pos.y > 40 && jumpAngle < 90) {
+			/*if (!Game::instance().getKey(GLFW_KEY_W) && !falling && startY - pos.y > 40 && jumpAngle < 90) {
 				falling = true;
 				shortenedJump = true;
 				maxY = startY - pos.y;
 				jumpAngle = 92;
-			}
+			}*/
 			//if (groundpounding) jumpAngle += 1;
 			if (jumpAngle == 180) {
 				bJumping = false;
 			}
 			else {
 
-				if (!shortenedJump) pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-				else pos.y = int(startY - maxY * sin(3.14159f * jumpAngle / 180.f));
+				/*if (!shortenedJump)*/ pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+				//else pos.y = int(startY - maxY * sin(3.14159f * jumpAngle / 180.f)); */
 				if (jumpAngle > 90) {
 					bJumping = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
 					falling = true;
@@ -395,6 +395,8 @@ void Player::checkGroundCollision() {
 		shortenedJump = false;
 		if (sprite->animation() == GROUND_POUND_LEFT || sprite->animation() == JUMP_LEFT || sprite->animation() == FALL_LEFT) changeAnim(STAND_LEFT);
 		else if (sprite->animation() == GROUND_POUND_RIGHT || sprite->animation() == JUMP_RIGHT || sprite->animation() == FALL_RIGHT) changeAnim(STAND_RIGHT);
+		else if (sprite->animation() == JUMP_GRABBED_LEFT || sprite->animation() == FALL_GRABBED_LEFT) changeAnim(STAND_GRABBED_LEFT);
+		else if (sprite->animation() == JUMP_GRABBED_RIGHT || sprite->animation() == FALL_GRABBED_RIGHT) changeAnim(STAND_GRABBED_RIGHT);
 		if (Game::instance().getKey(GLFW_KEY_W)) {
 			if (sprite->animation() == MOVE_LEFT || sprite->animation() == CROUCH_LEFT || sprite->animation() == STAND_LEFT || sprite->animation() == GROUND_POUND_RIGHT) {
 				if (object) {
@@ -498,7 +500,7 @@ bool Player::getObject() {
 	return object;
 }
 bool Player::moving() {
-	return speedX != 0;
+	return speedX != 0 || bJumping || falling;
 }
 
 int Player::getLives() {

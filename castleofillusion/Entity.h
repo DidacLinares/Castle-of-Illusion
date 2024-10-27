@@ -30,6 +30,9 @@ public:
 	bool isDead();
 	void setDead(bool dead);
 
+	void setId(int id);
+	int getId();
+
 protected:
 	glm::vec2 tileMapDispl, pos;
 	Texture spritesheet;
@@ -42,7 +45,7 @@ protected:
 	float invulnerableTimeLeft;
 	float invulnerableDuration = 1500.0f; // 1.5 seconds in milliseconds
 
-	int lives;
+	int lives, id;
 };
 
 

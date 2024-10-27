@@ -20,10 +20,15 @@
 #define INIT_PLAYER_Y_TILES 8
 
 
-#define INIT_ENEMY_X_TILES 8
+#define INIT_ENEMY_X_TILES 14
 #define INIT_ENEMY_Y_TILES 8
 
 #define REMOVE_AT 60
+
+enum ids
+{
+	PLAYER,TREE,FLOWER,OBJECT
+};
 
 Scene::Scene() {
 	map = NULL;
@@ -63,52 +68,60 @@ void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jum
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y - 5), texProgram); // canviat per alinear la hitbox al numberSprite, reajustar si dona problemes
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
+	player->setId(PLAYER);
 
 	entityArray.push_back(new TreeEnemy());
 	entityArray[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[0]->setPlayer(player);
 	entityArray[0]->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
 	entityArray[0]->setTileMap(map);
-
-	entityArray.push_back(new Cake());
-	entityArray[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[1]->setPlayer(player);
-	entityArray[1]->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
-	entityArray[1]->setTileMap(map);
+	entityArray[0]->setId(TREE);
 
 	entityArray.push_back(new Block());
-	entityArray[2]->setTileMap(map);
-	entityArray[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[2]->setPlayer(player);
-	entityArray[2]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 1) * map->getTileSize(), (13) * map->getTileSize()));
+	entityArray[1]->setTileMap(map);
+	entityArray[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[1]->setPlayer(player);
+	entityArray[1]->setPosition(glm::vec2((10) * map->getTileSize(), (12) * map->getTileSize()));
+	entityArray[1]->setId(OBJECT);
 
 	Chest* chest = new Chest();
 	chest->setObjectToSpawn(0);
 	entityArray.push_back(chest);
-	entityArray[3]->setTileMap(map);
-	entityArray[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[3]->setPlayer(player);
-	entityArray[3]->setPosition(glm::vec2((INIT_PLAYER_X_TILES - 1) * map->getTileSize(), (13) * map->getTileSize()));
+	entityArray[2]->setTileMap(map);
+	entityArray[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[2]->setPlayer(player);
+	entityArray[2]->setPosition(glm::vec2((32) * map->getTileSize(), (8) * map->getTileSize()));
+	entityArray[2]->setId(OBJECT);
 
 	chest = new Chest();
 	chest->setObjectToSpawn(1);
 	entityArray.push_back(chest);
-	entityArray[4]->setTileMap(map);
-	entityArray[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[4]->setPlayer(player);
-	entityArray[4]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 2) * map->getTileSize(), (13) * map->getTileSize()));
+	entityArray[3]->setTileMap(map);
+	entityArray[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[3]->setPlayer(player);
+	entityArray[3]->setPosition(glm::vec2((75) * map->getTileSize(), (13) * map->getTileSize()));
+	entityArray[3]->setId(OBJECT);
 
 	entityArray.push_back(new FlowerEnemy());
+	entityArray[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	entityArray[4]->setPlayer(player);
+	entityArray[4]->setPosition(glm::vec2((66) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
+	entityArray[4]->setTileMap(map);
+	entityArray[4]->setId(FLOWER);
+
+	entityArray.push_back(new Block());
+	entityArray[5]->setTileMap(map);
 	entityArray[5]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[5]->setPlayer(player);
-	entityArray[5]->setPosition(glm::vec2((INIT_ENEMY_X_TILES + 1) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
-	entityArray[5]->setTileMap(map);
+	entityArray[5]->setPosition(glm::vec2((62) * map->getTileSize(), (13) * map->getTileSize()));
+	entityArray[5]->setId(OBJECT);
 
 	entityArray.push_back(new IllusionGem());
 	entityArray[6]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	entityArray[6]->setPlayer(player);
 	entityArray[6]->setPosition(glm::vec2((91) * map->getTileSize(), (5) * map->getTileSize()));
 	entityArray[6]->setTileMap(map);
+	entityArray[6]->setId(OBJECT);
 
 
 	initInterface();
@@ -165,14 +178,31 @@ void Scene::update(int deltaTime) {
 
 	currentTime += deltaTime;
 	player->update(deltaTime);
+	bool treeAlive = false;
+	bool flowerAlive = false;
 	int size = entityArray.size();
 	for (int i = 0; i < size; ++i) {
 		if (entityArray[i] != nullptr) {
 			entityArray[i]->update(deltaTime);
+			if (entityArray[i]->getId() == TREE) treeAlive = true;
+			else if (entityArray[i]->getId() == FLOWER) flowerAlive = true;
 			if (entityArray[i]->isDead()) {
 				delete entityArray[i];
 				entityArray[i] = nullptr;
 			}
+		}
+	}
+
+	if (!treeAlive) {
+		glm::vec2 playerPos = player->getPosition();
+		if (std::abs(playerPos.x - (INIT_ENEMY_X_TILES * 16) > (224))) {
+			TreeEnemy* tree = new TreeEnemy();
+			tree->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			tree->setPlayer(player);
+			tree->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
+			tree->setTileMap(map);
+			tree->setId(TREE);
+			entityArray.push_back(tree);
 		}
 	}
 

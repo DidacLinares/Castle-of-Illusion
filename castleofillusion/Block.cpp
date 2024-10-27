@@ -34,7 +34,7 @@ void Block::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 void Block::update(int deltaTime) {
 	if (throwed) {
-		pos.y += 1;
+		pos.y += 3;
 		map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
 		if (left) {
 			pos.x -= 4;

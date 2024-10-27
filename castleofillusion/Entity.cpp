@@ -63,4 +63,12 @@ glm::vec4 Entity::getCollisionBox() {
 	return glm::vec4(pos.x, pos.y, hitbox_x, hitbox_y);
 }
 
+void Entity::setId(int id) {
+	this->id = id;
+}
+
+int Entity::getId() {
+	return id;
+}
+
 

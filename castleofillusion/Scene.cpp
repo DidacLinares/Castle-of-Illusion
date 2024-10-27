@@ -226,7 +226,8 @@ void Scene::render() {
 	float y = pos.y;
 	if (pos.x <= 194) x = 194;
 	else if (pos.x >= 1350) x = 1350;
-	if (y <= 80) y = 81;
+	if (pos.y <= 80) y = 81;
+	else if (pos.y >= 200) y = 199;
 	projection = glm::ortho(x - float(SCREEN_WIDTH) / zoom, x + float(SCREEN_WIDTH) / zoom, y + float(SCREEN_HEIGHT) / zoom, y - float(SCREEN_HEIGHT - 200) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);

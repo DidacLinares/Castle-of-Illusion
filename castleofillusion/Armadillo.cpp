@@ -142,7 +142,7 @@ void Armadillo::onEntityHit(bool isPlayer) {
 		if (player->isInvulnerable()) {
 			cout << "Mickey is invulnerable!" << endl;
 		}
-		else {
+		else if(isPlayer) {
 			player->onEntityHit();
 		}
 	}

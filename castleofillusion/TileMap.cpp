@@ -180,7 +180,7 @@ bool TileMap::collisionMoveRight(glm::vec2& pos, const glm::vec2& size) const {
 
 	return false;
 }
-//&& tile != 7 && tile != 31 && tile != 8 && tile != 10 && tile != 11 && tile != 37 ramp
+
 bool TileMap::collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, float* posY) const {
 	int x0, x1, y;
 
@@ -199,8 +199,6 @@ bool TileMap::collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, flo
 	return false;
 }
 
-/*Rampa: Detectar a MoveLeft/right tiles de tipus rampa, i tambe fer que per cada pixel 
-que es mou esquerra o dreta, puja o baixa un pixel. Acabar sprites mickey i fer Block*/
 void TileMap::raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const {
 	
 	glm::vec2 leftBottomRayStart = glm::vec2(pos.x, pos.y + size.y - 1);

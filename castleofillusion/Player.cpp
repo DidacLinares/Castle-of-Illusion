@@ -298,22 +298,34 @@ void Player::update(int deltaTime) {
 
 		if (bJumping) {
 			jumpAngle += JUMP_ANGLE_STEP;
-			/*if (!Game::instance().getKey(GLFW_KEY_W) && !falling && startY - pos.y > 40 && jumpAngle < 90) {
+			if (!Game::instance().getKey(GLFW_KEY_W) && !falling && startY - pos.y > 40 && jumpAngle < 90) {
 				falling = true;
 				shortenedJump = true;
 				maxY = startY - pos.y;
 				jumpAngle = 92;
-			}*/
+			}
 			//if (groundpounding) jumpAngle += 1;
 			if (jumpAngle == 180) {
 				bJumping = false;
+				pos.y = startY;
 			}
 			else {
-
-				/*if (!shortenedJump)*/ pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-				//else pos.y = int(startY - maxY * sin(3.14159f * jumpAngle / 180.f)); */
+				float antY = pos.y;
+				if (!shortenedJump) pos.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+				else pos.y = int(startY - maxY * sin(3.14159f * jumpAngle / 180.f)); 
+				bool collision = false;
 				if (jumpAngle > 90) {
-					bJumping = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
+					if (pos.y - antY > 4) {
+						float finalPos = pos.y;
+						pos.y = antY;
+						if (pos.y < finalPos) { //evitem bucles infinits
+							while (pos.y < finalPos && !collision) {
+								pos.y += 1;
+								collision = map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
+							}
+						}
+					}
+					bJumping = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y) || !collision;
 					falling = true;
 					if (!groundpounding && sprite->animation() != GROUND_POUND_LEFT && movingLeft()) {
 						if (object) {

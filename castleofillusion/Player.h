@@ -44,11 +44,11 @@ private:
 
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound; 
-	bool bJumping,falling,shortenedJump, crouching, groundpounding, hit;
+	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY,maxY,startX = 0;
 	int score = 0;
-	bool godMode = false, object = false, dying = false;
+	bool godMode = false, object = false, dying = false, shortenedJump = false;
 	int deathFase = 1;
 	int deathTime = 0;
 	int deathAngle = 0;

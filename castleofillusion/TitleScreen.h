@@ -27,7 +27,6 @@ private:
 	ShaderProgram texProgram;
 	Texture imageTexture;
 	glm::mat4 projection;
-	GLuint vao, vbo;
 	Sprite* background;
 };
 

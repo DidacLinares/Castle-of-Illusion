@@ -35,7 +35,6 @@ private:
 	int selectedOption = 0;
 
 	glm::mat4 projection;
-	GLuint vao, vbo;
 };
 
 #endif // _MAIN_MENU_INCLUDE

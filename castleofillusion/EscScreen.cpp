@@ -9,8 +9,9 @@ EscScreen::EscScreen() {
 }
 
 EscScreen::~EscScreen() {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
+	if (background != nullptr) delete background;
+	if (arrow != nullptr) delete arrow;
+
 }
 
 enum Animation {

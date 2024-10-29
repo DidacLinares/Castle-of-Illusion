@@ -6,8 +6,8 @@
 
 
 // Mirar que fa aixo
-#define SCREEN_X 100
-#define SCREEN_Y 100
+#define SCREEN_X 32
+#define SCREEN_Y 16
 
 // S'ha de canviar al necesari segons el nivell
 //#define INIT_PLAYER_X_TILES 4

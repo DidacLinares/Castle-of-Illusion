@@ -7,6 +7,7 @@
 #include <irrKlang.h>
 #include "ShaderProgram.h"
 #include "TileMap.h"
+#include "sprite.h"
 
 
 class TitleScreen {
@@ -27,6 +28,7 @@ private:
 	Texture imageTexture;
 	glm::mat4 projection;
 	GLuint vao, vbo;
+	Sprite* sprite;
 };
 
 #endif // _TITLE_SCENE_INCLUDE

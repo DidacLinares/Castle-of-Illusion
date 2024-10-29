@@ -10,10 +10,6 @@
 #include "Armadillo.h"
 
 
-// Mirar que fa aixo
-#define SCREEN_X 32
-#define SCREEN_Y 16
-
 TitleScreen::TitleScreen() {
 
 }

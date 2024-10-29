@@ -4,22 +4,11 @@
 #include "MainMenu.h"
 #include "Game.h"
 
-
-// Mirar que fa aixo
-#define SCREEN_X 32
-#define SCREEN_Y 16
-
-// S'ha de canviar al necesari segons el nivell
-//#define INIT_PLAYER_X_TILES 4
-//#define INIT_PLAYER_Y_TILES 25
-
-
-
 MainMenu::MainMenu() {
 }
 
 MainMenu::~MainMenu() {
-	if(background != nullptr)
+	if (background != nullptr) delete background;
 	if (arrow != nullptr) delete arrow;
 }
 

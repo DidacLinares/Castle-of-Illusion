@@ -38,10 +38,12 @@ void TitleScreen::init() {
 	sprite->addKeyframe(1, glm::vec2(0.f, 0.f));
 
 	sprite->setPosition(glm::vec2(0, 0));
+	sprite->changeAnimation(1);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 }
 
 void TitleScreen::update(int deltaTime) {
+	sprite->update(deltaTime);
 	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
 		Game::instance().changeScene(Game::MAIN_MENU);
 	}

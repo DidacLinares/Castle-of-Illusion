@@ -20,8 +20,6 @@ MainMenu::MainMenu() {
 
 MainMenu::~MainMenu() {
 	if (arrow != nullptr) delete arrow;
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
 }
 
 enum Animation {
@@ -30,37 +28,20 @@ enum Animation {
 
 void MainMenu::init() {
 	initShaders();
-
+	//glViewport(0, 0, 1280, 720);
 	imageTexture.loadFromFile("images/main_menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	imageTexture.setMinFilter(GL_NEAREST);
-	imageTexture.setMagFilter(GL_NEAREST);
+	sprite = Sprite::createSprite(glm::ivec2(1280, 720), glm::vec2(1, 1), &imageTexture, &texProgram);
+	sprite->setNumberAnimations(2);
 
-	projection = glm::ortho(0.0f, float(SCREEN_X), float(SCREEN_Y), 0.0f);
+	sprite->setAnimationSpeed(0, 1);
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
 
-	GLfloat vertices[] = { 0.0f,  0.0f, 0.0f, 0.0f, float(SCREEN_X), 0.0f, 1.0f, 0.0f, float(SCREEN_X), float(SCREEN_Y),  1.0f, 1.0f, 0.0f, float(SCREEN_Y),  0.0f, 1.0f };
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-
-	glBindVertexArray(vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
-
+	sprite->setAnimationSpeed(1, 1);
+	sprite->addKeyframe(1, glm::vec2(0.f, 0.f));
+	sprite->changeAnimation(1);
+	sprite->setPosition(glm::vec2(0, 0));
 	arrowTexture.loadFromFile("images/arrow.png", TEXTURE_PIXEL_FORMAT_RGBA);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	arrow = Sprite::createSprite(glm::ivec2(5, 5), glm::vec2(0.5f, 1.0f), &arrowTexture, &texProgram);
+	arrow = Sprite::createSprite(glm::ivec2(60, 40), glm::vec2(0.5f, 1.0f), &arrowTexture, &texProgram);
 	arrow->setNumberAnimations(2);
 
 	arrow->setAnimationSpeed(DUMMY, 1);
@@ -72,10 +53,11 @@ void MainMenu::init() {
 
 	arrow->changeAnimation(ARROW);
 
-	arrowX = SCREEN_X / 2;
-	arrowY = SCREEN_Y / 2;
+	arrowX = 1280 / 2;
+	arrowY = 720 / 2;
 
 	arrow->setPosition(glm::vec2(float(arrowX), float(arrowY)));
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 
 	if (Game::instance().getTries() == 0) {
 		Game::instance().setTries(3);
@@ -84,7 +66,7 @@ void MainMenu::init() {
 
 void MainMenu::update(int deltaTime) {
 	arrow->update(deltaTime);
-
+	sprite->update(deltaTime);
 	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
 		
 		switch (selectedOption) {
@@ -116,8 +98,8 @@ void MainMenu::update(int deltaTime) {
 				arrow->changeAnimation(ARROW);
 			}
 		}
-		arrowX = 33;
-		arrowY = 26;
+		arrowX = 1280 / 3;//33;
+		arrowY = 720 / 4;//26;
 	}
 	else if (selectedOption == 1) {
 		// Instruccions
@@ -131,8 +113,8 @@ void MainMenu::update(int deltaTime) {
 				arrow->changeAnimation(ARROW);
 			}
 		}
-		arrowX = 18;
-		arrowY = 38;
+		arrowX = 240;//33;
+		arrowY = 280;//26;
 	}
 	else {
 		// Credits
@@ -147,8 +129,8 @@ void MainMenu::update(int deltaTime) {
 			}
 		}
 
-		arrowX = 30;
-		arrowY = 52;
+		arrowX = 1280/3 - 40;
+		arrowY = 370;
 	}
 
 	Game::instance().keyReleased(GLFW_KEY_W);
@@ -163,21 +145,15 @@ void MainMenu::render() {
 	glm::mat4 modelview;
 
 	texProgram.use();
-
-	// Configuración de la proyección y la vista
+	// Center the camera at player position
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-
-	// Bind de la textura
-	imageTexture.use();
-
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-	glBindVertexArray(0);
-
+	sprite->render();
 	arrow->render();
 }
 

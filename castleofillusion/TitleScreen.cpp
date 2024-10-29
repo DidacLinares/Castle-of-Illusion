@@ -19,7 +19,7 @@ TitleScreen::TitleScreen() {
 }
 
 TitleScreen::~TitleScreen() {
-	if (sprite != nullptr) delete sprite;
+	if (background != nullptr) delete background;
 }
 
 
@@ -28,22 +28,22 @@ void TitleScreen::init() {
 	//map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	imageTexture.loadFromFile("images/main_screen.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(1280, 720), glm::vec2(1, 1), &imageTexture, &texProgram);
-	sprite->setNumberAnimations(2);
+	background = Sprite::createSprite(glm::ivec2(1280, 720), glm::vec2(1, 1), &imageTexture, &texProgram);
+	background->setNumberAnimations(2);
 
-	sprite->setAnimationSpeed(0, 1);
-	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
+	background->setAnimationSpeed(0, 1);
+	background->addKeyframe(0, glm::vec2(0.f, 0.f));
 
-	sprite->setAnimationSpeed(1, 1);
-	sprite->addKeyframe(1, glm::vec2(0.f, 0.f));
+	background->setAnimationSpeed(1, 1);
+	background->addKeyframe(1, glm::vec2(0.f, 0.f));
 
-	sprite->setPosition(glm::vec2(0, 0));
-	sprite->changeAnimation(1);
+	background->setPosition(glm::vec2(0, 0));
+	background->changeAnimation(1);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 }
 
 void TitleScreen::update(int deltaTime) {
-	sprite->update(deltaTime);
+	background->update(deltaTime);
 	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
 		Game::instance().changeScene(Game::MAIN_MENU);
 	}
@@ -56,7 +56,6 @@ void TitleScreen::render() {
 	glm::mat4 modelview;
 
 	texProgram.use();
-	// Center the camera at player position
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT),0.f);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -64,7 +63,7 @@ void TitleScreen::render() {
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	sprite->render();
+	background->render();
 }
 
 void TitleScreen::initShaders() {

@@ -19,6 +19,7 @@ MainMenu::MainMenu() {
 }
 
 MainMenu::~MainMenu() {
+	if(background != nullptr)
 	if (arrow != nullptr) delete arrow;
 }
 
@@ -30,16 +31,16 @@ void MainMenu::init() {
 	initShaders();
 	//glViewport(0, 0, 1280, 720);
 	imageTexture.loadFromFile("images/main_menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(1280, 720), glm::vec2(1, 1), &imageTexture, &texProgram);
-	sprite->setNumberAnimations(2);
+	background = Sprite::createSprite(glm::ivec2(1280, 720), glm::vec2(1, 1), &imageTexture, &texProgram);
+	background->setNumberAnimations(2);
 
-	sprite->setAnimationSpeed(0, 1);
-	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
+	background->setAnimationSpeed(0, 1);
+	background->addKeyframe(0, glm::vec2(0.f, 0.f));
 
-	sprite->setAnimationSpeed(1, 1);
-	sprite->addKeyframe(1, glm::vec2(0.f, 0.f));
-	sprite->changeAnimation(1);
-	sprite->setPosition(glm::vec2(0, 0));
+	background->setAnimationSpeed(1, 1);
+	background->addKeyframe(1, glm::vec2(0.f, 0.f));
+	background->changeAnimation(1);
+	background->setPosition(glm::vec2(0, 0));
 	arrowTexture.loadFromFile("images/arrow.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	arrow = Sprite::createSprite(glm::ivec2(60, 40), glm::vec2(0.5f, 1.0f), &arrowTexture, &texProgram);
 	arrow->setNumberAnimations(2);
@@ -66,7 +67,7 @@ void MainMenu::init() {
 
 void MainMenu::update(int deltaTime) {
 	arrow->update(deltaTime);
-	sprite->update(deltaTime);
+	background->update(deltaTime);
 	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
 		
 		switch (selectedOption) {
@@ -145,7 +146,6 @@ void MainMenu::render() {
 	glm::mat4 modelview;
 
 	texProgram.use();
-	// Center the camera at player position
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -153,7 +153,7 @@ void MainMenu::render() {
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	sprite->render();
+	background->render();
 	arrow->render();
 }
 

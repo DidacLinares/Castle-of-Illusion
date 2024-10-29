@@ -28,7 +28,7 @@ private:
 
 	Texture arrowTexture;
 	Sprite* arrow;
-	Sprite* sprite;
+	Sprite* background;
 
 	int arrowX, arrowY;
 

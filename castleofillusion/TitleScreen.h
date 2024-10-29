@@ -28,7 +28,7 @@ private:
 	Texture imageTexture;
 	glm::mat4 projection;
 	GLuint vao, vbo;
-	Sprite* sprite;
+	Sprite* background;
 };
 
 #endif // _TITLE_SCENE_INCLUDE

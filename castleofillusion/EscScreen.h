@@ -28,6 +28,7 @@ private:
 
 	Texture arrowTexture;
 	Sprite* arrow;
+	Sprite* background;
 
 	int arrowX, arrowY;
 

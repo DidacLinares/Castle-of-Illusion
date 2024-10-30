@@ -93,6 +93,9 @@ void Game::changeScene(int newStatus) {
 	case PRACTICE_LEVEL:
 		delete scene;
 		break;
+	case MAIN_LEVEL:
+		delete scene;
+		break;
 	case PAUSE:
 		if (escScreen != nullptr) delete escScreen;
 		break;
@@ -126,6 +129,11 @@ void Game::changeScene(int newStatus) {
 			gameOverScreen = new GameOverScreen();
 			gameOverScreen->init();
 			break;
+		case MAIN_LEVEL:
+			mainLevel = new MainLevel();
+			mainLevel->init(soundEngine, jumpSound, levelMusic, boxBreaking, dead, levelComplete);
+			scene = (Scene*) mainLevel;
+			break;
 		case PAUSE:
 			if (escScreen != nullptr) delete escScreen;
 			escScreen = new EscScreen();
@@ -151,6 +159,9 @@ void Game::renderScene(int status) {
 		case PRACTICE_LEVEL:
 			scene->render();
 			break;
+		case MAIN_LEVEL:
+			scene->render();
+			break;
 		case GAME_OVER:
 			gameOverScreen->render();
 			break;
@@ -172,6 +183,9 @@ void Game::updateScene(int status, int deltaTime) {
 		creditsScreen->update(deltaTime);
 		break;
 	case PRACTICE_LEVEL:
+		scene->update(deltaTime);
+		break;
+	case MAIN_LEVEL:
 		scene->update(deltaTime);
 		break;
 	case GAME_OVER:

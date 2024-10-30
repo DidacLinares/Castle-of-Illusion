@@ -1,0 +1,56 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "main_level.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "main_level.tmx": {
+            "scale": 1,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 542.5,
+                "y": 457
+            }
+        },
+        "sky_1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "sky_2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Workspace/Uni/Q7/VJ/2DGame/castleofillusions/tiled/main_level",
+    "last.imagePath": "C:/Workspace/Uni/Q7/VJ/2DGame/castleofillusions/castleofillusion/images",
+    "map.height": 80,
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 97,
+    "openFiles": [
+        "main_level.tmx",
+        "tiles.tsx",
+        "sky_2.tsx"
+    ],
+    "project": "main_level.tiled-project",
+    "recentFiles": [
+        "sky_2.tsx",
+        "tiles.tsx",
+        "main_level.tmx",
+        "sky_1.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

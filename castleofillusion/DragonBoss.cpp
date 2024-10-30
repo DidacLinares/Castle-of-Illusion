@@ -4,6 +4,7 @@
 #include "DragonBoss.h"
 #include "Game.h"
 #include "DragonBossProjectile.h"
+#include "IllusionGem.h"
 
 #define OFFSET_BODY_X 0.33
 #define OFFSET_HEAD_X 0.33
@@ -78,6 +79,9 @@ void DragonBoss::update(int deltaTime) {
 	sprite->update(deltaTime);
 
 	if (dead) {
+		IllusionGem* gem = new IllusionGem();
+		gem->init(glm::ivec2(pos.x, pos.y), Game::instance().getScene()->getShaderProgram());
+		Game::instance().getScene()->addEntity(gem);
 		return;
 	}
 

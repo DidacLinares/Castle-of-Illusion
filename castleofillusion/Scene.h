@@ -24,26 +24,26 @@ public:
 	Scene();
 	~Scene();
 
-	void init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* levelMusic, irrklang::ISoundSource* boxBreaking, irrklang::ISoundSource* dead,
-	irrklang::ISoundSource* levelComplete, irrklang::ISoundSource* hit);
-	void update(int deltaTime);
-	void render();
-	void renderInterface();
+	virtual void init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* levelMusic, irrklang::ISoundSource* boxBreaking, irrklang::ISoundSource* dead,
+						irrklang::ISoundSource* levelComplete,irrklang::ISoundSource* hit);
+	virtual void update(int deltaTime);
+	virtual void render();
+	virtual void renderInterface();
 
-	void addEntity(NonPlayerEntity* entity);
+	virtual void addEntity(NonPlayerEntity* entity);
 
-	std::vector<NonPlayerEntity*>& getEnemies();
-	ShaderProgram& getShaderProgram() { return texProgram; }
-	void changeScene() { endLevel = true; }
-	void changeMusicToDying();
+	virtual std::vector<NonPlayerEntity*>& getEnemies();
+	virtual ShaderProgram& getShaderProgram() { return texProgram; }
+	virtual void changeScene() { endLevel = true; }
+	virtual void changeMusicToDying();
 
-private:
-	void initShaders();
-	void initInterface();
-	void initNumbers();
-	void initDummies();
+protected:
+	virtual void initShaders();
+	virtual void initInterface();
+	virtual void initNumbers();
+	virtual void initDummies();
 
-private:
+protected:
 	TileMap* map;
 	TileMap* layer_0;
 	TileMap* layer_1;

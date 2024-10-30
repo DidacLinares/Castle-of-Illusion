@@ -38,9 +38,9 @@ public:
 	int getLives();
 	int getScore();
 	void addScore(int points);
+	void changeAnim(int anim);
 
 private:
-	void changeAnim(int anim);
 
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound; 

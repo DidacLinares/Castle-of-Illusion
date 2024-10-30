@@ -233,12 +233,13 @@ void Scene::update(int deltaTime) {
 		}
 		if (counter <= 0) {
 			music->stop();
-			levelCompleteMusic = soundEngine->play2D(dead, false, true, true);
+			levelCompleteMusic = soundEngine->play2D(levelComplete, false, true, true);
 			levelCompleteMusic->setVolume(0.2f);
 			if (levelCompleteMusic->getIsPaused()) levelCompleteMusic->setIsPaused(false);
+			player->changeAnim(0);
 		}
 		++counter;
-		if (counter >= 175) {
+		if (counter >= 350) {
 			Game::instance().changeScene(Game::MAIN_MENU);
 			return;
 		}

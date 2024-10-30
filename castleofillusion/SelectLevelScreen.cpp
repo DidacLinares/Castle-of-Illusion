@@ -60,7 +60,7 @@ void SelectLevelScreen::update(int deltaTime) {
 			Game::instance().changeScene(Game::PRACTICE_LEVEL);
 			break;
 		case 1:
-			//Game::instance().changeScene(Game::FINAL_LEVEL);
+			Game::instance().changeScene(Game::MAIN_LEVEL);
 			break;
 		}
 

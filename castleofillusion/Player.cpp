@@ -435,7 +435,7 @@ void Player::checkGroundCollision() {
 					changeAnim(JUMP_RIGHT);
 				}
 			}
-			if (jumpSound && !soundEngine->isCurrentlyPlaying(jumpSound->getName())) {
+			if (jumpSound) {
 				soundEngine->play2D(jumpSound);
 			}
 			bJumping = true;
@@ -474,6 +474,9 @@ void Player::onEntityHit(bool isPlayer) {
 		this->setDead(true);
 		return;
 	}
+	if (hitSound) {
+		soundEngine->play2D(hitSound);
+	}
 	cout << "Lives after: " << lives << endl;
 
 	// Mickey needs to be invulnerable for a while
@@ -496,9 +499,10 @@ bool Player::checkCollision(glm::vec4 hitboxentity) {
 		hitbox.y + hitbox.w > hitboxentity.y);  // hitboxplayer.bottom > hitboxenemy.top
 }
 
-void Player::setSoundEngineAndSounds(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* jumpSound) {
+void Player::setSoundEngineAndSounds(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* hitSound) {
 	this->soundEngine = soundEngine;
 	this->jumpSound = jumpSound;
+	this->hitSound = hitSound;
 }
 
 void Player::grabAnimation() {

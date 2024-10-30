@@ -84,11 +84,12 @@ Scene::~Scene() {
 
 
 void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* levelMusic, irrklang::ISoundSource* boxBreaking, irrklang::ISoundSource* dead,
-	irrklang::ISoundSource* levelComplete) {
+	irrklang::ISoundSource* levelComplete, irrklang::ISoundSource* hit) {
 	initShaders();
 	this->soundEngine = soundEngine;
 	this->jumpSound = jumpSound;
 	this->boxBreaking = boxBreaking;
+	this->hit = hit;
 	this->levelComplete = levelComplete;
 	this->dead = dead;
 
@@ -99,7 +100,7 @@ void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jum
 	map = TileMap::createTileMap("levels/level01/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	player = new Player();
-	player->setSoundEngineAndSounds(soundEngine,jumpSound);
+	player->setSoundEngineAndSounds(soundEngine,jumpSound,hit);
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y - 5), texProgram); // canviat per alinear la hitbox al numberSprite, reajustar si dona problemes
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
@@ -394,7 +395,6 @@ void Scene::renderInterface() {
 		numberSprite->changeAnimation(numberMaping[n]);
 		numberSprite->render();
 	}
-
 }
 
 void Scene::initShaders() {

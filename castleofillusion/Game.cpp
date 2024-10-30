@@ -11,6 +11,7 @@ void Game::init() {
 	boxBreaking = soundEngine->addSoundSourceFromFile("sound/box_breaking.wav");
 	levelComplete = soundEngine->addSoundSourceFromFile("sound/level_complete.wav");
 	dead = soundEngine->addSoundSourceFromFile("sound/lose_live.wav");
+	hit = soundEngine->addSoundSourceFromFile("sound/hit.wav");
 
 	levelMusic = soundEngine->addSoundSourceFromFile("sound/level.wav");
 	titleScreen = new TitleScreen();
@@ -119,7 +120,7 @@ void Game::changeScene(int newStatus) {
 			break;
 		case PRACTICE_LEVEL:
 			scene = new Scene();
-			scene->init(soundEngine,jumpSound,levelMusic,boxBreaking,dead,levelComplete);
+			scene->init(soundEngine,jumpSound,levelMusic,boxBreaking,dead,levelComplete,hit);
 			break;
 		case GAME_OVER:
 			gameOverScreen = new GameOverScreen();

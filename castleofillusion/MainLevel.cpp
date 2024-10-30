@@ -353,6 +353,9 @@ void MainLevel::update(int deltaTime) {
 		if (nextRemove++ >= REMOVE_AT) {
 			nextRemove = 0;
 			if (time > 0) --time;
+			else {
+				player->setDying(true);
+			}
 
 			// Remove null pointers to avoid memory leaks
 			entityArray.erase(std::remove(entityArray.begin(), entityArray.end(), nullptr), entityArray.end());

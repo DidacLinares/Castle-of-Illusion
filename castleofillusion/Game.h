@@ -12,6 +12,7 @@
 #include "EscScreen.h"
 #include "GameOverScreen.h"
 #include "MainLevel.h"
+#include "InstructionsScreen.h"
 
 
 #define SCREEN_WIDTH 1280
@@ -31,6 +32,7 @@ public:
 	enum GameStatus {
 		TITLE,
 		MAIN_MENU,
+		INSTRUCTIONS_MENU,
 		CREDITS_MENU,
 		SELECT_LEVEL,
 		PRACTICE_LEVEL,
@@ -91,6 +93,7 @@ private:
 	EscScreen* escScreen = nullptr;
 	GameOverScreen* gameOverScreen = nullptr;
 	MainLevel* mainLevel = nullptr;
+	InstructionsScreen* instructionsScreen = nullptr;
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound;
 	irrklang::ISoundSource* boxBreaking;

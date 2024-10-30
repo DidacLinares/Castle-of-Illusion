@@ -415,9 +415,6 @@ void Player::update(int deltaTime) {
 			pos.y = int(startY - 50 * sin(3.14159 * deathAngle / 180.f));
 			pos.x += 0.5;
 		}
-		else {
-			pos.y += 4;
-		}
 	}
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
@@ -465,7 +462,7 @@ void Player::render() {
 		}
 	}
 
-	sprite->render();
+	if (!musicDeathfase) sprite->render();
 }
 
 bool Player::isPlayerGroundPounding() {

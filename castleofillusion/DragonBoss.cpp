@@ -12,6 +12,7 @@
 #define ATTACK_COOLDOWN 1400
 #define CHANGE_HEAD_POSITION 167
 #define ATTACKING_TIME 258
+#define BLINK_TIME 200
 
 enum DragonBossBodyAnim {
 	DUMMY, BODY
@@ -75,15 +76,19 @@ void DragonBoss::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram
 }
 
 void DragonBoss::update(int deltaTime) {
-	headSprite->update(deltaTime);
-	sprite->update(deltaTime);
-
-	if (dead) {
+	if (dying) {
 		IllusionGem* gem = new IllusionGem();
-		gem->init(glm::ivec2(pos.x, pos.y), Game::instance().getScene()->getShaderProgram());
+		gem->setTileMap(map);
+		gem->init(glm::ivec2(32, 16), Game::instance().getScene()->getShaderProgram());
+		gem->setPosition(pos);
+		gem->setPlayer(player);
 		Game::instance().getScene()->addEntity(gem);
+		dead = true;
 		return;
 	}
+
+	headSprite->update(deltaTime);
+	sprite->update(deltaTime);
 
 	if (player->checkCollision(getCollisionBox())) {
 		onEntityHit();
@@ -136,6 +141,12 @@ void DragonBoss::render() {
 		return;
 	}
 
+	if (isInvulnerable()) {
+		if (fmod(invulnerableTimeLeft, BLINK_TIME * 2) < BLINK_TIME) {
+			return;
+		}
+	}
+
 	sprite->render();
 	headSprite->render();
 }
@@ -149,7 +160,7 @@ void DragonBoss::onEntityHit(bool isPlayer) {
 		this->setInvulnerable(true);
 
 		if (lives == 0) {
-			dead = true;
+			dying = true;
 		}
 
 		return;

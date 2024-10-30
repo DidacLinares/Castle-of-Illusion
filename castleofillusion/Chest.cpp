@@ -28,6 +28,17 @@ void Chest::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
+void Chest::update(int deltatime) {
+	Block::update(deltatime);
+
+	if (player->checkCollision(glm::vec4(pos.x,pos.y - 4,hitbox_x,hitbox_y)) && player->isPlayerGroundPounding()) {
+		tileX = pos.x / tileSize;
+		tileY = pos.y / tileSize;
+		map->setTileAsBlock(tileX, tileY, 0);
+		onEntityHit();
+	}
+}
+
 void Chest::onEntityHit(bool isPlayer) {
 	dead = true;
 	player->addScore(10);

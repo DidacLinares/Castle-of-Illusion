@@ -11,6 +11,7 @@
 #include "SelectLevelScreen.h"
 #include "EscScreen.h"
 #include "GameOverScreen.h"
+#include "MainLevel.h"
 
 
 #define SCREEN_WIDTH 1280
@@ -89,6 +90,7 @@ private:
 	CreditsScreen* creditsScreen = nullptr;
 	EscScreen* escScreen = nullptr;
 	GameOverScreen* gameOverScreen = nullptr;
+	MainLevel* mainLevel = nullptr;
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound;
 	irrklang::ISoundSource* boxBreaking;

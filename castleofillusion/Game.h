@@ -91,6 +91,10 @@ private:
 	GameOverScreen* gameOverScreen = nullptr;
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound;
+	irrklang::ISoundSource* boxBreaking;
+	irrklang::ISoundSource* dead;
+	irrklang::ISoundSource* levelComplete;
+	irrklang::ISoundSource* levelMusic;
 
 	int status = 0;
 	int lastScene = status;

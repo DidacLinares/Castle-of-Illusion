@@ -38,20 +38,21 @@ public:
 	int getLives();
 	int getScore();
 	void addScore(int points);
+	void changeAnim(int anim);
 
 private:
-	void changeAnim(int anim);
 
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound; 
-	bool bJumping,falling,shortenedJump, crouching, groundpounding, hit;
+	bool bJumping,falling, crouching, groundpounding, hit;
 	int jumpAngle;
 	float speedX,speedY, startY,maxY,startX = 0;
 	int score = 0;
-	bool godMode = false, object = false, dying = false;
-	int deathFase = 1;
+	bool godMode = false, object = false, dying = false, shortenedJump = false, deadMovement = false;
 	int deathTime = 0;
 	int deathAngle = 0;
+	bool musicDeathfase = false;
+	bool firstDyingIteration = true;
 };
 
 

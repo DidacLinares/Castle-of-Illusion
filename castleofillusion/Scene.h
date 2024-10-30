@@ -24,7 +24,8 @@ public:
 	Scene();
 	~Scene();
 
-	void init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound);
+	void init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* levelMusic, irrklang::ISoundSource* boxBreaking, irrklang::ISoundSource* dead,
+	irrklang::ISoundSource* levelComplete);
 	void update(int deltaTime);
 	void render();
 	void renderInterface();
@@ -34,6 +35,7 @@ public:
 	std::vector<NonPlayerEntity*>& getEnemies();
 	ShaderProgram& getShaderProgram() { return texProgram; }
 	void changeScene() { endLevel = true; }
+	void changeMusicToDying();
 
 private:
 	void initShaders();
@@ -49,6 +51,14 @@ private:
 	Player* player;
 	irrklang::ISoundEngine* soundEngine;
 	irrklang::ISoundSource* jumpSound;
+	irrklang::ISoundSource* boxBreaking;
+	irrklang::ISoundSource* levelMusic;
+	irrklang::ISoundSource* dead;
+	irrklang::ISoundSource* levelComplete;
+	irrklang::ISound* music;
+	irrklang::ISound* dyingMusic;
+	irrklang::ISound* levelCompleteMusic;
+
 	std::vector<NonPlayerEntity*> entityArray;
 	bool endLevel = false;
 	std::vector<int> numberMaping;
@@ -62,7 +72,7 @@ private:
 	Texture spritesheetinterfaceBackground;
 	Sprite* starSprite;
 	Texture spritesheetStar;
-	int nextRemove = 0,time = 300;
+	int nextRemove = 0,time = 300,counter = 0;
 };
 
 

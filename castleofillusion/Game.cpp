@@ -8,6 +8,11 @@ void Game::init() {
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	soundEngine = irrklang::createIrrKlangDevice();
 	jumpSound = soundEngine->addSoundSourceFromFile("sound/jump.wav");
+	boxBreaking = soundEngine->addSoundSourceFromFile("sound/box_breaking.wav");
+	levelComplete = soundEngine->addSoundSourceFromFile("sound/level_complete.wav");
+	dead = soundEngine->addSoundSourceFromFile("sound/lose_live.wav");
+
+	levelMusic = soundEngine->addSoundSourceFromFile("sound/level.wav");
 	titleScreen = new TitleScreen();
 	titleScreen->init();
 }
@@ -114,7 +119,7 @@ void Game::changeScene(int newStatus) {
 			break;
 		case PRACTICE_LEVEL:
 			scene = new Scene();
-			scene->init(soundEngine,jumpSound);
+			scene->init(soundEngine,jumpSound,levelMusic,boxBreaking,dead,levelComplete);
 			break;
 		case GAME_OVER:
 			gameOverScreen = new GameOverScreen();

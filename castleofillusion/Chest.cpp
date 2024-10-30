@@ -6,8 +6,10 @@
 #define OFFSET_X 0.125
 #define OFFSET_Y 0.5
 
-void Chest::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
+void Chest::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* boxBreaking) {
 	dead = false;
+	this->soundEngine = soundEngine;
+	this->boxBreaking = boxBreaking;
 	spritesheet.loadFromFile("images/blocks.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(OFFSET_X, OFFSET_Y), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(2);
@@ -42,6 +44,9 @@ void Chest::update(int deltatime) {
 void Chest::onEntityHit(bool isPlayer) {
 	dead = true;
 	player->addScore(10);
+	if (boxBreaking && !soundEngine->isCurrentlyPlaying(boxBreaking->getName())) {
+		soundEngine->play2D(boxBreaking);
+	}
 	Cake* cake;
 	Coin* coin;
 	switch (objectToSpawn) {
@@ -63,7 +68,6 @@ void Chest::onEntityHit(bool isPlayer) {
 	default:
 		break;
 	}
-
 }
 
 void Chest::setObjectToSpawn(int id) {

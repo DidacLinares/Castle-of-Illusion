@@ -3,57 +3,43 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "TitleScreen.h"
 #include "Game.h"
-
-
-// Mirar que fa aixo
-#define SCREEN_X 32
-#define SCREEN_Y 16
-
-// S'ha de canviar al necesari segons el nivell
-//#define INIT_PLAYER_X_TILES 4
-//#define INIT_PLAYER_Y_TILES 25
-
+#include "Entity.h"
+#include "DragonBoss.h"
+#include "illusionGem.h"
+#include "BreakeableBlock.h"
+#include "Armadillo.h"
 
 
 TitleScreen::TitleScreen() {
+
 }
 
 TitleScreen::~TitleScreen() {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
+	if (background != nullptr) delete background;
 }
 
 
 void TitleScreen::init() {
 	initShaders();
+	//map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	imageTexture.loadFromFile("images/main_screen.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	imageTexture.setMinFilter(GL_NEAREST);
-	imageTexture.setMagFilter(GL_NEAREST);
+	background = Sprite::createSprite(glm::ivec2(1280, 720), glm::vec2(1, 1), &imageTexture, &texProgram);
+	background->setNumberAnimations(2);
 
-	projection = glm::ortho(0.0f, float(SCREEN_X), float(SCREEN_Y), 0.0f);
+	background->setAnimationSpeed(0, 1);
+	background->addKeyframe(0, glm::vec2(0.f, 0.f));
 
-	GLfloat vertices[] = { 0.0f,  0.0f, 0.0f, 0.0f, float(SCREEN_X), 0.0f, 1.0f, 0.0f, float(SCREEN_X), float(SCREEN_Y),  1.0f, 1.0f, 0.0f, float(SCREEN_Y),  0.0f, 1.0f };
+	background->setAnimationSpeed(1, 1);
+	background->addKeyframe(1, glm::vec2(0.f, 0.f));
 
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-
-	glBindVertexArray(vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
+	background->setPosition(glm::vec2(0, 0));
+	background->changeAnimation(1);
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 }
 
 void TitleScreen::update(int deltaTime) {
+	background->update(deltaTime);
 	if (Game::instance().getKey(GLFW_KEY_ENTER) || Game::instance().getKey(GLFW_KEY_SPACE)) {
 		Game::instance().changeScene(Game::MAIN_MENU);
 	}
@@ -66,20 +52,14 @@ void TitleScreen::render() {
 	glm::mat4 modelview;
 
 	texProgram.use();
-
-	// Configuración de la proyección y la vista
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT),0.f);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-
-	// Bind de la textura
-	imageTexture.use();
-
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-	glBindVertexArray(0);
+	background->render();
 }
 
 void TitleScreen::initShaders() {

@@ -9,8 +9,8 @@
 #define JUMP_STEP 3
 #define JUMP_HEIGHT 96
 #define FALL_STEP 4
-#define MAX_SPEED 4
-#define ACCELERATION 0.0075f
+#define MAX_SPEED 3
+#define ACCELERATION 0.01f
 #define GRAVITY 0.0075
 
 #define MAX_RISE_TIME 200

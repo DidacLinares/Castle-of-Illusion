@@ -14,7 +14,7 @@
 #define GRAVITY 0.0075
 
 #define MAX_RISE_TIME 200
-#define MAX_DEATH_TIME 1000
+#define MAX_DEATH_TIME 3050
 #define DEATH_ANGLE_STEP 4
 
 #define OFFSET_X 0.0625
@@ -223,7 +223,7 @@ void Player::update(int deltaTime) {
 				speedX += ACCELERATION * deltaTime;
 				if (speedX > 0) {
 					speedX = 0;
-					changeAnim(STAND_LEFT);
+					if(sprite->animation() != STAND_LEFT) changeAnim(STAND_LEFT);
 				}
 				pos.x += speedX;
 			}
@@ -232,7 +232,7 @@ void Player::update(int deltaTime) {
 				speedX -= ACCELERATION * deltaTime;
 				if (speedX < 0) {
 					speedX = 0;
-					changeAnim(STAND_RIGHT);
+					if(sprite->animation() != STAND_RIGHT) changeAnim(STAND_RIGHT);
 
 				}
 				pos.x += speedX;
@@ -307,7 +307,6 @@ void Player::update(int deltaTime) {
 			//if (groundpounding) jumpAngle += 1;
 			if (jumpAngle == 180) {
 				bJumping = false;
-				pos.y = startY;
 			}
 			else {
 				float antY = pos.y;
@@ -325,7 +324,8 @@ void Player::update(int deltaTime) {
 							}
 						}
 					}
-					bJumping = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y) || !collision;
+					if (collision) bJumping = collision;
+					else bJumping = !map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y);
 					falling = true;
 					if (!groundpounding && sprite->animation() != GROUND_POUND_LEFT && movingLeft()) {
 						if (object) {
@@ -374,6 +374,10 @@ void Player::update(int deltaTime) {
 		}
 	}
 	else {
+		if (firstDyingIteration) {
+			Game::instance().getScene()->changeMusicToDying();
+			firstDyingIteration = false;
+		}
 		if (sprite->animation() != DIE_RIGHT && sprite->animation() != DIE_LEFT) {
 			startX = pos.x;
 			startY = pos.y;
@@ -386,15 +390,19 @@ void Player::update(int deltaTime) {
 		deathTime += deltaTime;
 
 		if (deathAngle >= 220 && !dead) {
+			musicDeathfase = true;
 			if (deathTime >= MAX_DEATH_TIME) {
 				dead = true;
 				Game::instance().getScene()->changeScene();
 			}
 		}
 
-		if (!dead) {
+		if (!dead && !musicDeathfase) {
 			pos.y = int(startY - 50 * sin(3.14159 * deathAngle / 180.f));
 			pos.x += 0.5;
+		}
+		else {
+			pos.y += 4;
 		}
 	}
 	if (pos.y >= 240) dying = true;

@@ -54,8 +54,8 @@ void Armadillo::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	pos.x = 0;
 	pos.y = 0;
 	tileMapDispl = glm::vec2(tileMapPos);
-	hitbox_x = 24;
-	hitbox_y = 32;
+	hitbox_x = 16;
+	hitbox_y = 16;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
@@ -80,7 +80,7 @@ void Armadillo::update(int deltaTime) {
 			if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
 				sprite->changeAnimation(MOVE_RIGHT);
 			}
-			if (player->checkCollision(getCollisionBox())) {
+			if (player->checkCollision(glm::vec4(pos.x,pos.y - 11,hitbox_x,hitbox_y))) {
 				onEntityHit();
 			}
 		}
@@ -89,16 +89,12 @@ void Armadillo::update(int deltaTime) {
 			else pos.x += 4;
 
 			if (map->collisionMoveRight(pos, glm::vec2(hitbox_x, hitbox_y))) {
-				sprite->changeAnimation(MOVE_LEFT);
-				rolling = false;
-				rollTimer = 0;
+				sprite->changeAnimation(ROLL_LEFT);
 			}
 			if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
-				sprite->changeAnimation(MOVE_RIGHT);
-				rolling = false;
-				rollTimer = 0;
+				sprite->changeAnimation(ROLL_RIGHT);
 			}
-			if (player->checkCollision(getCollisionBox())) {
+			if (player->checkCollision(glm::vec4(pos.x, pos.y - 11, hitbox_x, hitbox_y))) {
 				onEntityHit();
 			}
 		}

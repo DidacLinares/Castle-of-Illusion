@@ -48,10 +48,11 @@ private:
 	int jumpAngle;
 	float speedX,speedY, startY,maxY,startX = 0;
 	int score = 0;
-	bool godMode = false, object = false, dying = false, shortenedJump = false;
-	int deathFase = 1;
+	bool godMode = false, object = false, dying = false, shortenedJump = false, deadMovement = false;
 	int deathTime = 0;
 	int deathAngle = 0;
+	bool musicDeathfase = false;
+	bool firstDyingIteration = true;
 };
 
 

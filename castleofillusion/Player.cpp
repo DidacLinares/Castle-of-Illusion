@@ -456,11 +456,13 @@ void Player::checkGroundCollision() {
 	else {
 		if (movingLeft()) {
 			if (object && sprite->animation() != FALL_GRABBED_LEFT) changeAnim(FALL_GRABBED_LEFT);
-			else if (!object && sprite->animation() != FALL_LEFT) changeAnim(FALL_LEFT);
+			else if (!object && sprite->animation() != FALL_LEFT && sprite->animation() != GROUND_POUND_LEFT) changeAnim(FALL_LEFT);
+			falling = true;
 		} 
 		else {
 			if (object && sprite->animation() != FALL_GRABBED_RIGHT) changeAnim(FALL_GRABBED_RIGHT);
-			else if (!object && sprite->animation() != FALL_RIGHT) changeAnim(FALL_RIGHT);
+			else if (!object && sprite->animation() != FALL_RIGHT && sprite->animation() != GROUND_POUND_RIGHT) changeAnim(FALL_RIGHT);
+			falling = true;
 		}
 	}
 }

@@ -18,6 +18,10 @@ enum TreeAnims {
 };
 
 
+TreeEnemy::TreeEnemy(bool direction) {
+	this->direction = direction;
+}
+
 void TreeEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 	dead = false;
 	spritesheet.loadFromFile("images/TreeEnemy.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -41,7 +45,7 @@ void TreeEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	sprite->setAnimationSpeed(DIE_RIGHT, 1);
 	sprite->addKeyframe(DIE_RIGHT, glm::vec2(3 * OFFSET_X, 0.f));
 
-	sprite->changeAnimation(1);
+	sprite->changeAnimation(direction);
 	pos.x = 0;
 	pos.y = 0;
 	tileMapDispl = glm::vec2(tileMapPos);
@@ -53,15 +57,15 @@ void TreeEnemy::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 void TreeEnemy::update(int deltaTime) {
 	sprite->update(deltaTime);
 	if (!dying) {
-		if (sprite->animation() == MOVE_LEFT) pos.x -= 2;
-		else pos.x += 2;
+		if (sprite->animation() == MOVE_LEFT) pos.x -= 1.5;
+		else pos.x += 1.5;
 
 		if (map->collisionMoveRight(pos,glm::vec2(hitbox_x,hitbox_y))) {
-			pos.x -= 2;
+			pos.x -= 1.5;
 			sprite->changeAnimation(MOVE_LEFT);
 		}
 		if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
-			pos.x += 2;
+			pos.x += 1.5;
 			sprite->changeAnimation(MOVE_RIGHT);
 		}
 		if (player->checkCollision(getCollisionBox())) {

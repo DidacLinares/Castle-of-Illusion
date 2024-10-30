@@ -201,31 +201,37 @@ void DragonBoss::adjustHeadPosition(int animation) {
 void DragonBoss::spawnProjectile(int i) {
 	float projX, projY = 0.0;
 
+	int position = 0;
 	switch (headSprite->animation()) {
 		case HEAD_DOWN_LEFT:
 		case HEAD_DOWN_RIGHT:
 			projX = pos.x + 13;
 			projY = pos.y + 27;
+			position = 1;
 			break;
 
 		case HEAD_CLOSE_LEFT:
 			projX = pos.x + 2;
 			projY = pos.y + 28;
+			position = 0;
 			break;
 
 		case HEAD_CLOSE_RIGHT:
 			projX = pos.x + 30;
 			projY = pos.y + 29;
+			position = 2;
 			break;
 
 		case HEAD_LEFT:
 			projX = pos.x - 10;
 			projY = pos.y + 22;
+			position = 0;
 			break;
 
 		case HEAD_RIGHT:
 			projX = pos.x + 40;
 			projY = pos.y + 22;
+			position = 2;
 			break;
 	}
 
@@ -237,6 +243,7 @@ void DragonBoss::spawnProjectile(int i) {
 	projectile->setTileMap(map);
 	projectile->setPosition(glm::vec2(projX, projY));
 	projectile->setDirection(direction);
+	projectile->setHeadPosition(position);
 	projectile->setPlayer(player);
 	Game::instance().getScene()->addEntity(projectile);
 }

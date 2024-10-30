@@ -25,7 +25,7 @@ public:
 	~Scene();
 
 	virtual void init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* levelMusic, irrklang::ISoundSource* boxBreaking, irrklang::ISoundSource* dead,
-						irrklang::ISoundSource* levelComplete);
+						irrklang::ISoundSource* levelComplete,irrklang::ISoundSource* hit);
 	virtual void update(int deltaTime);
 	virtual void render();
 	virtual void renderInterface();
@@ -58,6 +58,7 @@ protected:
 	irrklang::ISound* music;
 	irrklang::ISound* dyingMusic;
 	irrklang::ISound* levelCompleteMusic;
+	irrklang::ISoundSource* hit;
 
 	std::vector<NonPlayerEntity*> entityArray;
 	bool endLevel = false;

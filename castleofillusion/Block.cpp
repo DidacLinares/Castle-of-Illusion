@@ -34,7 +34,12 @@ void Block::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 void Block::update(int deltaTime) {
 	if (throwed) {
-		pos.y += 3;
+		if (goingUp) {
+			//pos.y -= 1;
+			count += deltaTime;
+			if (count > 200) goingUp = false;
+		}
+		else pos.y += 3;
 		if (map->collisionMoveDown(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y)) {
 			throwed = false;
 			tileX = pos.x / tileSize;
@@ -134,8 +139,10 @@ void Block::update(int deltaTime) {
 		else {
 			left = player->movingLeft();
 			throwed = true;
+			goingUp = true;
 			transition = false;
 			pickedUp = false;
+			count = 0;
 		}
 	} 
 	if (!pickedUp && !throwed && !falling) {

@@ -97,6 +97,7 @@ private:
 	irrklang::ISoundSource* dead;
 	irrklang::ISoundSource* levelComplete;
 	irrklang::ISoundSource* levelMusic;
+	irrklang::ISoundSource* hit;
 
 	int status = 0;
 	int lastScene = status;

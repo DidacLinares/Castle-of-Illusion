@@ -16,6 +16,8 @@ public:
 protected:
 	bool pickedUp = false, transition = false, falling = false,throwed = false,left = false;
 	int tileX, tileY,tileSize;
+	bool goingUp = false;
+	int count = 0;
 	vector<NonPlayerEntity*> entities;
 
 };

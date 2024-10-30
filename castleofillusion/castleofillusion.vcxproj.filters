@@ -22,13 +22,14 @@
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="DragonBoss.cpp" />
-    <ClCompile Include="illusionGem.cpp" />
+    <ClCompile Include="IllusionGem.cpp" />
     <ClCompile Include="CreditsScreen.cpp" />
     <ClCompile Include="SelectLevelScreen.cpp" />
     <ClCompile Include="EscScreen.cpp" />
     <ClCompile Include="BreakeableBlock.cpp" />
     <ClCompile Include="Armadillo.cpp" />
     <ClCompile Include="DragonBossProjectile.cpp" />
+    <ClCompile Include="GameOverScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
@@ -52,12 +53,13 @@
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="DragonBoss.h" />
-    <ClInclude Include="illusionGem.h" />
+    <ClInclude Include="IllusionGem.h" />
     <ClInclude Include="CreditsScreen.h" />
     <ClInclude Include="SelectLevelScreen.h" />
     <ClInclude Include="EscScreen.h" />
     <ClInclude Include="BreakeableBlock.h" />
     <ClInclude Include="Armadillo.h" />
     <ClInclude Include="DragonBossProjectile.h" />
+    <ClInclude Include="GameOverScreen.h" />
   </ItemGroup>
 </Project>

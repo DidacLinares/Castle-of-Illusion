@@ -1,4 +1,4 @@
-#include "illusionGem.h"
+#include "IllusionGem.h"
 #include "Game.h"
 
 #define OFFSET_X 0.125

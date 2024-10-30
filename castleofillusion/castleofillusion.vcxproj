@@ -27,7 +27,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Cake.h" />
     <ClInclude Include="GameOverScreen.h" />
-    <ClInclude Include="illusionGem.h" />
+    <ClInclude Include="IllusionGem.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="SelectLevelScreen.h" />
     <ClInclude Include="TitleScreen.h" />
@@ -57,7 +57,7 @@
     <ClCompile Include="FlowerProjectile.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverScreen.cpp" />
-    <ClCompile Include="illusionGem.cpp" />
+    <ClCompile Include="IllusionGem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="SelectLevelScreen.cpp" />

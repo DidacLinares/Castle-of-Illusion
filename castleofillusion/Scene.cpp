@@ -240,7 +240,7 @@ void Scene::update(int deltaTime) {
 
 void Scene::render() {
 	glm::mat4 modelview;
-
+	glViewport(0, 161, 1280, 720 - 161);
 	texProgram.use();
 	// Center the camera at player position
 	glm::vec2 pos = player->getPosition();
@@ -249,9 +249,9 @@ void Scene::render() {
 	float y = pos.y;
 	if (pos.x <= 194) x = 194;
 	else if (pos.x >= 1350) x = 1350;
-	if (pos.y <= 80) y = 81;
+	if (pos.y <= 85) y = 86;
 	else if (pos.y >= 200) y = 199;
-	projection = glm::ortho(x - float(SCREEN_WIDTH) / zoom, x + float(SCREEN_WIDTH) / zoom, y + float(SCREEN_HEIGHT) / zoom, y - float(SCREEN_HEIGHT - 200) / zoom);
+	projection = glm::ortho(x - float(SCREEN_WIDTH) / zoom, x + float(SCREEN_WIDTH) / zoom, y + float(SCREEN_HEIGHT) / zoom, y - float(SCREEN_HEIGHT - 161) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -273,12 +273,13 @@ void Scene::render() {
 	
 	player->render();
 	renderInterface();
+	glViewport(0, 0, 1280, 720);
 }
 
 void Scene::renderInterface() {
-	glViewport(0, 0, 1280, 200);
+	glViewport(0, 0, 1280, 161);
 	texProgram.use();
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(200), 0.f);
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(161), 0.f);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -344,8 +345,6 @@ void Scene::renderInterface() {
 		numberSprite->render();
 	}
 
-
-	glViewport(0, 200, 1280, 720 - 200);
 }
 
 void Scene::initShaders() {

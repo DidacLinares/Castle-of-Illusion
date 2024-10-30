@@ -83,13 +83,14 @@ MainLevel::~MainLevel() {
 
 
 void MainLevel::init(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* levelMusic, irrklang::ISoundSource* boxBreaking, irrklang::ISoundSource* dead,
-	irrklang::ISoundSource* levelComplete) {
+	irrklang::ISoundSource* levelComplete, irrklang::ISoundSource* hit) {
 	initShaders();
 	this->soundEngine = soundEngine;
 	this->jumpSound = jumpSound;
 	this->boxBreaking = boxBreaking;
 	this->levelComplete = levelComplete;
 	this->dead = dead;
+	this->hit = hit;
 
 	//map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	layer_0 = TileMap::createTileMap("levels/main_level/sky_1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -98,7 +99,7 @@ void MainLevel::init(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource
 	map = TileMap::createTileMap("levels/main_level/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	player = new Player();
-	player->setSoundEngineAndSounds(soundEngine, jumpSound);
+	player->setSoundEngineAndSounds(soundEngine, jumpSound,hit);
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y - 5), texProgram); // canviat per alinear la hitbox al numberSprite, reajustar si dona problemes
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
@@ -248,6 +249,7 @@ void MainLevel::update(int deltaTime) {
 
 		currentTime += deltaTime;
 		player->update(deltaTime);
+		if (player->getPosition().y >= 63*16) player->setDying(true);
 		bool treeAlive = false;
 		bool flowerAlive = false;
 		int size = entityArray.size();
@@ -286,7 +288,7 @@ void MainLevel::render() {
 	if (pos.x <= 194) x = 194;
 	else if (pos.x >= 1350) x = 1350;
 	if (pos.y <= 85) y = 86;
-	else if (pos.y >= 200) y = 199;
+	else if (pos.y >= 63*16) y = 63*16;
 	projection = glm::ortho(x - float(SCREEN_WIDTH) / zoom, x + float(SCREEN_WIDTH) / zoom, y + float(SCREEN_HEIGHT) / zoom, y - float(SCREEN_HEIGHT - 161) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);

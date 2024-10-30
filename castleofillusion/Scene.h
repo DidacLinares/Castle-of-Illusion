@@ -76,6 +76,5 @@ protected:
 	int nextRemove = 0,time = 300,counter = 0;
 };
 
-
 #endif // _SCENE_INCLUDE
 

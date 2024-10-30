@@ -287,6 +287,20 @@ void Player::update(int deltaTime) {
 			if (sprite->animation() != STAND_LEFT) changeAnim(STAND_LEFT);
 			speedX = 0;
 		}
+		if (map->collisionMoveUp(pos, glm::vec2(hitbox_x, hitbox_y), &pos.y)) {
+			bJumping = false;
+			Game::instance().keyReleased(GLFW_KEY_W);
+		}
+		if (map->collisionMoveRight(pos, glm::vec2(hitbox_x, hitbox_y))) {
+			//pos.x -= speedX;
+			if (sprite->animation() != STAND_RIGHT) changeAnim(STAND_RIGHT);
+			speedX = 0;
+		}
+		if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
+			//pos.x -= speedX;
+			if (sprite->animation() != STAND_LEFT) changeAnim(STAND_LEFT);
+			speedX = 0;
+		}
 		vector<bool> raycast(3, false);
 		map->raycastDown(pos, glm::vec2(hitbox_x, hitbox_y), raycast);
 		if (sprite->animation() == STAND_LEFT && raycast[0] && !raycast[1] && !raycast[2]) { // 0 esquerra, 1 centre, 2 dreta
@@ -405,7 +419,6 @@ void Player::update(int deltaTime) {
 			pos.y += 4;
 		}
 	}
-	if (pos.y >= 240) dying = true;
 	sprite->setPosition(glm::vec2(int(tileMapDispl.x + pos.x), int(tileMapDispl.y + pos.y)));
 }
 

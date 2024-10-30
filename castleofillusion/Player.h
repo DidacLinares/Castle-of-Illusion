@@ -39,6 +39,7 @@ public:
 	int getScore();
 	void addScore(int points);
 	void changeAnim(int anim);
+	void setDying(bool die) { dying = die; }
 
 private:
 

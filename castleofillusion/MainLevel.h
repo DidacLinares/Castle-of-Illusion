@@ -26,7 +26,7 @@ public:
 	~MainLevel();
 
 	void init(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource* jumpSound, irrklang::ISoundSource* levelMusic, irrklang::ISoundSource* boxBreaking, irrklang::ISoundSource* dead,
-				irrklang::ISoundSource* levelComplete);
+				irrklang::ISoundSource* levelComplete,irrklang::ISoundSource* hit);
 	void update(int deltaTime);
 	void render();
 	void renderInterface();

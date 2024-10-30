@@ -32,6 +32,7 @@ public:
 	bool collisionMoveLeft(glm::vec2& pos, const glm::vec2& size) const;
 	bool collisionMoveRight(glm::vec2& pos, const glm::vec2& size) const;
 	bool collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, float* posY) const;
+	bool collisionMoveUp(const glm::vec2& pos, const glm::vec2& size, float* posY) const;
 	bool setTileAsBlock(int tileX, int tileY, int value);
 	bool isTileValidAsBlock(int tileX, int tileY);
 	void raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const;

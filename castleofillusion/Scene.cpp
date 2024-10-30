@@ -168,12 +168,12 @@ void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jum
 	breakeableBlock->setId(OBJECT);
 	entityArray.push_back(breakeableBlock);
 
-	entityArray.push_back(new Armadillo());
+	/*entityArray.push_back(new Armadillo());
 	entityArray[8]->setTileMap(map);
 	entityArray[8]->init(glm::ivec2(SCREEN_X, SCREEN_Y - 15), texProgram);
 	entityArray[8]->setPlayer(player);
 	entityArray[8]->setPosition(glm::vec2((11) * map->getTileSize(), (8) * map->getTileSize()));
-	entityArray[8]->setId(4);
+	entityArray[8]->setId(4); */
 	this->levelMusic = levelMusic;
 	music = soundEngine->play2D(levelMusic, true, true, true);
 	music->setVolume(0.1f);
@@ -250,6 +250,7 @@ void Scene::update(int deltaTime) {
 
 		currentTime += deltaTime;
 		player->update(deltaTime);
+		if (player->getPosition().y >= 240) player->setDying(true);
 		bool treeAlive = false;
 		bool flowerAlive = false;
 		int size = entityArray.size();

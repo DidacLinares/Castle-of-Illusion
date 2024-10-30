@@ -198,6 +198,23 @@ bool TileMap::collisionMoveDown(const glm::vec2& pos, const glm::vec2& size, flo
 	}
 	return false;
 }
+bool TileMap::collisionMoveUp(const glm::vec2& pos, const glm::vec2& size, float* posY) const {
+	int x0, x1, y;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y) / tileSize;
+	for (int x = x0; x <= x1; x++) {
+		int tile = map[y * mapSize.x + x] != 0;
+		if (tile != 0) {
+			if (*posY + tileSize * y + size.y >= 5) {
+				*posY = tileSize * y + tileSize;
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 void TileMap::raycastDown(const glm::vec2& pos, const glm::vec2& size, std::vector<bool>& collisions) const {
 	

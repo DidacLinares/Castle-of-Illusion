@@ -131,7 +131,7 @@ void Game::changeScene(int newStatus) {
 			break;
 		case MAIN_LEVEL:
 			mainLevel = new MainLevel();
-			mainLevel->init(soundEngine, jumpSound, levelMusic, boxBreaking, dead, levelComplete);
+			mainLevel->init(soundEngine, jumpSound, levelMusic, boxBreaking, dead, levelComplete,hit);
 			scene = (Scene*) mainLevel;
 			break;
 		case PAUSE:

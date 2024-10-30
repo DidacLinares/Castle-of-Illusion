@@ -1,0 +1,28 @@
+
+
+Controls:
+Et mous a Esquerra i Dreta amb A i D.
+Saltes amb W.
+Acotar-se amb S.
+Caure de cul saltant i prement S.
+
+Amb F pots agafar els blocs i cofres.
+Si estàs amb moviment i prems F, els llances.
+Si estàs quiet, el deixes al terra.
+
+God mode prement G
+Heal prement H
+
+Objectiu:
+Mickey ha de recuperar les gemes de l'l·lusió.
+Aquestes es troben al final dels dos nivells.
+En el cas del nivel de práctica, està esperant a ser recuperada.
+En el nivel final, Mickey haurà de derrotar al Drac.
+Els cofres poden contendre pastissos que et curen
+o monedes que et donen puntuació.
+
+El Mickey té 3 intents, amb 3 vides cadascún. Una vida es perd
+quan és ferit per un enemic. Si perd les 3 vides, perd un try
+i ha de reiniciar el nivell des de l'inici.
+A més, cada nivell té un temps limitat, que si arriba a 0, morirà
+automàticament.

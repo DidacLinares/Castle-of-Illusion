@@ -64,7 +64,7 @@ void MainMenu::update(int deltaTime) {
 				Game::instance().changeScene(Game::SELECT_LEVEL);
 				break;
 			case 1:
-				//Game::instance().changeScene(Game::INSTRUCTIONS);
+				Game::instance().changeScene(Game::INSTRUCTIONS_MENU);
 				break;
 			case 2:
 				Game::instance().changeScene(Game::CREDITS_MENU);

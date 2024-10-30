@@ -88,6 +88,9 @@ void Game::changeScene(int newStatus) {
 	case SELECT_LEVEL:
 		delete selectLevelScreen;
 		break;
+	case INSTRUCTIONS_MENU:
+		delete instructionsScreen;
+		break;
 	case CREDITS_MENU:
 		delete creditsScreen;
 		break;
@@ -136,6 +139,15 @@ void Game::changeScene(int newStatus) {
 			mainMenu = new MainMenu();
 			mainMenu->init();
 			break;
+		case INSTRUCTIONS_MENU:
+			if (!soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
+				mainMenuMusic = soundEngine->play2D(mainMenuMusicSource, true, true, true);
+				mainMenuMusic->setVolume(0.1f);
+				mainMenuMusic->setIsPaused(false);
+			}
+			instructionsScreen = new InstructionsScreen();
+			instructionsScreen->init();
+			break;
 		case CREDITS_MENU:
 			if (!soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
 				mainMenuMusic = soundEngine->play2D(mainMenuMusicSource, true, true, true);
@@ -181,6 +193,9 @@ void Game::renderScene(int status) {
 		case MAIN_MENU:
 			mainMenu->render();
 			break;
+		case INSTRUCTIONS_MENU:
+			instructionsScreen->render();
+			break;
 		case CREDITS_MENU:
 			creditsScreen->render();
 			break;
@@ -206,6 +221,9 @@ void Game::updateScene(int status, int deltaTime) {
 		break;
 	case MAIN_MENU:
 		mainMenu->update(deltaTime);
+		break;
+	case INSTRUCTIONS_MENU:
+		instructionsScreen->update(deltaTime);
 		break;
 	case CREDITS_MENU:
 		creditsScreen->update(deltaTime);

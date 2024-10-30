@@ -42,14 +42,15 @@ Scene::Scene() {
 	numberSprite = nullptr;
 	interfaceBackgroundSprite = nullptr;
 	layer_0 = nullptr;
-	TileMap* layer_1 = nullptr;
-	TileMap* layer_2 = nullptr;
+	layer_1 = nullptr;
+	layer_2 = nullptr;
 	soundEngine = nullptr;
 	jumpSound = nullptr;
 	boxBreaking = nullptr;
 	levelMusic = nullptr;
 	dead = nullptr;
 	levelComplete = nullptr;
+	currentTime = 0.0f;
 }
 
 Scene::~Scene() {
@@ -174,7 +175,7 @@ void Scene::init(irrklang::ISoundEngine* soundEngine,irrklang::ISoundSource* jum
 	entityArray[8]->setId(4);
 	this->levelMusic = levelMusic;
 	music = soundEngine->play2D(levelMusic, true, true, true);
-	music->setVolume(0.2f);
+	music->setVolume(0.1f);
 	if (music->getIsPaused()) music->setIsPaused(false);
 
 	initInterface();
@@ -234,7 +235,7 @@ void Scene::update(int deltaTime) {
 		if (counter <= 0) {
 			music->stop();
 			levelCompleteMusic = soundEngine->play2D(levelComplete, false, true, true);
-			levelCompleteMusic->setVolume(0.2f);
+			levelCompleteMusic->setVolume(0.1f);
 			if (levelCompleteMusic->getIsPaused()) levelCompleteMusic->setIsPaused(false);
 			player->changeAnim(0);
 		}
@@ -496,6 +497,6 @@ void Scene::initDummies() {
 void Scene::changeMusicToDying() {
 	music->stop();
 	dyingMusic = soundEngine->play2D(dead, false, true, true);
-	dyingMusic->setVolume(0.2f);
+	dyingMusic->setVolume(0.1f);
 	if (dyingMusic->getIsPaused()) dyingMusic->setIsPaused(false);
 }

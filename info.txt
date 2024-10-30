@@ -1,4 +1,6 @@
-
+Credis:
+Dídac Linares i Baldrich
+Lluís Pons Vidal
 
 Controls:
 Et mous a Esquerra i Dreta amb A i D.
@@ -26,3 +28,26 @@ quan és ferit per un enemic. Si perd les 3 vides, perd un try
 i ha de reiniciar el nivell des de l'inici.
 A més, cada nivell té un temps limitat, que si arriba a 0, morirà
 automàticament.
+
+Funcionalitats implementades
+
+Pantalles: Pantalla de titol, Menu, menú Pausa (tecla esc), instruccions, credits, jugar, seleccio nivells i game over.
+Nivell de practice i nivell complert.
+Tres enemics: Armadillo, planta i arbre.
+Boss: Drac.
+Moviment WASD, acceleracio, tall de salt, caure de cul, ajupir-se.
+Blocs: Cofre, bloc destructible i bloc indestructible.
+Drops: Moneda, pastis, gemma il·lusio (final nivell i drop boss).
+Agafar i llençar o deixar blocs amb la F.
+Vides i tries.
+Caure per un forat.
+Game over si perds el tries.
+Temps limit.
+Puntuacio
+Interficie que et mostra vides, tries, puntuacio i temps.
+God Mode i Heal.
+
+POLISH:
+Musica i efectes de so.
+Interactivitat entitats i animacions.
+

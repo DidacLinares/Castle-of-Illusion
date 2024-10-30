@@ -55,8 +55,8 @@ MainLevel::~MainLevel() {
 			delete entityArray[i];
 		}
 	}
-	if (map != NULL) delete map;
-	if (player != NULL) delete player;
+	if (map != nullptr) delete map;
+	if (player != nullptr) delete player;
 	if (layer_0 != nullptr) delete layer_0;
 	if (layer_1 != nullptr) delete layer_1;
 	if (layer_2 != nullptr) delete layer_2;

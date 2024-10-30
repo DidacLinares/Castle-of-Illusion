@@ -453,6 +453,16 @@ void Player::checkGroundCollision() {
 			startY = pos.y;
 		}
 	}
+	else {
+		if (movingLeft()) {
+			if (object && sprite->animation() != FALL_GRABBED_LEFT) changeAnim(FALL_GRABBED_LEFT);
+			else if (!object && sprite->animation() != FALL_LEFT) changeAnim(FALL_LEFT);
+		} 
+		else {
+			if (object && sprite->animation() != FALL_GRABBED_RIGHT) changeAnim(FALL_GRABBED_RIGHT);
+			else if (!object && sprite->animation() != FALL_RIGHT) changeAnim(FALL_RIGHT);
+		}
+	}
 }
 
 void Player::render() {

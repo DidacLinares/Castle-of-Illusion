@@ -98,6 +98,8 @@ private:
 	irrklang::ISoundSource* levelComplete;
 	irrklang::ISoundSource* levelMusic;
 	irrklang::ISoundSource* hit;
+	irrklang::ISoundSource* mainMenuMusicSource;
+	irrklang::ISound* mainMenuMusic;
 
 	int status = 0;
 	int lastScene = status;

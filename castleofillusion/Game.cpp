@@ -12,8 +12,12 @@ void Game::init() {
 	levelComplete = soundEngine->addSoundSourceFromFile("sound/level_complete.wav");
 	dead = soundEngine->addSoundSourceFromFile("sound/lose_live.wav");
 	hit = soundEngine->addSoundSourceFromFile("sound/hit.wav");
-
 	levelMusic = soundEngine->addSoundSourceFromFile("sound/level.wav");
+	mainMenuMusicSource = soundEngine->addSoundSourceFromFile("sound/main_menu.wav");
+	mainMenuMusic = soundEngine->play2D(mainMenuMusicSource, true, true, true);
+	mainMenuMusic->setVolume(0.1f);
+	mainMenuMusic->setIsPaused(false);
+
 	titleScreen = new TitleScreen();
 	titleScreen->init();
 }
@@ -106,22 +110,44 @@ void Game::changeScene(int newStatus) {
 
 	switch (status) {
 		case TITLE:
+			if (!soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
+				mainMenuMusic = soundEngine->play2D(mainMenuMusicSource, true, true, true);
+				mainMenuMusic->setVolume(0.1f);
+				mainMenuMusic->setIsPaused(false);
+			}
 			titleScreen = new TitleScreen();
 			titleScreen->init();
 			break;
 		case SELECT_LEVEL:
+			if (!soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
+				mainMenuMusic = soundEngine->play2D(mainMenuMusicSource, true, true, true);
+				mainMenuMusic->setVolume(0.1f);
+				mainMenuMusic->setIsPaused(false);
+			}
 			selectLevelScreen = new SelectLevelScreen();
 			selectLevelScreen->init();
 			break;
 		case MAIN_MENU:
+			if (!soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
+				mainMenuMusic = soundEngine->play2D(mainMenuMusicSource, true, true, true);
+				mainMenuMusic->setVolume(0.1f);
+				mainMenuMusic->setIsPaused(false);
+			}
 			mainMenu = new MainMenu();
 			mainMenu->init();
 			break;
 		case CREDITS_MENU:
+			if (!soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
+				mainMenuMusic = soundEngine->play2D(mainMenuMusicSource, true, true, true);
+				mainMenuMusic->setVolume(0.1f);
+				mainMenuMusic->setIsPaused(false);
+			}
 			creditsScreen = new CreditsScreen();
 			creditsScreen->init();
 			break;
 		case PRACTICE_LEVEL:
+			mainMenuMusic->stop();
+			mainMenuMusic->drop();
 			scene = new Scene();
 			scene->init(soundEngine,jumpSound,levelMusic,boxBreaking,dead,levelComplete,hit);
 			break;
@@ -130,6 +156,8 @@ void Game::changeScene(int newStatus) {
 			gameOverScreen->init();
 			break;
 		case MAIN_LEVEL:
+			mainMenuMusic->stop();
+			mainMenuMusic->drop();
 			mainLevel = new MainLevel();
 			mainLevel->init(soundEngine, jumpSound, levelMusic, boxBreaking, dead, levelComplete,hit);
 			scene = (Scene*) mainLevel;

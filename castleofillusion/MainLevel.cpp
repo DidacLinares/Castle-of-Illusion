@@ -21,10 +21,6 @@
 #define INIT_PLAYER_X_TILES 2
 #define INIT_PLAYER_Y_TILES 8
 
-
-#define INIT_ENEMY_X_TILES 14
-#define INIT_ENEMY_Y_TILES 8
-
 #define REMOVE_AT 60
 
 enum ids
@@ -99,83 +95,172 @@ void MainLevel::init(irrklang::ISoundEngine* soundEngine, irrklang::ISoundSource
 	map = TileMap::createTileMap("levels/main_level/map.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	player = new Player();
-	player->setSoundEngineAndSounds(soundEngine, jumpSound,hit);
+	player->setTileMap(map);
+	player->setSoundEngineAndSounds(soundEngine, jumpSound, hit);
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y - 5), texProgram); // canviat per alinear la hitbox al numberSprite, reajustar si dona problemes
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
-	player->setTileMap(map);
 	player->setId(PLAYER);
 
-	entityArray.push_back(new TreeEnemy());
-	entityArray[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[0]->setPlayer(player);
-	entityArray[0]->setPosition(glm::vec2(INIT_ENEMY_X_TILES * map->getTileSize(), INIT_ENEMY_Y_TILES * map->getTileSize()));
-	entityArray[0]->setTileMap(map);
-	entityArray[0]->setId(TREE);
+	TreeEnemy* treeEnemy = new TreeEnemy(false);
+	treeEnemy->setTileMap(map);
+	treeEnemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	treeEnemy->setPlayer(player);
+	treeEnemy->setPosition(glm::vec2(18 * map->getTileSize(), 9 * map->getTileSize()));
+	treeEnemy->setTileMap(map);
+	entityArray.push_back(treeEnemy);
 
-	entityArray.push_back(new Block());
-	entityArray[1]->setTileMap(map);
-	entityArray[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[1]->setPlayer(player);
-	entityArray[1]->setPosition(glm::vec2((10) * map->getTileSize(), (12) * map->getTileSize()));
-	entityArray[1]->setId(OBJECT);
+	FlowerEnemy* flowerEnemy = new FlowerEnemy();
+	flowerEnemy->setTileMap(map);
+	flowerEnemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flowerEnemy->setPlayer(player);
+	flowerEnemy->setPosition(glm::vec2(36 * map->getTileSize(), 6 * map->getTileSize()));
+	entityArray.push_back(flowerEnemy);
 
 	Chest* chest = new Chest();
-	chest->setObjectToSpawn(0);
 	chest->setTileMap(map);
 	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
 	chest->setPlayer(player);
-	chest->setPosition(glm::vec2((32) * map->getTileSize(), (8) * map->getTileSize()));
-	chest->setId(OBJECT);
+	chest->setPosition(glm::vec2(22 * map->getTileSize(), 13 * map->getTileSize()));
+	chest->setObjectToSpawn(0); // Cake
 	entityArray.push_back(chest);
 
-	chest = new Chest();
-	chest->setObjectToSpawn(1);
-	chest->setTileMap(map);
-	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
-	chest->setPlayer(player);
-	chest->setPosition(glm::vec2((75) * map->getTileSize(), (13) * map->getTileSize()));
-	chest->setId(OBJECT);
-	entityArray.push_back(chest);
+	Armadillo* armadillo = new Armadillo();
+	armadillo->setTileMap(map);
+	armadillo->init(glm::ivec2(SCREEN_X, SCREEN_Y - 15), texProgram);
+	armadillo->setPlayer(player);
+	armadillo->setPosition(glm::vec2(31 * map->getTileSize(), 28 * map->getTileSize()));
+	entityArray.push_back(armadillo);
 
-
-	entityArray.push_back(new FlowerEnemy());
-	entityArray[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[4]->setPlayer(player);
-	entityArray[4]->setPosition(glm::vec2((66) * map->getTileSize(), (INIT_ENEMY_Y_TILES + 1) * map->getTileSize()));
-	entityArray[4]->setTileMap(map);
-	entityArray[4]->setId(FLOWER);
-
-	entityArray.push_back(new Block());
-	entityArray[5]->setTileMap(map);
-	entityArray[5]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[5]->setPlayer(player);
-	entityArray[5]->setPosition(glm::vec2((49) * map->getTileSize(), (13) * map->getTileSize()));
-	entityArray[5]->setId(OBJECT);
-
-	entityArray.push_back(new IllusionGem());
-	entityArray[6]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	entityArray[6]->setPlayer(player);
-	entityArray[6]->setPosition(glm::vec2((91) * map->getTileSize(), (5) * map->getTileSize()));
-	entityArray[6]->setTileMap(map);
-	entityArray[6]->setId(OBJECT);
+	flowerEnemy = new FlowerEnemy();
+	flowerEnemy->setTileMap(map);
+	flowerEnemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flowerEnemy->setPlayer(player);
+	flowerEnemy->setPosition(glm::vec2(47 * map->getTileSize(), 11 * map->getTileSize()));
+	entityArray.push_back(flowerEnemy);
 
 	BreakeableBlock* breakeableBlock = new BreakeableBlock();
 	breakeableBlock->setTileMap(map);
 	breakeableBlock->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
 	breakeableBlock->setPlayer(player);
-	breakeableBlock->setPosition(glm::vec2((11) * map->getTileSize(), (12) * map->getTileSize()));
-	breakeableBlock->setId(OBJECT);
+	breakeableBlock->setPosition(glm::vec2(70 * map->getTileSize(), 13 * map->getTileSize()));
 	entityArray.push_back(breakeableBlock);
 
-	entityArray.push_back(new Armadillo());
-	entityArray[8]->setTileMap(map);
-	entityArray[8]->init(glm::ivec2(SCREEN_X, SCREEN_Y - 15), texProgram);
-	entityArray[8]->setPlayer(player);
-	entityArray[8]->setPosition(glm::vec2((11) * map->getTileSize(), (8) * map->getTileSize()));
-	entityArray[8]->setId(4);
+	treeEnemy = new TreeEnemy(false);
+	treeEnemy->setTileMap(map);
+	treeEnemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	treeEnemy->setPlayer(player);
+	treeEnemy->setPosition(glm::vec2(64 * map->getTileSize(), 11 * map->getTileSize()));
+	treeEnemy->setTileMap(map);
+	entityArray.push_back(treeEnemy);
+
+	flowerEnemy = new FlowerEnemy();
+	flowerEnemy->setTileMap(map);
+	flowerEnemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flowerEnemy->setPlayer(player);
+	flowerEnemy->setPosition(glm::vec2(76 * map->getTileSize(), 28 * map->getTileSize()));
+	entityArray.push_back(flowerEnemy);
+
+	chest = new Chest();
+	chest->setTileMap(map);
+	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
+	chest->setPlayer(player);
+	chest->setPosition(glm::vec2(90 * map->getTileSize(), 28 * map->getTileSize()));
+	chest->setObjectToSpawn(1); // Coin
+	entityArray.push_back(chest);
+
+	flowerEnemy = new FlowerEnemy();
+	flowerEnemy->setTileMap(map);
+	flowerEnemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flowerEnemy->setPlayer(player);
+	flowerEnemy->setPosition(glm::vec2(48 * map->getTileSize(), 41 * map->getTileSize()));
+	entityArray.push_back(flowerEnemy);
+
+	Block* block = new Block();
+	block->setTileMap(map);
+	block->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	block->setPlayer(player);
+	block->setPosition(glm::vec2(65 * map->getTileSize(), 41 * map->getTileSize()));
+	entityArray.push_back(block);
+
+	armadillo = new Armadillo();
+	armadillo->setTileMap(map);
+	armadillo->init(glm::ivec2(SCREEN_X, SCREEN_Y - 15), texProgram);
+	armadillo->setPlayer(player);
+	armadillo->setPosition(glm::vec2(79 * map->getTileSize(), 40 * map->getTileSize()));
+	entityArray.push_back(armadillo);
+
+	chest = new Chest();
+	chest->setTileMap(map);
+	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
+	chest->setPlayer(player);
+	chest->setPosition(glm::vec2(2 * map->getTileSize(), 27 * map->getTileSize()));
+	chest->setObjectToSpawn(1); // Coin
+	entityArray.push_back(chest);
+
+	chest = new Chest();
+	chest->setTileMap(map);
+	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
+	chest->setPlayer(player);
+	chest->setPosition(glm::vec2(12 * map->getTileSize(), 29 * map->getTileSize()));
+	chest->setObjectToSpawn(1); // Coin
+	entityArray.push_back(chest);
+
+	chest = new Chest();
+	chest->setTileMap(map);
+	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
+	chest->setPlayer(player);
+	chest->setPosition(glm::vec2(14 * map->getTileSize(), 41 * map->getTileSize()));
+	chest->setObjectToSpawn(0); // Coin
+	entityArray.push_back(chest);
+
+	breakeableBlock = new BreakeableBlock();
+	breakeableBlock->setTileMap(map);
+	breakeableBlock->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
+	breakeableBlock->setPlayer(player);
+	breakeableBlock->setPosition(glm::vec2(20 * map->getTileSize(), 59 * map->getTileSize()));
+	entityArray.push_back(breakeableBlock);
+
+	treeEnemy = new TreeEnemy(false);
+	treeEnemy->setTileMap(map);
+	treeEnemy->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	treeEnemy->setPlayer(player);
+	treeEnemy->setPosition(glm::vec2(8 * map->getTileSize(), 57 * map->getTileSize()));
+	treeEnemy->setTileMap(map);
+	entityArray.push_back(treeEnemy);
+
+	chest = new Chest();
+	chest->setTileMap(map);
+	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
+	chest->setPlayer(player);
+	chest->setPosition(glm::vec2(70 * map->getTileSize(), 59 * map->getTileSize()));
+	chest->setObjectToSpawn(0); // Cake
+	entityArray.push_back(chest);
+
+	chest = new Chest();
+	chest->setTileMap(map);
+	chest->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, soundEngine, boxBreaking);
+	chest->setPlayer(player);
+	chest->setPosition(glm::vec2(86 * map->getTileSize(), 59 * map->getTileSize()));
+	chest->setObjectToSpawn(0); // Cake
+	entityArray.push_back(chest);
+
+	block = new Block();
+	block->setTileMap(map);
+	block->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	block->setPlayer(player);
+	block->setPosition(glm::vec2(83 * map->getTileSize(), 59 * map->getTileSize()));
+	entityArray.push_back(block);
+
+	DragonBoss* dragonBoss = new DragonBoss();
+	dragonBoss->setTileMap(map);
+	dragonBoss->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	dragonBoss->setPlayer(player);
+	dragonBoss->setPosition(glm::vec2(84 * map->getTileSize(), 52 * map->getTileSize()));
+	entityArray.push_back(dragonBoss);
+
 	this->levelMusic = levelMusic;
 	music = soundEngine->play2D(levelMusic, true, true, true);
-	music->setVolume(0.2f);
+	music->setVolume(0.1f);
 	if (music->getIsPaused()) music->setIsPaused(false);
 
 	initInterface();
@@ -235,7 +320,7 @@ void MainLevel::update(int deltaTime) {
 		if (counter <= 0) {
 			music->stop();
 			levelCompleteMusic = soundEngine->play2D(levelComplete, false, true, true);
-			levelCompleteMusic->setVolume(0.2f);
+			levelCompleteMusic->setVolume(0.1f);
 			if (levelCompleteMusic->getIsPaused()) levelCompleteMusic->setIsPaused(false);
 			player->changeAnim(0);
 		}
@@ -249,7 +334,7 @@ void MainLevel::update(int deltaTime) {
 
 		currentTime += deltaTime;
 		player->update(deltaTime);
-		if (player->getPosition().y >= 63*16) player->setDying(true);
+		if (player->getPosition().y >= 970) player->setDying(true);
 		bool treeAlive = false;
 		bool flowerAlive = false;
 		int size = entityArray.size();
@@ -288,7 +373,7 @@ void MainLevel::render() {
 	if (pos.x <= 194) x = 194;
 	else if (pos.x >= 1350) x = 1350;
 	if (pos.y <= 85) y = 86;
-	else if (pos.y >= 63*16) y = 63*16;
+	else if (pos.y >= 928) y = 928;
 	projection = glm::ortho(x - float(SCREEN_WIDTH) / zoom, x + float(SCREEN_WIDTH) / zoom, y + float(SCREEN_HEIGHT) / zoom, y - float(SCREEN_HEIGHT - 161) / zoom);
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -485,6 +570,6 @@ void MainLevel::initDummies() {
 void MainLevel::changeMusicToDying() {
 	music->stop();
 	dyingMusic = soundEngine->play2D(dead, false, true, true);
-	dyingMusic->setVolume(0.2f);
+	dyingMusic->setVolume(0.1f);
 	if (dyingMusic->getIsPaused()) dyingMusic->setIsPaused(false);
 }

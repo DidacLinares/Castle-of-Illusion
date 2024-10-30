@@ -14,6 +14,8 @@
 class TreeEnemy: public NonPlayerEntity {
 
 public:
+	TreeEnemy(bool direction = true);
+
 	virtual void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	virtual void update(int deltaTime);
 
@@ -21,6 +23,7 @@ public:
 
 private:
 	bool dying = false;
+	bool direction = true;
 	int deathFase = 1;
 	int deathTime = 0;
 	int deathAngle = 0;

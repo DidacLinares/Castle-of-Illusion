@@ -53,6 +53,19 @@ void DragonBossProjectile::update(int deltaTime) {
 				break;
 		}
 
+		switch (headPosition) {
+			case HEAD_LEFT:
+				pos.x -= 0.5;
+				pos.y += 0.5;
+				break;
+			case HEAD_DOWN:
+				break;
+			case HEAD_RIGHT:
+				pos.x += 0.5;
+				pos.y += 0.5;
+				break;
+		}
+
 		if (player->checkCollision(getCollisionBox())) {
 			onEntityHit();
 		}

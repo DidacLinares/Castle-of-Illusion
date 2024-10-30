@@ -146,8 +146,10 @@ void Game::changeScene(int newStatus) {
 			creditsScreen->init();
 			break;
 		case PRACTICE_LEVEL:
-			mainMenuMusic->stop();
-			mainMenuMusic->drop();
+			if (soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
+				mainMenuMusic->stop();
+				mainMenuMusic->drop();
+			}
 			scene = new Scene();
 			scene->init(soundEngine,jumpSound,levelMusic,boxBreaking,dead,levelComplete,hit);
 			break;
@@ -156,8 +158,10 @@ void Game::changeScene(int newStatus) {
 			gameOverScreen->init();
 			break;
 		case MAIN_LEVEL:
-			mainMenuMusic->stop();
-			mainMenuMusic->drop();
+			if (soundEngine->isCurrentlyPlaying(mainMenuMusicSource->getName())) {
+				mainMenuMusic->stop();
+				mainMenuMusic->drop();
+			}
 			mainLevel = new MainLevel();
 			mainLevel->init(soundEngine, jumpSound, levelMusic, boxBreaking, dead, levelComplete,hit);
 			scene = (Scene*) mainLevel;

@@ -80,7 +80,7 @@ void Armadillo::update(int deltaTime) {
 			if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
 				sprite->changeAnimation(MOVE_RIGHT);
 			}
-			if (player->checkCollision(glm::vec4(pos.x,pos.y - 11,hitbox_x,hitbox_y))) {
+			if (player->checkCollision(glm::vec4(pos.x,pos.y - 5,hitbox_x,hitbox_y))) {
 				onEntityHit();
 			}
 		}
@@ -94,7 +94,7 @@ void Armadillo::update(int deltaTime) {
 			if (map->collisionMoveLeft(pos, glm::vec2(hitbox_x, hitbox_y))) {
 				sprite->changeAnimation(ROLL_RIGHT);
 			}
-			if (player->checkCollision(glm::vec4(pos.x, pos.y - 11, hitbox_x, hitbox_y))) {
+			if (player->checkCollision(glm::vec4(pos.x, pos.y - 5, hitbox_x, hitbox_y))) {
 				onEntityHit();
 			}
 		}
